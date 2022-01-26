@@ -1,0 +1,74 @@
+import pandas as pd
+import numpy as np
+
+
+# Clase que extraerá los indicies de los excels paths
+class IndicesDesdeExcel():
+    def __init__(self, xls_path: str):
+        self.df = pd.read_excel(xls_path, usecols='A:H', skiprows=6)
+        self.df = self.df.dropna()
+
+    def cvcl(self, ddof=0):
+        ## Coeficient of Variation of Chromosome Length, Paszko 2006 ##
+
+        media_largos_cromosomas = np.mean(self.df['Length each'])        
+        desviacion_estandar_largos_cromosomas = np.std(self.df['Length each'], ddof=ddof)
+        return desviacion_estandar_largos_cromosomas/media_largos_cromosomas * 100
+
+    def mca(self):
+        ## Mean Centromeric Asymmetry, ?? ##
+
+        #CA: centromeric asymmetry
+        asimetria_centromerica = (self.df['Long arm'] - self.df['Short arm']) / (self.df['Long arm'] + self.df['Short arm'])
+        return np.mean(asimetria_centromerica) * 100
+
+    def askp(self):
+        ## Karyotype Asymmetry Index Percentage, Arano 1963 ##
+
+        ask = np.sum(self.df['Long arm']) / np.sum(self.df['Length each'])
+        return ask*100  # DEVERÍA ESTAR MULTIPLICADO POR 100?
+
+    def tfp(self):
+        ## Total Form Percentage, Huziwara 1962 ##
+
+        tf = np.sum(self.df['Short arm']) / np.sum(self.df['Length each'])
+        return tf*100  # DEVERÍA ESTAR MULTIPLICADO POR 100?
+
+    def syi(self):
+        ## Symmetric Index, Greihuber y Speta 1976 ##
+
+        return np.mean(self.df['Short arm']) / np.mean(self.df['Long arm']) * 100
+
+    def a1(self):
+        ## Intrachromosomal Asymmetry, Romero-Zarco 1986 ##
+
+        # Ordenar df con la idea de obtener los pares homólogos
+        df_ordenado = self.df.sort_values('Arm Ratio (L/S)')
+        brazos_cortos_pares_homologos = []
+        brazos_largos_pares_homologos = []
+        n = len(self.df)//2
+        for i in range(n):
+            brazos_cortos_pares_homologos.append(np.mean(df_ordenado['Short arm'].iloc[2*i:2*i + 2]))
+            brazos_largos_pares_homologos.append(np.mean(df_ordenado['Long arm'].iloc[2*i:2*i + 2]))
+        b_div_B = [b / B for b, B in zip(brazos_cortos_pares_homologos, brazos_largos_pares_homologos)]
+
+        self.brazos_cortos_pares_homologosa1 = brazos_cortos_pares_homologos
+        self.brazos_largos_pares_homologosa1 = brazos_largos_pares_homologos
+        return 1 - (np.sum(b_div_B) / n)
+
+    def a(self):
+        ## Asymmetry Index A, Watanabe 1999 ##
+
+        # Ordenar df con la idea de obtener los pares homólogos
+        df_ordenado = self.df.sort_values('Arm Ratio (L/S)')
+        brazos_cortos_pares_homologos = []
+        brazos_largos_pares_homologos = []
+        n = len(self.df)//2
+        for i in range(n):
+            brazos_cortos_pares_homologos.append(np.mean(df_ordenado['Short arm'].iloc[2*i:2*i + 2]))
+            brazos_largos_pares_homologos.append(np.mean(df_ordenado['Long arm'].iloc[2*i:2*i + 2]))
+        division = [(B-b) / (B+b) for b, B in zip(brazos_cortos_pares_homologos, brazos_largos_pares_homologos)]
+
+        self.brazos_cortos_pares_homologosa = brazos_cortos_pares_homologos
+        self.brazos_largos_pares_homologosa = brazos_largos_pares_homologos
+        return (np.sum(division) / n)
