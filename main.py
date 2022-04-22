@@ -1,34 +1,34 @@
 import os
 import pandas as pd
+import streamlit as st
 #import xlsxwriter
 import numpy as np
 from datetime import datetime
 import string
 from clases import IndicesDesdeExcel
 
-
-# Indices que se calcularán y letras que se usarán
-indices_nombres = ['Nombre' ,'CVcl', 'Mca', 'Ask%', 'TF%', 'Syi', 'A1', 'A']
-N_indices = len(indices_nombres)
-
-# DataFrame que almacenará los indices por cada archivo
-df = pd.DataFrame(columns=indices_nombres)
-
-# Cargamos los excels y agregamos los índices al dataframe
-#df_index=0
-path_entrada = './excels_entrada/'
-for excel in os.listdir(path_entrada):
-    indices_clase = IndicesDesdeExcel(path_entrada + excel)
-    indices_valores = [indices_clase.cvcl(), indices_clase.mca(), indices_clase.askp(), indices_clase.tfp(),
-                       indices_clase.syi(), indices_clase.a1(), indices_clase.a()]
-    excel_nombre = excel.split('.xls')[0]
-    
-    df.loc[len(df)+1] = [excel_nombre] + indices_valores
+st.header('BIENVENIDO A LA WEBAPP PARA CÁLCULO DE ÍNDICES.')
 
 
-# Creamos el excel resultante
-fecha_hoy = datetime.now().strftime(r"%d-%m-%Y %Hh%Mm%Ss") 
-excel_nombre = f'Indices {fecha_hoy}.xlsx'
-excel_resultado = df.to_excel(f'./excels_salida/{excel_nombre}', index=False)
+## Uploades de los excels:
+if 'uploader_key' not in st.session_state:
+    st.session_state.uploader_key = 0
+lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, key=st.session_state.uploader_key)
 
+indices_nombres = ['CVcl', 'Mca', 'Ask%', 'TF%', 'Syi', 'A1', 'A']
 
+if len(lista_excels) > 0:
+    container_multiselect = st.container()
+    check_all = st.checkbox('Seleccionar todos')
+    if check_all:
+        indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
+    else:
+        indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
+    if st.button('Calcular indices'):
+        df = pd.DataFrame(columns=['Nombre'] + indices_seleccionados)
+        for uploader in lista_excels:
+            indices_clase = IndicesDesdeExcel(uploader)
+            indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
+            excel_nombre = uploader.name.split('.xls')[0]
+            df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
+        df
