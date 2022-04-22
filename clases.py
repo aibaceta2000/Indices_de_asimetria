@@ -72,3 +72,22 @@ class IndicesDesdeExcel():
         self.brazos_cortos_pares_homologosa = brazos_cortos_pares_homologos
         self.brazos_largos_pares_homologosa = brazos_largos_pares_homologos
         return (np.sum(division) / n)
+
+    def calcular_indices(self, indices):
+        dicc = dict()
+        for indice in indices:
+            if indice == 'CVcl':
+                dicc = dict(dicc, **{indice: self.cvcl()})
+            elif indice == 'Mca':
+                dicc = dict(dicc, **{indice: self.mca()})
+            elif indice == 'Ask%':
+                dicc = dict(dicc, **{indice: self.askp()})
+            elif indice == 'TF%':
+                dicc = dict(dicc, **{indice: self.tfp()})
+            elif indice == 'Syi':
+                dicc = dict(dicc, **{indice: self.syi()})
+            elif indice == 'A1':
+                dicc = dict(dicc, **{indice: self.a1()})
+            elif indice == 'A':
+                dicc = dict(dicc, **{indice: self.a()})
+        return dicc
