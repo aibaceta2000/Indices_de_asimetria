@@ -15,6 +15,13 @@ class IndicesDesdeExcel():
         desviacion_estandar_largos_cromosomas = np.std(self.df['Length each'], ddof=ddof)
         return desviacion_estandar_largos_cromosomas/media_largos_cromosomas * 100
 
+    def cvci(self, ddof=0):
+        ## Coeficient of Variation in the Centromeric Index, Paszko 2006 ##
+
+        media_indice_centromerico = np.mean(self.df['Cent. Index (S/(L+S))'])
+        desviacion_estandar_indice_centromerico = np.std(self.df['Cent. Index (S/(L+S))'], ddof=ddof)
+        return media_indice_centromerico/desviacion_estandar_indice_centromerico * 100        
+
     def mca(self):
         ## Mean Centromeric Asymmetry, ?? ##
 
@@ -73,11 +80,20 @@ class IndicesDesdeExcel():
         self.brazos_largos_pares_homologosa = brazos_largos_pares_homologos
         return (np.sum(division) / n)
 
+    def a2(self, ddof=0):
+        ## Lavania and Srivastava 1992 ##
+
+        media_largos_cromosomas = np.mean(self.df['Length each'])        
+        desviacion_estandar_largos_cromosomas = np.std(self.df['Length each'], ddof=ddof)
+        return desviacion_estandar_largos_cromosomas/media_largos_cromosomas
+
     def calcular_indices(self, indices):
         dicc = dict()
         for indice in indices:
             if indice == 'CVcl':
                 dicc = dict(dicc, **{indice: self.cvcl()})
+            elif indice == 'CVci':
+                dicc = dict(dicc, **{indice: self.cvci()})
             elif indice == 'Mca':
                 dicc = dict(dicc, **{indice: self.mca()})
             elif indice == 'Ask%':
@@ -90,4 +106,9 @@ class IndicesDesdeExcel():
                 dicc = dict(dicc, **{indice: self.a1()})
             elif indice == 'A':
                 dicc = dict(dicc, **{indice: self.a()})
+            elif indice == 'A2':
+                dicc = dict(dicc, **{indice: self.a2()})
         return dicc
+
+#['Ask%', 'TF%', 'Syi', 'A1', 'A']
+#[indices_clase.askp(), indices_clase.tfp(), indices_clase.syi(), indices_clase.a1(), indices_clase.a()]
