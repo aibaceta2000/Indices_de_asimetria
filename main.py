@@ -17,6 +17,8 @@ def xldownload(excel_writer, name):
 
 paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'About Us']
 
+st.image('imagenes/udec.png')
+
 with st.sidebar:
     st.image('imagenes/marca_udec2.png')
     st.text('')
