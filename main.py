@@ -79,7 +79,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     MicroMeasure.
     """
 
-    st.markdown(xldownload('elementos_web/excel_ejemplo1.xlsx', 'Excel para probear - 1'), unsafe_allow_html=True)
+    st.markdown(xldownload('elementos_web/excel_ejemplo1.xlsx', 'Excel para probar - 1'), unsafe_allow_html=True)
     st.markdown(xldownload('elementos_web/excel_ejemplo2.xlsx', 'Excel para probar - 2'), unsafe_allow_html=True)
     st.markdown(xldownload('elementos_web/excel_ejemplo3.xlsx', 'Excel para probar - 3'), unsafe_allow_html=True)
 
