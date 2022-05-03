@@ -33,16 +33,16 @@ if pag_navegacion_actual == paginas_navegacion[0]:
     Bienvenidos a **Alstroemeria-UDEC**, una aplicación web que permite calcular, de una manera sencilla, índices de
      asimetría de cariotipos a partir de tablas excel generadas con el programa *Micromeasure*(Reeves, 2001). 
      **Alstroemeria-UDEC** es el resultado del trabajo en conjunto de la Unidad de Data Science¹ y la 
-     Facultad de Ciencias Naturales y Oceanográficas².
-     
-     ¹Pedro Pinacho Davidson. Facultad de Ingeniería, Departamento de Ingeniería Informática y Ciencias de la 
-     Computación, Universidad de Concepción, Concepción, Chile.
+     Facultad de Ciencias Naturales y Oceanográficas².     
      
      ¹Álvaro Guzmán Chacón. Facultad de Ciencias Físicas y Matemáticas, Departamento de Ingeniería Civil Matemática,
       Universidad de Concepción, Concepción, Chile.
       
      ²Carlos Baeza Perry. Facultad de Ciencias Naturales y Oceanográficas, departamento de Botánica, 
-     Universidad de Concepción, Concepción, Chile
+     Universidad de Concepción, Concepción, Chile.
+     
+     ¹Pedro Pinacho Davidson. Facultad de Ingeniería, Departamento de Ingeniería Informática y Ciencias de la 
+     Computación, Universidad de Concepción, Concepción, Chile.
     """
 
 elif pag_navegacion_actual == paginas_navegacion[1]:
