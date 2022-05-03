@@ -63,23 +63,6 @@ class IndicesDesdeExcel():
         self.brazos_largos_pares_homologosa1 = brazos_largos_pares_homologos
         return 1 - (np.sum(b_div_B) / n)
 
-    def a(self):
-        ## Asymmetry Index A, Watanabe 1999 ##
-
-        # Ordenar df con la idea de obtener los pares homólogos
-        df_ordenado = self.df.sort_values('Arm Ratio (L/S)')
-        brazos_cortos_pares_homologos = []
-        brazos_largos_pares_homologos = []
-        n = len(self.df)//2
-        for i in range(n):
-            brazos_cortos_pares_homologos.append(np.mean(df_ordenado['Short arm'].iloc[2*i:2*i + 2]))
-            brazos_largos_pares_homologos.append(np.mean(df_ordenado['Long arm'].iloc[2*i:2*i + 2]))
-        division = [(B-b) / (B+b) for b, B in zip(brazos_cortos_pares_homologos, brazos_largos_pares_homologos)]
-
-        self.brazos_cortos_pares_homologosa = brazos_cortos_pares_homologos
-        self.brazos_largos_pares_homologosa = brazos_largos_pares_homologos
-        return (np.sum(division) / n)
-
     def a2(self, ddof=0):
         ## Lavania and Srivastava 1992 ##
 
@@ -90,9 +73,9 @@ class IndicesDesdeExcel():
     def calcular_indices(self, indices):
         dicc = dict()
         for indice in indices:
-            if indice == 'CVcl':
+            if indice == 'CV꜀ₗ':
                 dicc = dict(dicc, **{indice: self.cvcl()})
-            elif indice == 'CVci':
+            elif indice == 'CV꜀ᵢ':
                 dicc = dict(dicc, **{indice: self.cvci()})
             elif indice == 'Mca':
                 dicc = dict(dicc, **{indice: self.mca()})
@@ -102,11 +85,9 @@ class IndicesDesdeExcel():
                 dicc = dict(dicc, **{indice: self.tfp()})
             elif indice == 'Syi':
                 dicc = dict(dicc, **{indice: self.syi()})
-            elif indice == 'A1':
+            elif indice == u'A\u2081':
                 dicc = dict(dicc, **{indice: self.a1()})
-            elif indice == 'A':
-                dicc = dict(dicc, **{indice: self.a()})
-            elif indice == 'A2':
+            elif indice == u'A\u2082':
                 dicc = dict(dicc, **{indice: self.a2()})
         return dicc
 
