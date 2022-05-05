@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import streamlit as st
-#import xlsxwriter
 import numpy as np
 from datetime import datetime
 import string
@@ -94,7 +93,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
         st.session_state.uploader_key = 0
     lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, key=st.session_state.uploader_key)
 
-    indices_nombres = ['CV꜀ₗ', 'CV꜀ᵢ', 'Mca', 'Ask%', 'TF%', 'Syi', u'A\u2081', u'A\u2082']
+    indices_nombres = [u'A\u2081', u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
 
     if len(lista_excels) > 0:
         container_multiselect = st.container()
