@@ -124,7 +124,7 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     """
     st.latex('x^1 - \sum_{i=1} x_i')
     st.text('Si o no')
-    st. latex('x_2')
+    st. latex('\text{Donde }x_2\text{ es la caos.}')
     st.subheader('CVCL')
     
     """
