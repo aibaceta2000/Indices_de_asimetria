@@ -118,12 +118,13 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     Especificación respecto al cálculo de índices:
     """
     
-    st.subheader(u'A\u2081')
-    st.text(u'El índice A\u2081')
+    st.subheader(u'A\u2081')    
     u""" 
-    ASD\u2081
+    El índice A\u2081 (_Intrachromosomal Asymmetry, Romero-Zarco 1986_), se calcula de la siguiente forma
     """
-    
+    st.latex('x^1 - \sum_{i=1} x_i')
+    st.text('Si o no')
+    st. latex('x_2')
     st.subheader('CVCL')
     
     """
