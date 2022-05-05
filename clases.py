@@ -73,22 +73,22 @@ class IndicesDesdeExcel():
     def calcular_indices(self, indices):
         dicc = dict()
         for indice in indices:
-            if indice == 'CV꜀ₗ':
-                dicc = dict(dicc, **{indice: self.cvcl()})
-            elif indice == 'CV꜀ᵢ':
-                dicc = dict(dicc, **{indice: self.cvci()})
-            elif indice == 'Mca':
-                dicc = dict(dicc, **{indice: self.mca()})
-            elif indice == 'Ask%':
-                dicc = dict(dicc, **{indice: self.askp()})
-            elif indice == 'TF%':
-                dicc = dict(dicc, **{indice: self.tfp()})
-            elif indice == 'Syi':
-                dicc = dict(dicc, **{indice: self.syi()})
-            elif indice == u'A\u2081':
+            if indice == u'A\u2081':
                 dicc = dict(dicc, **{indice: self.a1()})
             elif indice == u'A\u2082':
                 dicc = dict(dicc, **{indice: self.a2()})
+            elif indice == 'Ask%':
+                dicc = dict(dicc, **{indice: self.askp()})
+            elif indice == 'CVCI':
+                dicc = dict(dicc, **{indice: self.cvci()})
+            elif indice == 'CVCL':
+                dicc = dict(dicc, **{indice: self.cvcl()})
+            elif indice == 'MCA':
+                dicc = dict(dicc, **{indice: self.mca()})
+            elif indice == 'Syi':
+                dicc = dict(dicc, **{indice: self.syi()})
+            elif indice == 'TF%':
+                dicc = dict(dicc, **{indice: self.tfp()})
         return dicc
 
 #['Ask%', 'TF%', 'Syi', 'A1', 'A']
