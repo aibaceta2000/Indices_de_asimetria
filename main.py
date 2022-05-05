@@ -120,8 +120,8 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     
     st.subheader(u'A\u2081')
     st.text(u'El índice A\u2081')
-    """ 
-    ASD 
+    u""" 
+    ASD\u2081
     """
     
     st.subheader('CVCL')
