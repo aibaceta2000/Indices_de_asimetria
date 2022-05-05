@@ -122,9 +122,7 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     u""" 
     El índice A\u2081 (_Intrachromosomal Asymmetry, Romero-Zarco 1986_), se calcula de la siguiente forma
     """
-    st.latex('x^1 - \sum_{i=1} x_i')
-    st.text('Si o no')
-    st. latex('\begin{itemize} \item 2 \end{itemize}')
+    st.latex('x^1 - \sum_{i=1} x_i')        
     st.subheader('CVCL')
     
     """
