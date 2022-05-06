@@ -118,21 +118,23 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     Especificación respecto al cálculo de índices:
     """
     
-    st.subheader(u'A\u2081')    
-    u""" 
-    El índice A\u2081 (_Intrachromosomal Asymmetry, Romero-Zarco 1986_), se calcula de la siguiente forma
-    """
-    st.latex('x^1 - \sum_{i=1} x_i')        
-    st.subheader('CVCL')
-    
-    """
-    A
-    """
-    st.subheader('CV꜀ᵢₗ')
+    st.markdown("<h4>A<sub>1</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice A<sub>1</sub> es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'A_1 = 1 - \frac{\sum_{i=1}^n\frac{b_i}{B_i}}{n}.')
+    st.markdown('Donde _b_<sub>i</sub> y _B_<sub>i</sub> corresponden, respectivamente, al largo promedio de los brazos\
+     cortos y al largo promedio de los brazos largos del _i_-ésimo par de cromosomas homólgos.', unsafe_allow_html=True)
 
-    st.subheader("...")
+    st.markdown("<h4>A<sub>2</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice A<sub>2</sub> es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'A_2 = \frac{s}{x}.')
+    st.markdown('Donde _s_ y _x_ son, respectivamente, la desviación estándar y el promedio de los largos \
+    de los cromosomas.', unsafe_allow_html=True)
 
-    st.subheader(u'A\u2082')
+    st.markdown("<h4>Ask%<sub>2</sub> (Arano, 1963)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice Ask% es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'Ask% = \frac{\sum_L_i}{x}.')
+    st.markdown('Donde _s_ y _x_ son, respectivamente, la desviación estándar y el promedio de los largos \
+    de los cromosomas.', unsafe_allow_html=True)
 
     """
     **NO OLVIDAR CITAR PAPERS CORRESPONDIENTES**
