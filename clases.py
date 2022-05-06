@@ -20,7 +20,7 @@ class IndicesDesdeExcel():
 
         media_indice_centromerico = np.mean(self.df['Cent. Index (S/(L+S))'])
         desviacion_estandar_indice_centromerico = np.std(self.df['Cent. Index (S/(L+S))'], ddof=ddof)
-        return media_indice_centromerico/desviacion_estandar_indice_centromerico * 100        
+        return desviacion_estandar_indice_centromerico/media_indice_centromerico * 100        
 
     def mca(self):
         ## Mean Centromeric Asymmetry, ?? ##
