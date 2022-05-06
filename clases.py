@@ -8,14 +8,14 @@ class IndicesDesdeExcel():
         self.df = pd.read_excel(xls_path, usecols='A:H', skiprows=6)
         self.df = self.df.dropna()
 
-    def cvcl(self, ddof=0):
+    def cvcl(self, ddof=1):
         ## Coeficient of Variation of Chromosome Length, Paszko 2006 ##
 
         media_largos_cromosomas = np.mean(self.df['Length each'])        
         desviacion_estandar_largos_cromosomas = np.std(self.df['Length each'], ddof=ddof)
         return desviacion_estandar_largos_cromosomas/media_largos_cromosomas * 100
 
-    def cvci(self, ddof=0):
+    def cvci(self, ddof=1):
         ## Coeficient of Variation in the Centromeric Index, Paszko 2006 ##
 
         media_indice_centromerico = np.mean(self.df['Cent. Index (S/(L+S))'])
