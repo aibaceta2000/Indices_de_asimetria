@@ -32,7 +32,7 @@ if pag_navegacion_actual == paginas_navegacion[0]:
 
     """
     **Alstroemeria-UDEC** es una aplicación web que permite calcular, de una manera sencilla, índices de
-     asimetría de cariotipos a partir de tablas excel generadas con el programa *Micromeasure*(Reeves, 2001). 
+     asimetría de careotipos a partir de tablas excel generadas con el programa *Micromeasure*(Reeves, 2001). 
      **Alstroemeria-UDEC** es el resultado del trabajo en conjunto de la Unidad de Data Science¹ y la 
      Facultad de Ciencias Naturales y Oceanográficas².     
      
