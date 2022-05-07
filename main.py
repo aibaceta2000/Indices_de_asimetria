@@ -116,8 +116,9 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
-    st.markdown('El cálculo de los índices se hizo según la referencia<sup>1</sup>. A continuación se presenta un \
-    resumen de estos cálculos.', unsafe_allow_html=True)
+    st.markdown('El cálculo de los índices se hizo según la referencia<sup>1</sup>. A continuación se presenta un resumen \
+    de estos cálculos. Cabe destacar que en lo que sigue, _n_ representa la cantidad total de cromosomas y la desviación\
+    estándar corresponde a la desviación estándar muestral.', unsafe_allow_html=True)
 
     st.markdown("<h4>A<sub>1</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __A<sub>1</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
