@@ -122,9 +122,10 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
 
     st.markdown("<h4>A<sub>1</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __A<sub>1</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
-    st.latex(r'A_1 = 1 - \frac{\sum_{i=1}^n\frac{b_i}{B_i}}{n}.')
+    st.latex(r'A_1 = 1 - \frac{\sum_{i=1}^n\frac{b_i}{B_i}}{n_p}.')
     st.markdown('Donde ___b_<sub>i</sub>__ y ___B_<sub>i</sub>__ corresponden, respectivamente, al largo promedio de los brazos\
-     cortos y al largo promedio de los brazos largos del _i_-ésimo par de cromosomas homólgos.', unsafe_allow_html=True)
+     cortos y al largo promedio de los brazos largos del _i_-ésimo par de cromosomas homólgos. Y ___n<sub>p</sub>___ es la \
+     cantidad de pares de cromosomas.', unsafe_allow_html=True)
 
     st.markdown("<h4>A<sub>2</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __A<sub>2</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
