@@ -13,8 +13,10 @@ def xldownload(excel_writer, name):
     b64 = base64.b64encode(data).decode('UTF-8')
     href = f'<a href="data:file/xls;base64,{b64}" download="{name}.xlsx">Descargar {name}</a>'
     return href
+st.set_page_config(layout="wide")
 
-paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'About Us']
+
+paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UDEC']
 
 st.image('imagenes/udec.png')
 
@@ -26,10 +28,10 @@ with st.sidebar:
 
 
 if pag_navegacion_actual == paginas_navegacion[0]:
-    st.header('BIENVENIDOS')
+    st.header('Alstroemeria-UDEC')
 
     """
-    Bienvenidos a **Alstroemeria-UDEC**, una aplicación web que permite calcular, de una manera sencilla, índices de
+    **Alstroemeria-UDEC** es una aplicación web que permite calcular, de una manera sencilla, índices de
      asimetría de cariotipos a partir de tablas excel generadas con el programa *Micromeasure*(Reeves, 2001). 
      **Alstroemeria-UDEC** es el resultado del trabajo en conjunto de la Unidad de Data Science¹ y la 
      Facultad de Ciencias Naturales y Oceanográficas².     
@@ -45,7 +47,7 @@ if pag_navegacion_actual == paginas_navegacion[0]:
     """
 
 elif pag_navegacion_actual == paginas_navegacion[1]:
-    st.header('INSTRUCCIONES DE USO')
+    st.header('Instrucciones de uso')
 
     st.subheader('Paso 1:')
     """    
@@ -85,7 +87,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     st.markdown(xldownload('elementos_web/excel_ejemplo3.xlsx', 'Excel para probar - 3'), unsafe_allow_html=True)
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('BIENVENIDO A LA WEBAPP PARA CÁLCULO DE ÍNDICES.')
+    st.header('Aplicación Web Alstroemeria-UDEC.')
 
 
     ## Uploades de los excels:
@@ -114,33 +116,67 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
-    """
-    Especificación respecto al cálculo de índices:
-    """
-    
+    st.markdown('El cálculo de los índices se hizo según la referencia<sup>1</sup>. A continuación se presenta un \
+    resumen de estos cálculos.', unsafe_allow_html=True)
+
     st.markdown("<h4>A<sub>1</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
-    st.markdown("El índice A<sub>1</sub> es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.markdown("El índice __A<sub>1</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
     st.latex(r'A_1 = 1 - \frac{\sum_{i=1}^n\frac{b_i}{B_i}}{n}.')
-    st.markdown('Donde _b_<sub>i</sub> y _B_<sub>i</sub> corresponden, respectivamente, al largo promedio de los brazos\
+    st.markdown('Donde ___b_<sub>i</sub>__ y ___B_<sub>i</sub>__ corresponden, respectivamente, al largo promedio de los brazos\
      cortos y al largo promedio de los brazos largos del _i_-ésimo par de cromosomas homólgos.', unsafe_allow_html=True)
 
     st.markdown("<h4>A<sub>2</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
-    st.markdown("El índice A<sub>2</sub> es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.markdown("El índice __A<sub>2</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
     st.latex(r'A_2 = \frac{s}{x}.')
-    st.markdown('Donde _s_ y _x_ son, respectivamente, la desviación estándar y el promedio de los largos \
+    st.markdown('Donde ___s___ y ___x___ son, respectivamente, la desviación estándar y el promedio de los largos \
     de los cromosomas.', unsafe_allow_html=True)
 
-    st.markdown("<h4>Ask%<sub>2</sub> (Arano, 1963)</h4>", unsafe_allow_html=True)
-    st.markdown("El índice Ask% es calculado de la siguiente forma:", unsafe_allow_html=True)
-    st.latex(r'Ask% = \frac{\sum_L_i}{x}.')
-    st.markdown('Donde _s_ y _x_ son, respectivamente, la desviación estándar y el promedio de los largos \
-    de los cromosomas.', unsafe_allow_html=True)
+    st.markdown("<h4>Ask% (Arano, 1963)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __Ask%__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'Ask\% = \frac{\sum_{i=1}^n L_i}{\sum_{i=1}^n L_i+l_i}.')
+    st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
+    del brazo más corto del cromosoma _i_-ésimo. Es decir, este índice se calcula como la suma de las longitudes de \
+    los brazos largos dividio en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
 
-    """
-    **NO OLVIDAR CITAR PAPERS CORRESPONDIENTES**
-    """
+    st.markdown("<h4>CV<sub>CI</sub> (Paszko, 2006)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __CV<sub>CI</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'CV_{CI} = \frac{s_{CI}}{x_{CI}}.')
+    st.markdown('Donde ___s<sub>CI</sub>___ y ___x<sub>CI</sub>___ son, respectivamente, la desviación estándar y la media de\
+    los índices centroméricos.', unsafe_allow_html=True)
+
+    st.markdown("<h4>CV<sub>CL</sub>  (Paszko, 2006)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __CV<sub>CL</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'CV_{CL}= A_2 \times 100.')
+    st.markdown('Donde ___A<sub>2</sub>___ corresponde al índices propuesto por Romero Zarco ya expuesto.', unsafe_allow_html=True)
+
+    st.markdown("<h4>M<sub>CA</sub>  (Watanabe, 1999???)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __M<sub>CA</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'M_{CA} = \frac{\sum_{i=1}^n \frac{L_i-l_i}{L_i+l_i}}{n} \times 100.')
+    st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
+    del brazo más corto del cromosoma _i_-ésimo.', unsafe_allow_html=True)
+
+    st.markdown("<h4>Sy<sub>i</sub>  (Greihuber y Speta, 1976)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __Sy<sub>i</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'Sy_i = \frac{x_l}{x_L} \times 100.')
+    st.markdown('Donde ___x<sub>l</sub>___ y ___x<sub>L</sub>___ son, respectivamente, la media de los largos de los brazos cortos\
+    y la media de los largos de los brazo largos.', unsafe_allow_html=True)
+
+    st.markdown("<h4>TF% (Huziwara, 1962)</h4>", unsafe_allow_html=True)
+    st.markdown("El índice __TF%__ es calculado de la siguiente forma:", unsafe_allow_html=True)
+    st.latex(r'TF\% = \frac{\sum_{i=1}^n l_i}{\sum_{i=1}^n L_i+l_i}.')
+    st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
+    del brazo más corto del cromosoma _i_-ésimo. Es decir, este índice se calcula como la suma de las longitudes de \
+    los brazos cortos dividio en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
+
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+
+    st.caption("<h10> <sup>1</sup>: Zuo, L., & Yuan, Q. (2011). The difference between the heterogeneity of the \
+    centromeric index and intrachromosomal asymmetry. Plant systematics and Evolution, 297(1), \
+    141-145.</h10>", unsafe_allow_html=True)
 
 
 
 elif pag_navegacion_actual == paginas_navegacion[4]:
-    st.header('Acerca de nosotros')
+    st.header('Conoce Alstroemeria-UDEC')
