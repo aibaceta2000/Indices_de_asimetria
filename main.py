@@ -119,9 +119,9 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
-    st.markdown('El cálculo de los índices se hizo según la referencia<sup>1</sup>. A continuación se presenta un resumen \
-    de estos cálculos. Cabe destacar que en lo que sigue, _n_ representa la cantidad total de cromosomas y la desviación\
-    estándar corresponde a la desviación estándar muestral.', unsafe_allow_html=True)
+    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UDEC. Cabe destacar que en lo \
+    que sigue, _n_ representa la cantidad total de cromosomas y la desviación estándar corresponde a la desviación\
+    estándar muestral.', unsafe_allow_html=True)
 
     st.markdown("<h4>A<sub>1</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __A<sub>1</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
@@ -171,7 +171,7 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.latex(r'TF\% = \frac{\sum_{i=1}^n l_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
     del brazo más corto del cromosoma _i_-ésimo. Es decir, este índice se calcula como la suma de las longitudes de \
-    los brazos cortos dividio en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
+    los brazos cortos dividido en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
 
     st.write("\n")
     st.write("\n")
