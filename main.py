@@ -177,9 +177,8 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.write("\n")
     st.write("\n")
 
-    st.caption("<h10> <sup>1</sup>: Zuo, L., & Yuan, Q. (2011). The difference between the heterogeneity of the \
-    centromeric index and intrachromosomal asymmetry. Plant systematics and Evolution, 297(1), \
-    141-145.</h10>", unsafe_allow_html=True)
+    st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
+    and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)
 
 
 
