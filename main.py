@@ -149,12 +149,12 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.markdown('Donde ___s<sub>CI</sub>___ y ___x<sub>CI</sub>___ son, respectivamente, la desviación estándar y la media de\
     los índices centroméricos.', unsafe_allow_html=True)
 
-    st.markdown("<h4>CV<sub>CL</sub>  (Paszko, 2006)</h4>", unsafe_allow_html=True)
+    st.markdown("<h4>CV<sub>CL</sub>  (Peruzzi y Eroglu, 2013)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __CV<sub>CL</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
     st.latex(r'CV_{CL}= A_2 \times 100.')
     st.markdown('Donde ___A<sub>2</sub>___ corresponde al índices propuesto por Romero Zarco ya expuesto.', unsafe_allow_html=True)
 
-    st.markdown("<h4>M<sub>CA</sub>  (Watanabe, 1999???)</h4>", unsafe_allow_html=True)
+    st.markdown("<h4>M<sub>CA</sub>  (Peruzzi y Eroglu, 2013)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __M<sub>CA</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
     st.latex(r'M_{CA} = \frac{\sum_{i=1}^n \frac{L_i-l_i}{L_i+l_i}}{n} \times 100.')
     st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
