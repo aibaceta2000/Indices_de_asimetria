@@ -90,7 +90,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     st.markdown(xldownload('elementos_web/excel_ejemplo3.xlsx', 'Excel para probar - 3'), unsafe_allow_html=True)
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('Aplicación Web Alstroemeria-UDEC.')
+    st.header('Alstroemeria-UDEC.')
 
 
     ## Uploades de los excels:
@@ -136,7 +136,7 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.markdown('Donde ___s___ y ___x___ son, respectivamente, la desviación estándar y el promedio de los largos \
     de los cromosomas.', unsafe_allow_html=True)
 
-    st.markdown("<h4>Ask% (Arano, 1963)</h4>", unsafe_allow_html=True)
+    st.markdown("<h4>Ask% (Arano y Saito, 1980)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __Ask%__ es calculado de la siguiente forma:", unsafe_allow_html=True)
     st.latex(r'Ask\% = \frac{\sum_{i=1}^n L_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
