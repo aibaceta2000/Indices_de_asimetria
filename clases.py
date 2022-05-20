@@ -63,7 +63,7 @@ class IndicesDesdeExcel():
         self.brazos_largos_pares_homologosa1 = brazos_largos_pares_homologos
         return 1 - (np.sum(b_div_B) / n)
 
-    def a2(self, ddof=0):
+    def a2(self, ddof=1):
         ## Lavania and Srivastava 1992 ##
 
         media_largos_cromosomas = np.mean(self.df['Length each'])        
