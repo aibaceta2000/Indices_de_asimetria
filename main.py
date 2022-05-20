@@ -56,7 +56,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     """    
     MicroMeasure es un programa científico de análisis de imágenes, cuya aplicación está destinada a 
     estudios citológicos, citogenéticos y citotaxonómicos. Este programa recibe imágenes en un formato específico y, a 
-    través de cálculos internos, retorna un excel con información importante del careotipo en estudio.
+    través de cálculos internos, retorna un excel con información importante del cariotipo en estudio.
     """
 
     st.image("imagenes/paso1.png", caption="Ejemplo de excel obtenido de MicroMeasure.")
