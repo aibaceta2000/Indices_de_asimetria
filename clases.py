@@ -73,9 +73,7 @@ class IndicesDesdeExcel():
     def calcular_indices(self, indices):
         dicc = dict()
         for indice in indices:
-            if indice == u'A\u2081':
-                dicc = dict(dicc, **{indice: self.a1()})
-            elif indice == u'A\u2082':
+            if indice == u'A\u2082':
                 dicc = dict(dicc, **{indice: self.a2()})
             elif indice == 'Ask%':
                 dicc = dict(dicc, **{indice: self.askp()})
