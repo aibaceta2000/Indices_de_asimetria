@@ -46,22 +46,22 @@ class IndicesDesdeExcel():
 
         return np.mean(self.df['Short arm']) / np.mean(self.df['Long arm']) * 100
 
-    def a1(self):
-        ## Intrachromosomal Asymmetry, Romero-Zarco 1986 ##
-
-        # Ordenar df con la idea de obtener los pares homólogos
-        df_ordenado = self.df.sort_values('Arm Ratio (L/S)')
-        brazos_cortos_pares_homologos = []
-        brazos_largos_pares_homologos = []
-        n = len(self.df)//2
-        for i in range(n):
-            brazos_cortos_pares_homologos.append(np.mean(df_ordenado['Short arm'].iloc[2*i:2*i + 2]))
-            brazos_largos_pares_homologos.append(np.mean(df_ordenado['Long arm'].iloc[2*i:2*i + 2]))
-        b_div_B = [b / B for b, B in zip(brazos_cortos_pares_homologos, brazos_largos_pares_homologos)]
-
-        self.brazos_cortos_pares_homologosa1 = brazos_cortos_pares_homologos
-        self.brazos_largos_pares_homologosa1 = brazos_largos_pares_homologos
-        return 1 - (np.sum(b_div_B) / n)
+    #def a1(self):
+    #    ## Intrachromosomal Asymmetry, Romero-Zarco 1986 ##
+    #
+    #    # Ordenar df con la idea de obtener los pares homólogos
+    #    df_ordenado = self.df.sort_values('Arm Ratio (L/S)')
+    #    brazos_cortos_pares_homologos = []
+    #    brazos_largos_pares_homologos = []
+    #    n = len(self.df)//2
+    #    for i in range(n):
+    #        brazos_cortos_pares_homologos.append(np.mean(df_ordenado['Short arm'].iloc[2*i:2*i + 2]))
+    #        brazos_largos_pares_homologos.append(np.mean(df_ordenado['Long arm'].iloc[2*i:2*i + 2]))
+    #    b_div_B = [b / B for b, B in zip(brazos_cortos_pares_homologos, brazos_largos_pares_homologos)]
+    #
+    #    self.brazos_cortos_pares_homologosa1 = brazos_cortos_pares_homologos
+    #    self.brazos_largos_pares_homologosa1 = brazos_largos_pares_homologos
+    #    return 1 - (np.sum(b_div_B) / n)
 
     def a2(self, ddof=1):
         ## Lavania and Srivastava 1992 ##
