@@ -178,7 +178,9 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.write("\n")
 
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
-    and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)
+    and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)    
+    st.caption("<h10>Huziwara, Y. 1962. Karyotype analysis in some genera of Compositae. VIII. Further studies on \
+    the chromosomes of Aster. American Journal of Botany 49:116-119.</h10>", unsafe_allow_html=True)    
 
 
 
