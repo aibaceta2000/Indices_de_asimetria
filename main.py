@@ -125,15 +125,14 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                 excel_nombre = uploader.name.split('.xls')[0]
                 df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             df
-        if 'boton_calcular_indices' in st.session_state:
-            if st.session_state.boton_calcular_indices == 1:
-                st.download_button(
-                    label='📥 Descargar Excel con resultados',
-                    data=xlsdownload(df),
-                    file_name="test.xlsx",
-                    mime="application/vnd.ms-excel",
-                    on_click=del_sesion_state('boton_calcular_indices')
-                )
+        if 'boton_calcular_indices' in st.session_state:            
+            st.download_button(
+                label='📥 Descargar Excel con resultados',
+                data=xlsdownload(df),
+                file_name="test.xlsx",
+                mime="application/vnd.ms-excel",
+                on_click=del_sesion_state('boton_calcular_indices')
+            )
 
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
