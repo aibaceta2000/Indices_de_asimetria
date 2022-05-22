@@ -1,5 +1,3 @@
-import os
-import xlsxwriter
 import pandas as pd
 import streamlit as st
 import numpy as np
@@ -11,7 +9,7 @@ from io import BytesIO
 
 def xlsdownload(df):
     output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    writer = pd.ExcelWriter(output, engine='openpyxl')
     df.to_excel(writer, index=False)
     writer.save()    
     return output.getvalue()
