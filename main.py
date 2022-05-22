@@ -141,11 +141,11 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.latex(r'Ask\% = \frac{\sum_{i=1}^n L_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
     del brazo más corto del cromosoma _i_-ésimo. Es decir, este índice se calcula como la suma de las longitudes de \
-    los brazos largos dividio en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
+    los brazos largos dividio en la suma de los largos de todos los cromosomas.', unsafe_allow_html=True)
 
     st.markdown("<h4>CV<sub>CI</sub> (Paszko, 2006)</h4>", unsafe_allow_html=True)
     st.markdown("El índice __CV<sub>CI</sub>__ es calculado de la siguiente forma:", unsafe_allow_html=True)
-    st.latex(r'CV_{CI} = \frac{s_{CI}}{x_{CI}}.')
+    st.latex(r'CV_{CI} = \frac{s_{CI}}{x_{CI}}\times 100.')
     st.markdown('Donde ___s<sub>CI</sub>___ y ___x<sub>CI</sub>___ son, respectivamente, la desviación estándar y la media de\
     los índices centroméricos.', unsafe_allow_html=True)
 
@@ -171,7 +171,8 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.latex(r'TF\% = \frac{\sum_{i=1}^n l_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown('Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son, respectivamente, el largo del brazo más largo y el largo\
     del brazo más corto del cromosoma _i_-ésimo. Es decir, este índice se calcula como la suma de las longitudes de \
-    los brazos cortos dividido en la suma del largo de todos los cromosomas.', unsafe_allow_html=True)
+    los brazos cortos dividido en la suma del largo de todos los cromosomas. Notar que Ask%+TF%=1 para cualquier conjunto\
+    de cromosomas.', unsafe_allow_html=True)
 
     st.write("\n")
     st.write("\n")
