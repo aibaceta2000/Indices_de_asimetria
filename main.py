@@ -89,7 +89,13 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     """
 
     st.image("imagenes/paso3.png", caption="Resultado final: Tabla con los índices seleccionados por cada archivo subido y botón de descarga.")
-
+    
+    st.subheader('En caso de errores')
+    
+    """
+    En caso de tener errores al momento de calcular los índices, se recomienda reinicar la página. En caso de persistir el problema, escribir un correo
+    al autor (alvaroo_98@hotmail.cl) o crear un *Issue* en la página de github.
+    """
     st.subheader('Archivo de prueba')
     """
     Puede poner a prueba la aplicación web con el siguiente archivo excel de prueba. Este fue obtenido con MicroMeasure.
