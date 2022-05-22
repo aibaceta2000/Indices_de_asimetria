@@ -97,12 +97,12 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
 )
     st.download_button(
     label='Excel para probar - 2',
-    data=open('elementos_web/excel_ejemplo3.xlsx', 'rb').read(),
+    data=open('elementos_web/excel_ejemplo2.xlsx', 'rb').read(),
     file_name="excel_ejemplo2.xlsx",
     mime="application/vnd.ms-excel"
 )
     st.download_button(
-    label='Excel para probar - 1',
+    label='Excel para probar - 3',
     data=open('elementos_web/excel_ejemplo3.xlsx', 'rb').read(),
     file_name="excel_ejemplo3.xlsx",
     mime="application/vnd.ms-excel"
