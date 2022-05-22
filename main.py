@@ -132,7 +132,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                 data=st.session_state['df_resultado'],
                 file_name="test.xlsx",
                 mime="application/vnd.ms-excel",
-                on_click=del_sesion_state('boton_calcular_indices')
+                on_click=del_sesion_state('df_resultado')
             )
 
 elif pag_navegacion_actual == paginas_navegacion[3]:
