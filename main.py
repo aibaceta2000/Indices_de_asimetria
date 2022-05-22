@@ -84,7 +84,13 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     Puede poner a prueba la aplicación web con los siguientes archivos excel de prueba. Esto fueron obtenidos con 
     MicroMeasure.
     """
-
+    
+    st.download_button(
+    label="Download Excel workbook",
+    data='elementos_web/excel_ejemplo1.xlsx',
+    file_name="workbook.xlsx",
+    mime="application/vnd.ms-excel"
+)
     st.markdown(xldownload('elementos_web/excel_ejemplo1.xlsx', 'Excel para probar - 1'), unsafe_allow_html=True)
     st.markdown(xldownload('elementos_web/excel_ejemplo2.xlsx', 'Excel para probar - 2'), unsafe_allow_html=True)
     st.markdown(xldownload('elementos_web/excel_ejemplo3.xlsx', 'Excel para probar - 3'), unsafe_allow_html=True)
