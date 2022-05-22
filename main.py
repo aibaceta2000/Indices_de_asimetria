@@ -106,7 +106,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 
 
     ## Uploades de los excels:
-    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, on_click=add_sesion_state('uploader_key', 1)
+    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, on_click=add_sesion_state('uploader_key', 1))
 
     indices_nombres = [u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
 
