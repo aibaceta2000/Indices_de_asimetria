@@ -4,7 +4,6 @@ import numpy as np
 from datetime import datetime
 import string
 from clases import IndicesDesdeExcel
-import base64
 from io import BytesIO
 
 def xlsdownload(df):
@@ -82,12 +81,14 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     st.subheader('Paso 3:')
     """
     Una vez cargado el archivo excel a la aplicación web, aparecerá un menú para seleccionar los índices que se deseen 
-    calcular (Ver documentación para revisar cómo se calculan los índices). Selecciones los índices que necesite y haga 
+    calcular (Ver *Documentación* para revisar cómo se calculan los índices). Seleccione los índices que necesite y haga 
     click en el botón _Calcular índices_. Si se hizo todo de forma correcta, se desplegará una tabla que, por cada 
-    archivo excel subido (indicado por su nombre), mostrará hacia la derecha los índices seleccionados. 
+    archivo excel subido (indicado por su nombre), mostrará hacia la derecha los índices seleccionados. Además, está la 
+    opción de descargar la tabla desplegada en formato excel al hacer click en el botón _📥 Descargar Excel con resultados_
+    que se muestra al final de la imagen.
     """
 
-    st.image("imagenes/paso3.png", caption="Resultado final: Tabla con los índices seleccionados por cada archivo subido.")
+    st.image("imagenes/paso3.png", caption="Resultado final: Tabla con los índices seleccionados por cada archivo subido y botón de descarga.")
 
     st.subheader('Archivo de prueba')
     """
@@ -127,10 +128,12 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
             df
             add_sesion_state('df_resultado', xlsdownload(df))
         if 'df_resultado' in st.session_state:
+            fecha_hoy = datetime.now().strftime(r"%d-%m-%Y %Hh%Mm%Ss") 
+            excel_nombre = f'Indices_{fecha_hoy}.xlsx'
             st.download_button(
                 label='📥 Descargar Excel con resultados',
                 data=st.session_state['df_resultado'],
-                file_name="test.xlsx",
+                file_name=excel_nombre,
                 mime="application/vnd.ms-excel",
                 on_click=del_sesion_state('df_resultado')
             )
