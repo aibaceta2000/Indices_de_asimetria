@@ -128,7 +128,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
             df
             add_sesion_state('df_resultado', xlsdownload(df))
         if 'df_resultado' in st.session_state:
-            fecha_hoy = datetime.now().strftime(r"%d-%m-%Y %Hh%Mm%Ss") 
+            fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss") 
             excel_nombre = f'Indices_{fecha_hoy}.xlsx'
             st.download_button(
                 label='📥 Descargar Excel con resultados',
