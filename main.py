@@ -106,7 +106,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 
 
     ## Uploades de los excels:
-    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, key='uploader_key')
+    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, on_click=add_sesion_state('uploader_key', 1)
 
     indices_nombres = [u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
 
@@ -117,7 +117,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
             indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
         else:
             indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
-        if st.button('Calcular indices', on_click=add_sesion_state('boton_calcular_indices', 1)):
+        if st.button('Calcular indices'):
             df = pd.DataFrame(columns=['Nombre'] + indices_seleccionados)
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
@@ -125,10 +125,11 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                 excel_nombre = uploader.name.split('.xls')[0]
                 df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             df
-        if 'boton_calcular_indices' in st.session_state:            
+            add_sesion_state('df_resultado', xlsdownload(df))
+        if 'df_resultado' in st.session_state:
             st.download_button(
                 label='📥 Descargar Excel con resultados',
-                data=xlsdownload(df),
+                data=st.session_state['df_resultado'],
                 file_name="test.xlsx",
                 mime="application/vnd.ms-excel",
                 on_click=del_sesion_state('boton_calcular_indices')
