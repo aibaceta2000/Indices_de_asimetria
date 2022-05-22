@@ -8,15 +8,13 @@ from clases import IndicesDesdeExcel
 import base64
 from io import BytesIO
 
-#def xlsdownloadable(path_excel):
-#    output = BytesIO()
-    
-def xldownload(excel_writer, name):
-    ## Función para descargar la clase "writer" como excel.
-    data = open(excel_writer, 'rb').read()
-    b64 = base64.b64encode(data).decode('UTF-8')
-    href = f'<a href="data:file/xls;base64,{b64}" download="{name}.xlsx">Descargar {name}</a>'
-    return href
+def xlsdownload(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.save()    
+    return output.getvalue()
+
 st.set_page_config(layout="wide")
 
 
@@ -83,17 +81,17 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
 
     st.image("imagenes/paso3.png", caption="Resultado final: Tabla con los índices seleccionados por cada archivo subido.")
 
-    st.subheader('Archivos de prueba')
+    st.subheader('Archivo de prueba')
     """
     Puede poner a prueba la aplicación web con el siguiente archivo excel de prueba. Este fue obtenido con MicroMeasure.
     """
     
     st.download_button(
-    label='Descargar Excel para probar',
-    data=open('elementos_web/excel_ejemplo1.xlsx', 'rb').read(),
-    file_name="A. hookeri subsp. hookeri.xlsx",
-    mime="application/vnd.ms-excel"
-)
+        label='📥 Descargar Excel para probar',
+        data=open('elementos_web/excel_ejemplo1.xlsx', 'rb'),
+        file_name="A. hookeri subsp. hookeri.xlsx",
+        mime="application/vnd.ms-excel"
+    )
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
     st.header('Alstroemeria-UDEC.')
@@ -114,6 +112,8 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
         else:
             indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
         if st.button('Calcular indices'):
+            if 'boton_calcular_indices' not in st.session_state:
+                st.session_state.boton_calcular_indices = 1
             df = pd.DataFrame(columns=['Nombre'] + indices_seleccionados)
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
@@ -121,6 +121,14 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                 excel_nombre = uploader.name.split('.xls')[0]
                 df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             df
+        if 'boton_calcular_indices' in st.session_state:
+            if st.session_state.boton_calcular_indices == 1:
+                st.download_button(
+                    label='📥 Descargar Excel con resultados',
+                    data=xlsdownload(df),
+                    file_name="test.xlsx",
+                    mime="application/vnd.ms-excel"
+                )
 
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
