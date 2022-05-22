@@ -18,6 +18,11 @@ def del_sesion_state(st_key):
     if st_key in st.session_state:
         del st.session_state[st_key]
 
+
+def add_sesion_state(st_key, value):
+    if st_key not in st.session_state:
+        st.session_state[st_key] = value
+
 st.set_page_config(layout="wide")
 
 
@@ -101,22 +106,18 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 
 
     ## Uploades de los excels:
-    if 'uploader_key' not in st.session_state:
-        st.session_state.uploader_key = 0
-    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, key=st.session_state.uploader_key)
+    lista_excels = st.file_uploader('Subir archivos', type=['xls', 'xlsx'], accept_multiple_files=True, key='uploader_key')
 
     indices_nombres = [u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
 
-    if len(lista_excels) > 0:
+    if ('uploader_key' in st.session_state) & (len(lista_excels) > 0):
         container_multiselect = st.container()
         check_all = st.checkbox('Seleccionar todos')
         if check_all:
             indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
         else:
             indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
-        if st.button('Calcular indices'):
-            if 'boton_calcular_indices' not in st.session_state:
-                st.session_state.boton_calcular_indices = 1
+        if st.button('Calcular indices', on_click=add_sesion_state('boton_calcular_indices', 1)):
             df = pd.DataFrame(columns=['Nombre'] + indices_seleccionados)
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
