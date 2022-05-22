@@ -94,7 +94,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     
     """
     En caso de tener errores al momento de calcular los índices, se recomienda reinicar la página. En caso de persistir el problema, escribir un correo
-    al autor (alvaroo_98@hotmail.cl) o crear un *Issue* en la página de github.
+    al autor (alvaroo_98@hotmail.cl) o crear un *Issue* en la página de github, detallando el problema y adjuntando imágenes en caso de ser necesario.
     """
     st.subheader('Archivo de prueba')
     """
