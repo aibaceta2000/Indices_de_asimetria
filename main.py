@@ -6,7 +6,11 @@ from datetime import datetime
 import string
 from clases import IndicesDesdeExcel
 import base64
+from io import BytesIO
 
+#def xlsdownloadable(path_excel):
+#    output = BytesIO()
+    
 def xldownload(excel_writer, name):
     ## Función para descargar la clase "writer" como excel.
     data = open(excel_writer, 'rb').read()
@@ -86,9 +90,21 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     """
     
     st.download_button(
-    label="Download Excel workbook",
-    data='elementos_web/excel_ejemplo1.xlsx',
-    file_name="workbook.xlsx",
+    label='Excel para probar - 1',
+    data=open('elementos_web/excel_ejemplo1.xlsx', 'rb').read(),
+    file_name="excel_ejemplo1.xlsx",
+    mime="application/vnd.ms-excel"
+)
+    st.download_button(
+    label='Excel para probar - 2',
+    data=open('elementos_web/excel_ejemplo3.xlsx', 'rb').read(),
+    file_name="excel_ejemplo2.xlsx",
+    mime="application/vnd.ms-excel"
+)
+    st.download_button(
+    label='Excel para probar - 1',
+    data=open('elementos_web/excel_ejemplo3.xlsx', 'rb').read(),
+    file_name="excel_ejemplo3.xlsx",
     mime="application/vnd.ms-excel"
 )
     st.markdown(xldownload('elementos_web/excel_ejemplo1.xlsx', 'Excel para probar - 1'), unsafe_allow_html=True)
