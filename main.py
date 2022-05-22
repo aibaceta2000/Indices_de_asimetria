@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 from datetime import datetime
-import string
 from clases import IndicesDesdeExcel
 from io import BytesIO
 
@@ -84,8 +83,9 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     calcular (Ver *Documentación* para revisar cómo se calculan los índices). Seleccione los índices que necesite y haga 
     click en el botón _Calcular índices_. Si se hizo todo de forma correcta, se desplegará una tabla que, por cada 
     archivo excel subido (indicado por su nombre), mostrará hacia la derecha los índices seleccionados. Además, está la 
-    opción de descargar la tabla desplegada en formato excel al hacer click en el botón _📥 Descargar Excel con resultados_
-    que se muestra al final de la imagen.
+    opción de descargar la tabla desplegada en formato excel al hacer click en el botón _📥 Descargar Excel con resultados_.
+    El archivo se descargará con el nombre Indices_dd-mm-aaaa_hhmmss.xlsx., donde dd-mm-aaaa y hhmmss corresponden, respectivamente,
+    a la fecha y hora exacta al momento de calcular los índices.
     """
 
     st.image("imagenes/paso3.png", caption="Resultado final: Tabla con los índices seleccionados por cada archivo subido y botón de descarga.")
