@@ -14,9 +14,9 @@ def xlsdownload(df):
     writer.save()    
     return output.getvalue()
 
-def del_sesion_state('st_key'):
-    if 'st_key' in st.session_state:
-        del st.session_state.st_key
+def del_sesion_state(st_key):
+    if st_key in st.session_state:
+        del st.session_state[st_key]
 
 st.set_page_config(layout="wide")
 
