@@ -14,6 +14,10 @@ def xlsdownload(df):
     writer.save()    
     return output.getvalue()
 
+def del_sesion_state('st_key'):
+    if 'st_key' in st.session_state:
+        del st.session_state.st_key
+
 st.set_page_config(layout="wide")
 
 
@@ -126,7 +130,8 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                     label='📥 Descargar Excel con resultados',
                     data=xlsdownload(df),
                     file_name="test.xlsx",
-                    mime="application/vnd.ms-excel"
+                    mime="application/vnd.ms-excel",
+                    on_click=del_sesion_state('boton_calcular_indices')
                 )
 
 elif pag_navegacion_actual == paginas_navegacion[3]:
