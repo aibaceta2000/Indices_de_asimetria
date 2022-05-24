@@ -25,16 +25,11 @@ st.set_page_config(layout="wide")
 
 
 paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UDEC']
-imagenes_cols = ['imagenes/udec.png', None, 'imagenes/logosNO.png', 'imagenes/logosCFM.png', 'imagenes/logosFI.png',\
-                 'imagenes/logosDB.jpg', 'imagenes/logosICM.png', 'imagenes/logosUDS.jpg']
-cols = st.columns([1, 2, 1, 1, 1, 1, 1, 1])
 
-for i in range(len(cols)):
-    if i==1:
-        continue
-    col = cols[i]
-    col.image(imagenes_cols[i])
-#st.image('imagenes/udec.png')
+col1, _, col2 = st.columns([1, 3, 2])
+col1.image('imagenes/logoAPP.bmp')
+col2.image('imagenes/udec2.gif', use_column_width = 'always')
+
 
 with st.sidebar:
     st.image('imagenes/marca_udec2.png')
@@ -61,7 +56,7 @@ if pag_navegacion_actual == paginas_navegacion[0]:
      ²Facultad de Ciencias Naturales y Oceanográficas, Departamento de Botánica, 
      Universidad de Concepción, Concepción, Chile.
      
-     ³Pedro Pinacho Davidson. Facultad de Ingeniería, Departamento de Ingeniería Informática y Ciencias de la 
+     ³Facultad de Ingeniería, Departamento de Ingeniería Informática y Ciencias de la 
      Computación, Universidad de Concepción, Concepción, Chile.
     """
 
@@ -229,3 +224,13 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
 
 elif pag_navegacion_actual == paginas_navegacion[4]:
     st.header('Conoce Alstroemeria-UDEC')
+
+
+imagenes_cols = ['imagenes/logosNO.png', 'imagenes/logosCFM.png', 'imagenes/logosFI.png',\
+                 'imagenes/logosDB.jpg', 'imagenes/logosICM.png', 'imagenes/logosUDS.jpg']
+
+cols = st.columns([1, 1, 1, 1, 1, 1])
+
+for i in range(len(cols)):
+    col = cols[i]
+    col.image(imagenes_cols[i])
