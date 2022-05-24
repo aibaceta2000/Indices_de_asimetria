@@ -28,7 +28,7 @@ paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documenta
 
 col1, _, col2 = st.columns([1, 3, 2])
 col1.image('imagenes/logoAPP.bmp')
-col2.image('imagenes/udec2.gif', use_column_width = True)
+col2.image('imagenes/udec.gif', use_column_width = True)
 
 
 with st.sidebar:
