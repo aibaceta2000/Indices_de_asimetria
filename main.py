@@ -112,7 +112,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     )
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('Alstroemeria-UDEC.')
+    st.header('Alstroemeria-UdeC.')
 
 
     ## Uploades de los excels:
