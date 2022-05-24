@@ -25,9 +25,8 @@ st.set_page_config(layout="wide")
 
 
 paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UDEC']
-
 imagenes_cols = ['imagenes/udec.png', None, 'imagenes/logosFI.png', 'imagenes/logosUDS.jpg', \
-            'imagenes/logosFI.png', 'imagenes/logosUDS.jpg', 'imagenes/logosFI.png', 'imagenes/logosUDS.jpg']
+                 'imagenes/logosCFM.png', 'imagenes/logosICM.png', 'imagenes/logosNO.png', 'imagenes/logosDB.jpg']
 cols = st.columns([1, 2, 1, 1, 1, 1, 1, 1])
 
 for i in range(len(cols)):
