@@ -112,7 +112,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     )
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('Alstroemeria-UdeC.')
+    st.header('Alstroemeria-UdeC')
 
 
     ## Uploades de los excels:
@@ -150,7 +150,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
-    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UDEC. Cabe destacar que en lo \
+    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UdeC. Cabe destacar que en lo \
     que sigue, _n_ representa la cantidad total de cromosomas y la desviación estándar corresponde a la desviación\
     estándar muestral.', unsafe_allow_html=True)
 
