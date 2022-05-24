@@ -32,7 +32,7 @@ cols = st.columns([1, 2, 1, 1, 1, 1, 1, 1])
 
 for i in range(len(cols)):
     if i==1:
-        pass
+        continue
     col = cols[i]
     col.image(imagenes_cols[i])
 #st.image('imagenes/udec.png')
