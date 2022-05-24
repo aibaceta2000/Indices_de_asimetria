@@ -229,8 +229,5 @@ elif pag_navegacion_actual == paginas_navegacion[4]:
 imagenes_cols = ['imagenes/logosNO.png', 'imagenes/logosCFM.png', 'imagenes/logosFI.png',\
                  'imagenes/logosDB.jpg', 'imagenes/logosICM.png', 'imagenes/logosUDS.jpg']
 
-cols = st.columns([1, 1, 1, 1, 1, 1])
 
-for i in range(len(cols)):
-    col = cols[i]
-    col.image(imagenes_cols[i])
+st.image('imagenes/banner.png')
