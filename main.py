@@ -59,7 +59,11 @@ if pag_navegacion_actual == paginas_navegacion[0]:
      ³Facultad de Ingeniería, Departamento de Ingeniería Informática y Ciencias de la 
      Computación, Universidad de Concepción, Concepción, Chile.
     """
-
+    
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    
 elif pag_navegacion_actual == paginas_navegacion[1]:
     st.header('Instrucciones de uso')
 
