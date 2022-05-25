@@ -63,6 +63,9 @@ if pag_navegacion_actual == paginas_navegacion[0]:
     st.write("\n")
     st.write("\n")
     st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
     
 elif pag_navegacion_actual == paginas_navegacion[1]:
     st.header('Instrucciones de uso')
@@ -114,7 +117,14 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
         file_name="A. hookeri subsp. hookeri.xlsx",
         mime="application/vnd.ms-excel"
     )
-
+    
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    
 elif pag_navegacion_actual == paginas_navegacion[2]:
     st.header('Alstroemeria-UdeC')
 
@@ -150,7 +160,14 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
                 mime="application/vnd.ms-excel",
                 on_click=del_sesion_state('df_resultado')
             )
-
+            
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
@@ -226,7 +243,12 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.caption("<h10>Romero Zarco, C. 1986. A new method for estimating Karyotype asymmetry. \
     Taxon 36: 526-530.</h10>", unsafe_allow_html=True) 
 
-
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
 
 elif pag_navegacion_actual == paginas_navegacion[4]:
     st.header('Conoce Alstroemeria-UdeC')
@@ -253,7 +275,10 @@ elif pag_navegacion_actual == paginas_navegacion[4]:
     st.write("\n")
     st.write("\n")
     st.write("\n")
-
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    
     st.caption("<h10><sup>1</sup>:Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
     st.caption("<h10><sup>2</sup>: Streamlit. A faster way to build and share data apps. https://streamlit.io/</h10>",
