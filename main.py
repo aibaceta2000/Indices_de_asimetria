@@ -231,7 +231,10 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     st.write("\n")
     st.write("\n")
     st.write("\n")
-
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+    
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
     and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)    
     st.caption("<h10>Huziwara, Y. 1962. Karyotype analysis in some genera of Compositae. VIII. Further studies on \
@@ -242,13 +245,6 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
     to measure?  Comparative Cytogenetics 7: 1-9.</h10>", unsafe_allow_html=True)
     st.caption("<h10>Romero Zarco, C. 1986. A new method for estimating Karyotype asymmetry. \
     Taxon 36: 526-530.</h10>", unsafe_allow_html=True) 
-
-    st.write("\n")
-    st.write("\n")
-    st.write("\n")
-    st.write("\n")
-    st.write("\n")
-    st.write("\n")
 
 elif pag_navegacion_actual == paginas_navegacion[4]:
     st.header('Conoce Alstroemeria-UdeC')
