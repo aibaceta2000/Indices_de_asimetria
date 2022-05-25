@@ -24,11 +24,11 @@ def add_sesion_state(st_key, value):
 st.set_page_config(layout="wide")
 
 
-paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UdeC']
+paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UDEC']
 
 col1, _, col2 = st.columns([1, 3, 2])
 col1.image('imagenes/logoAPP.bmp')
-col2.image('imagenes/udec.gif', use_column_width = True)
+col2.image('imagenes/udec.gif', use_column_width='always')
 
 
 with st.sidebar:
@@ -39,13 +39,13 @@ with st.sidebar:
 
 
 if pag_navegacion_actual == paginas_navegacion[0]:
-    st.header('Alstroemeria-UdeC')
+    st.header('Alstroemeria-UDEC')
 
     """
-    **Alstroemeria-UdeC**, una manera sencilla de calcular índices de asimetría del cariotipo a partir de tablas 
+    **Alstroemeria-UDEC**, una manera sencilla de calcular índices de asimetría del cariotipo a partir de tablas 
     excel generadas con el programa Micromeasure (Reeves, 2001).
     
-    Alstroemeria-UdeC, a simple way to calculate karyotype asymmetry indices from excel tables generated 
+    Alstroemeria-UDEC, a simple way to calculate karyotype asymmetry indices from excel tables generated 
     by the Micromeasure program (Reeves, 2001).
     
     Álvaro Guzmán Chacón¹, Carlos Baeza Perry² & Pedro Pinacho Davidson³.
@@ -112,7 +112,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     )
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('Alstroemeria-UdeC')
+    st.header('Alstroemeria-UDEC.')
 
 
     ## Uploades de los excels:
@@ -150,7 +150,9 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentación')
 
-    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UdeC. Cabe destacar que en lo \
+    st.markdown("""Puede revisar el código fuente en el siguiente repositorio de GitHub: 
+    <a href="https://github.com/Zekess/Indices_de_asimetria">**Repositorio Alstromeria-UdeC**</a>.\n""", unsafe_allow_html=True)
+    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UDEC. Cabe destacar que en lo \
     que sigue, _n_ representa la cantidad total de cromosomas y la desviación estándar corresponde a la desviación\
     estándar muestral.', unsafe_allow_html=True)
 
@@ -225,9 +227,32 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
 elif pag_navegacion_actual == paginas_navegacion[4]:
     st.header('Conoce Alstroemeria-UdeC')
 
+    st.markdown(
+        """
+        **Alstromeria-UdeC** nace de la motivación de crear una herramienta que facilitara el cálculo de índices de
+        asimetría de cariotipos, con la idea de agilizar la investigación y evitar pasar por el cálculo engorroso que 
+        puede haber detrás de estos índices. **Alstromeria-UdeC** fue concebida en el contexto de las prácticas de la 
+        Unidad de Data Science de la Universidad de Concepción, esta práctica en particular fue una colaboración entre 
+        los individuos presentados en la página _Home_.
+        
+        Lo primero fue crear un script en <a href="https://www.python.org/">**Python**</a><sup>1</sup> capáz de resolver la problématica (leer tablas excels 
+        y retornar el valor de los distintos índices). Sin embargo, se necesitaba también una interfaz amigable para que
+        cualquier investigador pueda utilizar esta herramienta sin necesidad de entender de programación. Aquí es donde
+        entra la librería <a href="https://streamlit.io/">**Streamlit**</a><sup>2</sup>. Esta librería de Python es capáz de crear una aplicación web a 
+        partir de un código de Python sin mayores dificultades. Una vez se tiene el código, se decidió subirlo a 
+         <a href="https://github.com/">**GitHub**</a> para así utilizar un servidor para montar la aplicación en la web.
+        """,
+        unsafe_allow_html=True
+    )
 
-imagenes_cols = ['imagenes/logosNO.png', 'imagenes/logosCFM.png', 'imagenes/logosFI.png',\
-                 'imagenes/logosDB.jpg', 'imagenes/logosICM.png', 'imagenes/logosUDS.jpg']
 
+    st.write("\n")
+    st.write("\n")
+    st.write("\n")
+
+    st.caption("<h10><sup>1</sup>:Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
+               CreateSpace.</h10>", unsafe_allow_html=True)
+    st.caption("<h10><sup>2</sup>: Streamlit. A faster way to build and share data apps. https://streamlit.io/</h10>",
+                unsafe_allow_html=True)
 
 st.image('imagenes/banner.png')
