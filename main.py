@@ -24,7 +24,7 @@ def add_sesion_state(st_key, value):
 st.set_page_config(layout="wide")
 
 
-paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UDEC']
+paginas_navegacion = ['Home', 'Instrucciones', 'Cálculo de indices', 'Documentación', 'Conoce Alstroemeria-UdeC']
 
 col1, _, col2 = st.columns([1, 3, 2])
 col1.image('imagenes/logoAPP.bmp')
@@ -39,13 +39,13 @@ with st.sidebar:
 
 
 if pag_navegacion_actual == paginas_navegacion[0]:
-    st.header('Alstroemeria-UDEC')
+    st.header('Alstroemeria-UdeC')
 
     """
-    **Alstroemeria-UDEC**, una manera sencilla de calcular índices de asimetría del cariotipo a partir de tablas 
+    **Alstroemeria-UdeC**, una manera sencilla de calcular índices de asimetría del cariotipo a partir de tablas 
     excel generadas con el programa Micromeasure (Reeves, 2001).
     
-    Alstroemeria-UDEC, a simple way to calculate karyotype asymmetry indices from excel tables generated 
+    Alstroemeria-UdeC, a simple way to calculate karyotype asymmetry indices from excel tables generated 
     by the Micromeasure program (Reeves, 2001).
     
     Álvaro Guzmán Chacón¹, Carlos Baeza Perry² & Pedro Pinacho Davidson³.
@@ -112,7 +112,7 @@ elif pag_navegacion_actual == paginas_navegacion[1]:
     )
 
 elif pag_navegacion_actual == paginas_navegacion[2]:
-    st.header('Alstroemeria-UDEC.')
+    st.header('Alstroemeria-UdeC')
 
 
     ## Uploades de los excels:
@@ -152,7 +152,7 @@ elif pag_navegacion_actual == paginas_navegacion[3]:
 
     st.markdown("""Puede revisar el código fuente en el siguiente repositorio de GitHub: 
     <a href="https://github.com/Zekess/Indices_de_asimetria">**Repositorio Alstromeria-UdeC**</a>.\n""", unsafe_allow_html=True)
-    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UDEC. Cabe destacar que en lo \
+    st.markdown('A continuación se presenta un resumen de los índices incluidos en Alstroemeria-UdeC. Cabe destacar que en lo \
     que sigue, _n_ representa la cantidad total de cromosomas y la desviación estándar corresponde a la desviación\
     estándar muestral.', unsafe_allow_html=True)
 
