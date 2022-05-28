@@ -45,9 +45,6 @@ if pag_navegacion_actual == paginas_navegacion[0]:
     **Alstroemeria-UdeC**, una manera sencilla de calcular índices de asimetría del cariotipo a partir de tablas 
     excel generadas con el programa Micromeasure (Reeves, 2001).
     
-    Alstroemeria-UdeC, a simple way to calculate karyotype asymmetry indices from excel tables generated 
-    by the Micromeasure program (Reeves, 2001).
-    
     Álvaro Guzmán Chacón¹, Carlos Baeza Perry² & Pedro Pinacho Davidson³.
      
      ¹Facultad de Ciencias Físicas y Matemáticas, Departamento de Ingeniería Civil Matemática,
