@@ -248,18 +248,19 @@ elif pag_navegacion_actual == paginas_navegacion[4]:
 
     st.markdown(
         """
-        **Alstromeria-UdeC** nace de la motivación de crear una herramienta que facilitara el cálculo de índices de
-        asimetría de cariotipos, con la idea de agilizar la investigación y evitar pasar por el cálculo engorroso que 
-        puede haber detrás de estos índices. **Alstromeria-UdeC** fue concebida en el contexto de las prácticas de la 
-        Unidad de Data Science de la Universidad de Concepción, esta práctica en particular fue una colaboración entre 
-        los individuos presentados en la página _Home_.
+        **Alstroemeria-UdeC** nace de la motivación de crear una herramienta que facilitara el cálculo de índices de 
+        asimetría de cariotipos, con la idea de agilizar la investigación y evitar pasar por el cálculo complejo 
+        que hay detrás de estos índices. Alstroemeria-UdeC fue concebida en el contexto de las prácticas de la 
+        Unidad de Data Science de la Universidad de Concepción. Esta práctica en particular fue una cooperación 
+        entre los colaboradores presentados en la página _Home_.
         
-        Lo primero fue crear un script en <a href="https://www.python.org/">**Python**</a><sup>1</sup> capáz de resolver la problématica (leer tablas excels 
-        y retornar el valor de los distintos índices). Sin embargo, se necesitaba también una interfaz amigable para que
-        cualquier investigador pueda utilizar esta herramienta sin necesidad de entender de programación. Aquí es donde
-        entra la librería <a href="https://streamlit.io/">**Streamlit**</a><sup>2</sup>. Esta librería de Python es capáz de crear una aplicación web a 
-        partir de un código de Python sin mayores dificultades. Una vez se tiene el código, se decidió subirlo a 
-         <a href="https://github.com/">**GitHub**</a> para así utilizar un servidor para montar la aplicación en la web.
+        Para elaborar el programa **Alstroemeria-UdeC**, lo primero fue crear un script en **Python** (Rossum & Drake 2009) 
+        capaz de resolver la problemática planteada (leer tablas Excel y retornar el valor de los distintos índices). 
+        Sin embargo, se necesitaba también una interfaz amigable para que cualquier investigador pudiera utilizar 
+        esta herramienta, sin necesidad de entender de programación. Para ese objetivo, se usó la librería **Streamlit** 
+        (https://streamlit.io/). Esta librería permite crear una aplicación web a partir de un código de Python sin 
+        mayores dificultades. Una vez obtenido el código, se subió a **GitHub** (https://github.com/) para así utilizar 
+        un servidor para montar la aplicación en la web.
         """,
         unsafe_allow_html=True
     )
@@ -272,9 +273,7 @@ elif pag_navegacion_actual == paginas_navegacion[4]:
     st.write("\n")
     st.write("\n")
     
-    st.caption("<h10><sup>1</sup>:Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
+    st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
-    st.caption("<h10><sup>2</sup>: Streamlit. A faster way to build and share data apps. https://streamlit.io/</h10>",
-                unsafe_allow_html=True)
 
 st.image('imagenes/banner.png')
