@@ -172,7 +172,7 @@ elif pag_navegacion_actual == paginas_navegacion[2]:
 elif pag_navegacion_actual == paginas_navegacion[3]:
     st.header('Documentation')
 
-    st.markdown("""The source code is aviable ON!! the following GitHub repository:
+    st.markdown("""The source code is aviable at the following GitHub repository:
     <a href="https://github.com/Zekess/Indices_de_asimetria">**Chromindex-UdeC Repository**</a>.\n""",
                 unsafe_allow_html=True)
     st.markdown(""" Below there is a summary of the indices that **Chromindex-UdeC** includes. Note that in what 
