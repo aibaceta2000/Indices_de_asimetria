@@ -90,4 +90,3 @@ class IndicesDesdeExcel():
         return dicc
 
 #['Ask%', 'TF%', 'Syi', 'A1', 'A']
-#[indices_clase.askp(), indices_clase.tfp(), indices_clase.syi(), indices_clase.a1(), indices_clase.a()]
