@@ -42,7 +42,7 @@ def instrucciones():
     st.subheader('Paso 2:')
     st.write(
     """
-    Vaya al menú 🥀**Calculo de índices** y haga clic en el botón para cargar archivos. Elija el archivo Excel obtenido con
+    Vaya al menú 🥀**Cálculo de índices** y haga clic en el botón para cargar archivos. Elija el archivo Excel obtenido con
     MicroMeasure.
     """
     )
