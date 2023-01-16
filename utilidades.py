@@ -9,7 +9,7 @@ import pandas as pd
 
 lenguajes = ["🇺🇸 Eng (USA)", "🇨🇱 Esp (Chile)"]
 paginas_navegacion_eng = ['🏠Home', '📖How to use', '🥀Index calculation', '📃Documentation', '❓About Chromindex-UdeC']
-paginas_navegacion_esp = ['🏠Inicio', '📖Instrucciones', '🥀Calculo de índices', '📃Documentación', '❓Acerca de Chromindex-UdeC']
+paginas_navegacion_esp = ['🏠Inicio', '📖Instrucciones', '🥀Cálculo de índices', '📃Documentación', '❓Acerca de Chromindex-UdeC']
 
 def lenguaje_selectbox():
     check_sstate = ("idioma" in st.session_state)
