@@ -44,7 +44,7 @@ def xlsdownload(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='openpyxl')
     df.to_excel(writer, index=False)
-    writer.save()
+    writer.close()
     return output.getvalue()
 
 
