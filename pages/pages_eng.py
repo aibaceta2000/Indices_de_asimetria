@@ -1,6 +1,7 @@
 import streamlit as st
 from utilidades import *
 from clases import *
+import graficos as gf
 
 
 def home():
@@ -22,6 +23,13 @@ def home():
     """
     )
     write_espacios(6)
+
+    matriz = [[1, 20, 30],
+              [20, 1, 60],
+              [30, 60, 1]]
+
+    gf.heatmap(matriz)
+    
 
 def howToUse():
     st.header('How to use')
