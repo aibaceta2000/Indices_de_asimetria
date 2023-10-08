@@ -24,11 +24,18 @@ def home():
     )
     write_espacios(6)
 
-    matriz = [[1, 20, 30],
-              [20, 1, 60],
-              [30, 60, 1]]
+    matriz = [[1, 2, 4],
+              [2, 1, 6],
+              [3, 6, 1]]
 
     gf.heatmap(matriz)
+    gf.heatmap(matriz, [[0, 'rgb(255, 255, 255)'], [1, 'rgb(255, 0, 0)']])
+    gf.heatmap(matriz, "Viridis")
+    gf.heatmap(matriz, "Inferno")
+    gf.heatmap(matriz, "Plasma")
+    gf.heatmap(matriz, "Cividis")
+    gf.heatmap(matriz, "Magma")
+    gf.heatmap(matriz, "Magma")
     
 
 def howToUse():
