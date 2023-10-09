@@ -230,3 +230,14 @@ def about():
 
     st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
+
+def graph():
+    st.header('Graph')
+
+    st.markdown("""
+    imagine this is a graph
+    """,
+    unsafe_allow_html=True
+    )
+    write_espacios(2)
+    
