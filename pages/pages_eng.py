@@ -231,13 +231,29 @@ def about():
     st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
 
-def graph():
-    st.header('Graph')
-
-    st.markdown("""
-    imagine this is a graph
-    """,
-    unsafe_allow_html=True
+def graphSelector():
+    st.header("Graph selector")
+    upload = st.file_uploader(
+        'Upload file(s)', 
+        type=['xls', 'xlsx','csv'], 
+        accept_multiple_files=True,
+        on_change=add_sesion_state('uploader_key', 1)
     )
-    write_espacios(2)
-    
+    st.subheader("How to use?")
+    st.write(
+        """
+        Web developers often use the Chrom-Index as a reference point to optimize their 
+        websites and web applications for the best possible user experience on the Chrome browser.
+        It provides valuable insights into how efficiently a site runs on Chrome and helps 
+        identify areas for improvement. Just upload your .xls file with the correct format and we 
+        will process the file and generate the graphs.
+        """
+    )
+    st.subheader("What is Chrom-Index?")
+    st.write(
+        """
+        In the world of web browsers, the Chrom-Index is a term that has been gaining popularity 
+        among tech enthusiasts and developers alike. It represents a unique metric designed to 
+        measure the efficiency and performance of the browser across various platforms and devices.
+        """
+    )
