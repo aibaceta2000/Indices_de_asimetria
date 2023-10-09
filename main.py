@@ -41,9 +41,6 @@ if leng == lenguajes[0]:
 
     elif pag_actual == paginas_navegacion_eng[5]:#about
         about()
-    
-    elif pag_actual == paginas_navegacion_eng[5]:
-        graph()
 
 
 # Cargar página en español

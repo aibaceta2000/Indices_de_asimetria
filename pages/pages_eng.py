@@ -1,6 +1,8 @@
 import streamlit as st
 from utilidades import *
 from clases import *
+import pandas as pd
+import plotly.express as px
 
 
 def home():
@@ -239,6 +241,27 @@ def graphSelector():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
+    
+    if upload:
+        st.markdown('---')
+        
+        for uploaded_file in upload:
+            # Check the file extension to determine the file type for each uploaded file
+            if uploaded_file.name.endswith(('.xlsx', '.xls')):
+                # Read an Excel file
+                df = pd.read_excel(uploaded_file, engine='openpyxl')
+            elif uploaded_file.name.endswith('.csv'):
+                # Read a CSV file
+                df = pd.read_csv(uploaded_file)
+            else:
+                st.error(f'Unsupported file format for {uploaded_file.name}. Please upload an Excel (.xlsx or .xls) or CSV (.csv) file.')
+                continue  # Skip processing this file and continue with the next
+        
+            # Display the DataFrame for each uploaded file
+            st.subheader(f'Data from {uploaded_file.name}:')
+            st.dataframe(df)
+
+
     st.subheader("How to use?")
     st.write(
         """
