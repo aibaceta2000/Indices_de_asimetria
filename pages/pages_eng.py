@@ -3,6 +3,7 @@ from utilidades import *
 from clases import *
 import pandas as pd
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 
 def home():
@@ -260,7 +261,28 @@ def graphSelector():
             # Display the DataFrame for each uploaded file
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
+            selectgraphtype = st.selectbox(
+                'What graph do you want?',
+                ('graph1', 'graph2'),
+            )
+            if selectgraphtype == 'graph1':
+                # Plot 'CVCL' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['CVCL'])
+                plt.title('Graph 1: CVCL Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('CVCL Values')
+                st.pyplot(plt)
 
+            elif selectgraphtype == 'graph2':
+                # Plot 'LTC' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['LTC'])
+                plt.title('Graph 2: LTC Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('LTC Values')
+                st.pyplot(plt)
+            
 
     st.subheader("How to use?")
     st.write(
