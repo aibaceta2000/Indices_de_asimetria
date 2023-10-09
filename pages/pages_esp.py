@@ -233,3 +233,30 @@ def acerca():
 
     st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
+
+def selectorGraficos():
+    st.header("Selector de graficos")
+    upload = st.file_uploader(
+        'Subir archivo(s)', 
+        type=['xls', 'xlsx','csv'], 
+        accept_multiple_files=True,
+        on_change=add_sesion_state('uploader_key', 1)
+    )
+    st.subheader("¿Cómo usar?")
+    st.write(
+        """
+        Desarrolladores web usan con frecuencia Chrom-Index como un punto de referencia para optimizar sus 
+        paginas y aplicaciones web para la mejor experiencia de usuario posible en el navegador Chrome. 
+        Provee visiones valiosas sobre que tan eficiente un sitio corre en Chrome y ayuda a 
+        identificar áreas para mejorar. Solo sube tu archivo .xls con el formato correcto y procesaremos 
+        el archivo y generaremos los gráficos.
+        """
+    )
+    st.subheader("¿Qué es Chrom-Index?")
+    st.write(
+        """
+        En el mundo de navegadores web, Chrom-Index es un término que ha estado ganando popularidad 
+        entre tanto entusiastas de tecnología como desarrolladores. Representa una métrica única diseñada 
+        para medir la eficiencia y rendimiento del navegador a través de varias plataformas y dispositivos.
+        """
+    )
