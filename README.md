@@ -4,14 +4,21 @@ Este repositorio es un proyecto que busca automatizar el cálculo de indices de 
 
 ## Instrucciones
 
-1. Instalar dependencias:
+1. Crear y ejecutar un entorno virtual (recomendado):
+   dentro de la carpeta Indices_de_asimetria ejecutar
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
 
+2. Instalar dependencias:
+   si utiliza un entorno virtual, asegúrese de que se encuentre activado
    ```bash
    pip install -r requirements.txt
    ```
 
-1. Ejecutar:
-
+3. Ejecutar:
+   si utiliza un entorno virtual, asegúrese de que se encuentre activado
    ```bash
    streamlit run main.py
    ```
