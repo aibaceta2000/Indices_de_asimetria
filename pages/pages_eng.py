@@ -4,7 +4,7 @@ from clases import *
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
-
+from graficos.plot_hull_boxplot import *
 
 def home():
     st.header('Chromindex-UdeC')
@@ -262,8 +262,8 @@ def graphSelector():
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
             selectgraphtype = st.selectbox(
-                'What graph do you want?',
-                ('graph1', 'graph2'),
+                'Select the type of graph:',
+                ('graph1', 'graph2', "Scatter plot with Convex Hull and Boxplots"),
             )
             if selectgraphtype == 'graph1':
                 # Plot 'CVCL' column
@@ -283,6 +283,8 @@ def graphSelector():
                 plt.ylabel('LTC Values')
                 st.pyplot(plt)
             
+            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+               plot_convex_hull(df)
 
     st.subheader("How to use?")
     st.write(
