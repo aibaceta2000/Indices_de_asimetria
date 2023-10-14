@@ -1,8 +1,10 @@
 import streamlit as st
 from utilidades import *
 from clases import *
-import graficos as gf
-
+import pandas as pd
+import plotly.express as px
+import matplotlib.pyplot as plt
+from graficos.plot_hull_boxplot import *
 
 def home():
     st.header('Chromindex-UdeC')
@@ -23,20 +25,6 @@ def home():
     """
     )
     write_espacios(6)
-
-    matriz = [[1, 2, 4],
-              [2, 1, 6],
-              [3, 6, 1]]
-
-    gf.heatmap(matriz)
-    gf.heatmap(matriz, [[0, 'rgb(255, 255, 255)'], [1, 'rgb(255, 0, 0)']])
-    gf.heatmap(matriz, "Viridis")
-    gf.heatmap(matriz, "Inferno")
-    gf.heatmap(matriz, "Plasma")
-    gf.heatmap(matriz, "Cividis")
-    gf.heatmap(matriz, "Magma")
-    gf.heatmap(matriz, "Magma")
-    
 
 def howToUse():
     st.header('How to use')
@@ -245,3 +233,74 @@ def about():
 
     st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
+
+def graphSelector():
+    st.header("Graph selector")
+    upload = st.file_uploader(
+        'Upload file(s)', 
+        type=['xls', 'xlsx','csv'], 
+        accept_multiple_files=True,
+        on_change=add_sesion_state('uploader_key', 1)
+    )
+    
+    if upload:
+        st.markdown('---')
+        
+        for uploaded_file in upload:
+            # Check the file extension to determine the file type for each uploaded file
+            if uploaded_file.name.endswith(('.xlsx', '.xls')):
+                # Read an Excel file
+                df = pd.read_excel(uploaded_file, engine='openpyxl')
+            elif uploaded_file.name.endswith('.csv'):
+                # Read a CSV file
+                df = pd.read_csv(uploaded_file)
+            else:
+                st.error(f'Unsupported file format for {uploaded_file.name}. Please upload an Excel (.xlsx or .xls) or CSV (.csv) file.')
+                continue  # Skip processing this file and continue with the next
+        
+            # Display the DataFrame for each uploaded file
+            st.subheader(f'Data from {uploaded_file.name}:')
+            st.dataframe(df)
+            selectgraphtype = st.selectbox(
+                'Select the type of graph:',
+                ('graph1', 'graph2', "Scatter plot with Convex Hull and Boxplots"),
+            )
+            if selectgraphtype == 'graph1':
+                # Plot 'CVCL' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['CVCL'])
+                plt.title('Graph 1: CVCL Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('CVCL Values')
+                st.pyplot(plt)
+
+            elif selectgraphtype == 'graph2':
+                # Plot 'LTC' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['LTC'])
+                plt.title('Graph 2: LTC Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('LTC Values')
+                st.pyplot(plt)
+            
+            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+               plot_convex_hull(df)
+
+    st.subheader("How to use?")
+    st.write(
+        """
+        Web developers often use the Chrom-Index as a reference point to optimize their 
+        websites and web applications for the best possible user experience on the Chrome browser.
+        It provides valuable insights into how efficiently a site runs on Chrome and helps 
+        identify areas for improvement. Just upload your .xls file with the correct format and we 
+        will process the file and generate the graphs.
+        """
+    )
+    st.subheader("What is Chrom-Index?")
+    st.write(
+        """
+        In the world of web browsers, the Chrom-Index is a term that has been gaining popularity 
+        among tech enthusiasts and developers alike. It represents a unique metric designed to 
+        measure the efficiency and performance of the browser across various platforms and devices.
+        """
+    )

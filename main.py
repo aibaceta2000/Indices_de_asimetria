@@ -24,19 +24,22 @@ if leng == lenguajes[0]:
     write_espacios_sbar(32)
     st.sidebar.image("imagenes/marca_udec2.png")
 
-    if pag_actual == paginas_navegacion_eng[0]:
+    if pag_actual == paginas_navegacion_eng[0]:#inicio
         home()
 
-    elif pag_actual == paginas_navegacion_eng[1]:
+    elif pag_actual == paginas_navegacion_eng[1]:#instrucciones
         howToUse()
 
-    elif pag_actual == paginas_navegacion_eng[2]:
+    elif pag_actual == paginas_navegacion_eng[2]:#calculo de indices
         indexCalc()
 
-    elif pag_actual == paginas_navegacion_eng[3]:
+    elif pag_actual == paginas_navegacion_eng[3]:#documentacion
         docs()
 
-    elif pag_actual == paginas_navegacion_eng[4]:
+    elif pag_actual == paginas_navegacion_eng[4]:#selector de graficos
+        graphSelector()
+
+    elif pag_actual == paginas_navegacion_eng[5]:#about
         about()
 
 
@@ -47,19 +50,22 @@ else:
     write_espacios_sbar(32)
     st.sidebar.image("imagenes/marca_udec2.png")
 
-    if pag_actual == paginas_navegacion_esp[0]:
+    if pag_actual == paginas_navegacion_esp[0]:#inicio
         inicio()
 
-    elif pag_actual == paginas_navegacion_esp[1]:
+    elif pag_actual == paginas_navegacion_esp[1]:#instrucciones
         instrucciones()
 
-    elif pag_actual == paginas_navegacion_esp[2]:
+    elif pag_actual == paginas_navegacion_esp[2]:#calculo de indices
         calculoIndices()
 
-    elif pag_actual == paginas_navegacion_esp[3]:
+    elif pag_actual == paginas_navegacion_esp[3]:#documentacion
         docu()
 
-    elif pag_actual == paginas_navegacion_esp[4]:
+    elif pag_actual == paginas_navegacion_esp[4]:#selector de graficos
+        selectorGraficos()
+
+    elif pag_actual == paginas_navegacion_esp[5]:#about
         acerca()
 
 #Pie de página
