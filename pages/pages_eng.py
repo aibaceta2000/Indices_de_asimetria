@@ -5,6 +5,9 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 from graficos.plot_hull_boxplot import *
+import io
+import base64
+from matplotlib.backends.backend_pdf import PdfPages
 
 def home():
     st.header('Chromindex-UdeC')
@@ -294,6 +297,25 @@ def graphSelector():
                show_point_values = st.checkbox("Show Point Values", False)
                plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_point_values)
 
+            formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
+
+            if st.button("Export Graph"):
+                # Save Graph
+                buffer = io.BytesIO()
+                if formato == "PNG":
+                    plt.savefig(buffer, format="png")
+                    extension = "png"
+                elif formato == "JPEG":
+                    plt.savefig(buffer, format="jpeg")
+                    extension = "jpg"
+                elif formato == "PDF":
+                    plt.savefig(buffer, format="pdf")
+                    extension = "pdf"
+    
+                # Download graph
+                st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
+
+
     st.subheader("How to use?")
     st.write(
         """
@@ -312,3 +334,8 @@ def graphSelector():
         measure the efficiency and performance of the browser across various platforms and devices.
         """
     )
+
+def get_binary_file_downloader_html(bin_data, file_label, button_text):
+    data = base64.b64encode(bin_data.getvalue()).decode()
+    href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
+    return href

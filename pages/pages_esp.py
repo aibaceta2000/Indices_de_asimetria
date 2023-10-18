@@ -1,7 +1,13 @@
 import streamlit as st
 from utilidades import *
 from clases import *
-
+import pandas as pd
+import plotly.express as px
+import matplotlib.pyplot as plt
+from graficos.plot_hull_boxplot import *
+import io
+import base64
+from matplotlib.backends.backend_pdf import PdfPages
 
 def inicio():
     st.header('Chromindex-UdeC')
@@ -242,6 +248,67 @@ def selectorGraficos():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
+
+    if upload:
+        st.markdown('---')
+        
+        for uploaded_file in upload:
+            # Check the file extension to determine the file type for each uploaded file
+            if uploaded_file.name.endswith(('.xlsx', '.xls')):
+                # Read an Excel file
+                df = pd.read_excel(uploaded_file, engine='openpyxl')
+            elif uploaded_file.name.endswith('.csv'):
+                # Read a CSV file
+                df = pd.read_csv(uploaded_file)
+            else:
+                st.error(f'Formato de archivo no soportado {uploaded_file.name}. Porfavor suba un Excel (.xlsx or .xls) o CSV (.csv) file.')
+                continue  # Skip processing this file and continue with the next
+        
+            # Display the DataFrame for each uploaded file
+            st.subheader(f'Data from {uploaded_file.name}:')
+            st.dataframe(df)
+            selectgraphtype = st.selectbox(
+                'Seleccionar tipo de gráfico:',
+                ('gráfico1', 'gráfico2', "Scatter plot with Convex Hull and Boxplots"),
+            )
+            if selectgraphtype == 'gráfico1':
+                # Plot 'CVCL' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['CVCL'])
+                plt.title('Gráfico 1: CVCL Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('CVCL Values')
+                st.pyplot(plt)
+
+            elif selectgraphtype == 'gráfico2':
+                # Plot 'LTC' column
+                plt.figure(figsize=(8, 6))
+                plt.plot(df['LTC'])
+                plt.title('Gráfico 2: LTC Column Plot')
+                plt.xlabel('Index')
+                plt.ylabel('LTC Values')
+                st.pyplot(plt)
+            
+            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+               plot_convex_hull(df)
+
+            formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
+
+            if st.button("Exportar gráfico"):
+                # Save Graph
+                buffer = io.BytesIO()
+                if formato == "PNG":
+                    plt.savefig(buffer, format="png")
+                    extension = "png"
+                elif formato == "JPEG":
+                    plt.savefig(buffer, format="jpeg")
+                    extension = "jpg"
+                elif formato == "PDF":
+                    plt.savefig(buffer, format="pdf")
+                    extension = "pdf"
+    
+                # Download graph
+                st.markdown(get_binary_file_downloader_html(buffer, f"gráfico.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
     st.subheader("¿Cómo usar?")
     st.write(
         """
@@ -260,3 +327,8 @@ def selectorGraficos():
         para medir la eficiencia y rendimiento del navegador a través de varias plataformas y dispositivos.
         """
     )
+
+def get_binary_file_downloader_html(bin_data, file_label, button_text):
+    data = base64.b64encode(bin_data.getvalue()).decode()
+    href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
+    return href
