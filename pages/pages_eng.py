@@ -284,7 +284,15 @@ def graphSelector():
                 st.pyplot(plt)
             
             elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-               plot_convex_hull(df)
+               available_palettes = [
+               "Set1", "Set2", "Set3", "deep", "muted", "bright", "pastel", "dark", "colorblind",
+               "Paired", "Accent",]
+               selected_palette = st.selectbox("Select colors:", available_palettes)
+               show_legend = st.checkbox("Show Legend", True)  
+               show_labels = st.checkbox("Show Labels", True)  
+               show_ticks = st.checkbox("Show Ticks", True)  
+               show_point_values = st.checkbox("Show Point Values", False)
+               plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_point_values)
 
     st.subheader("How to use?")
     st.write(
