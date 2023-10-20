@@ -5,7 +5,9 @@ from scipy.spatial import ConvexHull
 import streamlit as st
 
 
-def plot_convex_hull(a):
+def plot_convex_hull(
+    a, selected_palette, show_legend, show_labels, show_ticks, show_point_values
+):
     combinations = [("CVCL", "MCA"), ("CVCL", "LTC"), ("MCA", "LTC")]
 
     # Initialize an empty DataFrame for convex hull points
@@ -18,7 +20,7 @@ def plot_convex_hull(a):
             hull_points = data.iloc[hull.vertices]  # Get hull points
             hulls = pd.concat([hulls, hull_points])  # Concatenate hull points
 
-        palette = sns.color_palette("Set1", len(hulls["Infrataxa"].unique()))
+        palette = sns.color_palette(selected_palette, len(hulls["Infrataxa"].unique()))
 
         # Plot with convex hull
         fig = plt.figure(figsize=(12, 6))
@@ -49,9 +51,33 @@ def plot_convex_hull(a):
                 color=palette[i],
             )
 
-        scatter_ax.set_xlabel(x_var)
-        scatter_ax.set_ylabel(y_var)
-        scatter_ax.legend()
+            if show_point_values:
+                for x, y in zip(data[x_var], data[y_var]):
+                    scatter_ax.annotate(
+                        f"({x:.1f}, {y:.1f})",
+                        xy=(x, y),
+                        xytext=(-10, 5),
+                        textcoords="offset points",
+                        fontsize=8,
+                    )
+
+        # x and y labels
+        if show_labels:
+            scatter_ax.set_xlabel(x_var)
+            scatter_ax.set_ylabel(y_var)
+        else:
+            scatter_ax.set(xlabel=None, ylabel=None)
+
+        # legend
+        if show_legend:
+            scatter_ax.legend()
+        else:
+            scatter_ax.legend().set_visible(False)  # Hide legend if not required
+
+        # x and y ticks
+        if not show_ticks:
+            scatter_ax.set_xticks([])
+            scatter_ax.set_yticks([])
 
         # Boxplots
         ax = sns.boxplot(
