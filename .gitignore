@@ -2,3 +2,10 @@ __pycache__
 .vscode
 venv
 pages/__pycache__/pages_eng.cpython-311.pyc
+__pycache__/clases.cpython-311.pyc
+__pycache__/clases.cpython-311.pyc
+pages/__pycache__/pages_esp.cpython-311.pyc
+pages/__pycache__/pages_eng.cpython-311.pyc
+pages/__pycache__/__init__.cpython-311.pyc
+__pycache__/utilidades.cpython-311.pyc
+*.pyc

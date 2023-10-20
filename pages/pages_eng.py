@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 from graficos.plot_hull_boxplot import *
+import graficos.heatmap as gf
 import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
@@ -266,7 +267,7 @@ def graphSelector():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Select the type of graph:',
-                ('graph1', 'graph2', "Scatter plot with Convex Hull and Boxplots"),
+                ('graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots"),
             )
             if selectgraphtype == 'graph1':
                 # Plot 'CVCL' column
@@ -285,6 +286,9 @@ def graphSelector():
                 plt.xlabel('Index')
                 plt.ylabel('LTC Values')
                 st.pyplot(plt)
+
+            elif selectgraphtype == "Heatmap":
+                gf.heatmap(df)
             
             elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
                available_palettes = [
