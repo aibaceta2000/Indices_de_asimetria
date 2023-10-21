@@ -298,8 +298,9 @@ def graphSelector():
                show_legend = st.checkbox("Show Legend", True)  
                show_labels = st.checkbox("Show Labels", True)  
                show_ticks = st.checkbox("Show Ticks", True)  
-               show_point_values = st.checkbox("Show Point Values", False)
-               plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_point_values)
+               show_population = st.checkbox("Show Point Values", True)
+               show_coordinates = st.checkbox("Show Coordinates", False)
+               plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_coordinates, show_population)
 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 

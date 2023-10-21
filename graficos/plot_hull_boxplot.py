@@ -6,7 +6,13 @@ import streamlit as st
 
 
 def plot_convex_hull(
-    a, selected_palette, show_legend, show_labels, show_ticks, show_point_values
+    a,
+    selected_palette,
+    show_legend,
+    show_labels,
+    show_ticks,
+    show_coordinates,
+    show_population,
 ):
     combinations = [("CVCL", "MCA"), ("CVCL", "LTC"), ("MCA", "LTC")]
 
@@ -31,11 +37,37 @@ def plot_convex_hull(
         boxplot_ax = plt.axes([w + 0.11, starty, 0.1, h])
         boxplot_ax2 = plt.axes([startx, h + 0.11, w, 0.1])
 
-        # Scatter plot with convex hull
-        for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
+        # Plot Scatter plot
+        for i, (group, data) in enumerate(a.groupby("Infrataxa")):
             scatter_ax.scatter(
                 data[x_var], data[y_var], label=group, s=30, c=[palette[i]]
             )
+
+            # show point coordinates
+            if show_coordinates:
+                for x, y in zip(data[x_var], data[y_var]):
+                    scatter_ax.annotate(
+                        f"({x:.1f}, {y:.1f})",
+                        xy=(x, y),
+                        xytext=(-10, 5),
+                        textcoords="offset points",
+                        fontsize=8,
+                    )
+            # show the point value (population coulmn)
+            if show_population:
+                for x, y, population in zip(
+                    data[x_var], data[y_var], data["Population"]
+                ):
+                    scatter_ax.annotate(
+                        f"{population}",
+                        xy=(x, y),
+                        xytext=(-10, 5),
+                        textcoords="offset points",
+                        fontsize=8,
+                    )
+
+        # Plot Convex hull
+        for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
             hull = ConvexHull(data[[x_var, y_var]].values)
             for simplex in hull.simplices:
                 scatter_ax.plot(
@@ -50,16 +82,6 @@ def plot_convex_hull(
                 alpha=0.2,
                 color=palette[i],
             )
-
-            if show_point_values:
-                for x, y in zip(data[x_var], data[y_var]):
-                    scatter_ax.annotate(
-                        f"({x:.1f}, {y:.1f})",
-                        xy=(x, y),
-                        xytext=(-10, 5),
-                        textcoords="offset points",
-                        fontsize=8,
-                    )
 
         # x and y labels
         if show_labels:
