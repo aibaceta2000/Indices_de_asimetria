@@ -267,7 +267,7 @@ def graphSelector():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Select the type of graph:',
-                ('graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots"),
+                ('graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
             if selectgraphtype == 'graph1':
                 # Plot 'CVCL' column
@@ -301,6 +301,31 @@ def graphSelector():
                show_population = st.checkbox("Show Point Values", True)
                show_coordinates = st.checkbox("Show Coordinates", False)
                plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_coordinates, show_population)
+
+            elif selectgraphtype == "Boxplot":
+                st.header("Test Graph")
+                df_data = pd.DataFrame(df, columns=df.columns)
+                infrataxas = dict()
+                for index, value in enumerate(df_data['Infrataxa']):
+                    if value not in infrataxas:
+                        infrataxas[value] = index
+                infrataxas_graph_data = dict()
+                indexes = df_data.iloc[:, 3:]
+                for index, (keys, values) in enumerate(infrataxas.items()):
+                    if index >=0 and index < len(infrataxas) - 1:
+                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
+                    else:
+                        infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
+                    
+                figs = []
+                for (columnName) in indexes.columns:
+                    fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
+                    fig.update_layout(height=600, width=800)
+                    fig.update_traces(width=0.5)
+                    #fig.update_layout(hovermode=False)
+                    figs.append(fig)
+                for index, figure in enumerate(figs):
+                    st.plotly_chart(figure)              
 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
