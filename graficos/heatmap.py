@@ -27,11 +27,11 @@ def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=
     col = sns.color_palette(color, n_colors=n_colors) if discrete_palette else color
 
     # atrocidad para que el clustermap use jerarquia con los datos originales y no con los datos escalados
-    linkage_matrix_row = linkage(df.iloc[:, 3:6], method='average', metric='euclidean')
-    linkage_matrix_col = linkage(df.iloc[:, 3:6].T, method='average', metric='euclidean')
+    linkage_matrix_row = linkage(df.iloc[:, 3:], method='average', metric='euclidean')
+    linkage_matrix_col = linkage(df.iloc[:, 3:].T, method='average', metric='euclidean')
 
     # clustermap
-    clustermap = sns.clustermap(df.iloc[:, 3:6], 
+    clustermap = sns.clustermap(df.iloc[:, 3:], 
                                 method='average', 
                                 metric='euclidean', 
                                 cmap=col, 
