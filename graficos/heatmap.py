@@ -1,14 +1,30 @@
 import seaborn as sns
 import streamlit as st
 from scipy.cluster.hierarchy import linkage
-import matplotlib.pyplot as plt
-import numpy as np
 
 
-def heatmap(df, color="Spectral"):
-    # color
-    colores = 9
-    col = sns.color_palette(color, n_colors=colores)
+def heatmap(df):
+    available_palettes = ["Spectral", "Set1", "Set2", "Set3", "deep", "muted", 
+                          "bright", "pastel", "dark", "colorblind", 
+                          "Paired", "Accent"]
+    
+    selected_palette = st.selectbox("Select palette:", available_palettes)
+    annotations = st.checkbox("Show cell values", False)
+    scaled_data = st.checkbox("Scaled Data", True)
+    discrete_palette = st.checkbox("Discrete palette", True)
+    n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
+
+
+    heatmapGraph(df, 
+                 color=selected_palette, 
+                 n_colors=n_colors, 
+                 discrete_palette=discrete_palette,
+                 annot=annotations,
+                 scaled_data=scaled_data)
+
+
+def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=False, scaled_data=True):
+    col = sns.color_palette(color, n_colors=n_colors) if discrete_palette else color
 
     # atrocidad para que el clustermap use jerarquia con los datos originales y no con los datos escalados
     linkage_matrix_row = linkage(df.iloc[:, 3:6], method='average', metric='euclidean')
@@ -21,9 +37,9 @@ def heatmap(df, color="Spectral"):
                                 cmap=col, 
                                 row_linkage=linkage_matrix_row, 
                                 col_linkage=linkage_matrix_col, 
-                                z_score=1,
-                                cbar=0
-                                )
+                                z_score= 1 if scaled_data else None,
+                                annot=annot,
+                                cbar= not discrete_palette)
     
     # etiquetas especies
     row_labels = df.iloc[:, 1].values
@@ -32,7 +48,6 @@ def heatmap(df, color="Spectral"):
     row_order = clustermap.dendrogram_row.reordered_ind
     clustermap.ax_heatmap.set_yticklabels([row_labels[i] for i in row_order], fontsize=10, rotation = 0)
     
-
 
     # rotacion dendogramas
     clustermap.ax_heatmap.invert_xaxis()
@@ -43,23 +58,22 @@ def heatmap(df, color="Spectral"):
 
 
     # histograma
-    clustermap.cax.set_position([0.0, 0.85, 0.18, 0.18])
+    if discrete_palette:
+        clustermap.cax.set_position([0.0, 0.85, 0.18, 0.18])
 
-    hist = sns.histplot(clustermap.data2d.to_numpy().reshape(-1), 
-                 ax=clustermap.cax,
-                 bins=colores
-                 )
-    
-    for bin, i in zip(hist.patches, col):
-        bin.set_facecolor(i)
+        hist = sns.histplot(clustermap.data2d.to_numpy().reshape(-1), 
+                            ax=clustermap.cax,
+                            bins=n_colors
+                            )
+        
+        for bin, i in zip(hist.patches, col):
+            bin.set_facecolor(i)
 
+        hist.set_title("Color Key and Histogram")
+        if scaled_data: 
+            hist.set_xticks([-1, 0, 1])
 
-    hist.set_title("Color Key and Histogram")
-    hist.set_xticks([-1, 0, 1])
-    hist.set_xlabel("z-score")
-
-
-
+        hist.set_xlabel("z-score" if scaled_data else "Value")
 
 
     st.pyplot(clustermap)

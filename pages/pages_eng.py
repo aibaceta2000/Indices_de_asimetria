@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 from graficos.plot_hull_boxplot import *
-import graficos.heatmap as gf
+from graficos.heatmap import heatmap
 import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
@@ -288,7 +288,7 @@ def graphSelector():
                 st.pyplot(plt)
 
             elif selectgraphtype == "Heatmap":
-                gf.heatmap(df)
+                heatmap(df)
             
             elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
                available_palettes = [
