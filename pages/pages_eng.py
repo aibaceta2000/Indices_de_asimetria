@@ -291,16 +291,7 @@ def graphSelector():
                 heatmap(df)
             
             elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-               available_palettes = [
-               "Set1", "Set2", "Set3", "deep", "muted", "bright", "pastel", "dark", "colorblind",
-               "Paired", "Accent",]
-               selected_palette = st.selectbox("Select colors:", available_palettes)
-               show_legend = st.checkbox("Show Legend", True)  
-               show_labels = st.checkbox("Show Labels", True)  
-               show_ticks = st.checkbox("Show Ticks", True)  
-               show_population = st.checkbox("Show Point Values", True)
-               show_coordinates = st.checkbox("Show Coordinates", False)
-               plot_convex_hull(df, selected_palette, show_legend, show_labels, show_ticks, show_coordinates, show_population)
+                plot_convex_hull(df)
 
             elif selectgraphtype == "Boxplot":
                 st.header("Test Graph")

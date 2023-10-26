@@ -3,18 +3,45 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.spatial import ConvexHull
 import streamlit as st
+import itertools
 
 
-def plot_convex_hull(
-    a,
-    selected_palette,
-    show_legend,
-    show_labels,
-    show_ticks,
-    show_coordinates,
-    show_population,
-):
-    combinations = [("CVCL", "MCA"), ("CVCL", "LTC"), ("MCA", "LTC")]
+def plot_convex_hull(a):
+    available_palettes = [
+        "Set1",
+        "Set2",
+        "Set3",
+        "deep",
+        "muted",
+        "bright",
+        "pastel",
+        "dark",
+        "colorblind",
+        "Paired",
+        "Accent",
+    ]
+    available_columns = a.columns[3:]  # get columns from 3 to end
+    selected_columns = st.multiselect("Select the indexes", available_columns)
+    combinations = []
+
+    if len(selected_columns) < 2:
+        st.warning("Select at least 2 indexes")
+    else:
+        # get the permutations
+        permutations = list(itertools.permutations(selected_columns, 2))
+        # select desired permutations
+        combinations = st.multiselect(
+            "Select the combinations", permutations, permutations
+        )
+        if len(combinations) < 1:
+            st.warning("Select at least 1 combination")
+
+        selected_palette = st.selectbox("Select colors:", available_palettes)
+        show_legend = st.checkbox("Show Legend", True)
+        show_labels = st.checkbox("Show Labels", True)
+        show_ticks = st.checkbox("Show Ticks", True)
+        show_population = st.checkbox("Show Point Values", True)
+        show_coordinates = st.checkbox("Show Coordinates", False)
 
     # Initialize an empty DataFrame for convex hull points
     hulls = pd.DataFrame(columns=a.columns)

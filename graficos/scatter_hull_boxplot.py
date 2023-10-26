@@ -19,7 +19,6 @@ for x_var, y_var in combinations:
 
     palette = sns.color_palette("Set1", len(hulls["Infrataxa"].unique()))
 
-    # Plot with convex hull
     plt.figure(figsize=(12, 6))
 
     # Define positions for the main scatter plot and boxplot axes
@@ -28,9 +27,12 @@ for x_var, y_var in combinations:
     boxplot_ax = plt.axes([w + 0.11, starty, 0.1, h])
     boxplot_ax2 = plt.axes([startx, h + 0.11, w, 0.1])
 
-    # Scatter plot with convex hull
-    for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
+    # scatter
+    for i, (group, data) in enumerate(a.groupby("Infrataxa")):
         scatter_ax.scatter(data[x_var], data[y_var], label=group, s=30, c=[palette[i]])
+
+    # convex hull
+    for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
         hull = ConvexHull(data[[x_var, y_var]].values)
         for simplex in hull.simplices:
             scatter_ax.plot(
