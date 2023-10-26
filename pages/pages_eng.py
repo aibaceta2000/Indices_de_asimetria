@@ -246,7 +246,11 @@ def graphSelector():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    
+    """ check_cvcl=st.checkbox("CVCL Column Plot")
+    check_ltc=st.checkbox("LTC Column Plot")
+    check_heat=st.checkbox("Heatmap")
+    check_scatter=st.checkbox("Scatter plot with Convex Hull and Boxplots")
+    check_boxplot=st.checkbox("Boxplot") """
     if upload:
         st.markdown('---')
         
