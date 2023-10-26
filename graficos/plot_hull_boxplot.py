@@ -5,21 +5,43 @@ from scipy.spatial import ConvexHull
 import streamlit as st
 import itertools
 
+available_palettes = [
+    "Set1",
+    "Set2",
+    "Set3",
+    "deep",
+    "muted",
+    "bright",
+    "pastel",
+    "dark",
+    "colorblind",
+    "Paired",
+    "Accent",
+    "husl",
+    "tab10",
+    "tab20",
+    "tab20b",
+    "tab20c",
+    "viridis",
+    "plasma",
+    "inferno",
+    "magma",
+    "cividis",
+    "coolwarm",
+    "RdYlGn",
+    "PiYG",
+    "PRGn",
+    "BrBG",
+    "RdGy",
+    "PuOr",
+    "RdBu",
+    "RdBu_r",
+    "bwr",
+    "seismic",
+]
+
 
 def plot_convex_hull(a):
-    available_palettes = [
-        "Set1",
-        "Set2",
-        "Set3",
-        "deep",
-        "muted",
-        "bright",
-        "pastel",
-        "dark",
-        "colorblind",
-        "Paired",
-        "Accent",
-    ]
     available_columns = a.columns[3:]  # get columns from 3 to end
     selected_columns = st.multiselect("Select the indexes", available_columns)
     combinations = []
@@ -36,7 +58,7 @@ def plot_convex_hull(a):
         if len(combinations) < 1:
             st.warning("Select at least 1 combination")
 
-        selected_palette = st.selectbox("Select colors:", available_palettes)
+        selected_palette = st.selectbox("Select palette:", available_palettes)
         show_legend = st.checkbox("Show Legend", True)
         show_labels = st.checkbox("Show Labels", True)
         show_ticks = st.checkbox("Show Ticks", True)
@@ -52,6 +74,8 @@ def plot_convex_hull(a):
             hull = ConvexHull(data[[x_var, y_var]].values)  # Compute convex hull
             hull_points = data.iloc[hull.vertices]  # Get hull points
             hulls = pd.concat([hulls, hull_points])  # Concatenate hull points
+
+        st.header(f"{x_var} vs {y_var}")
 
         palette = sns.color_palette(selected_palette, len(hulls["Infrataxa"].unique()))
 
