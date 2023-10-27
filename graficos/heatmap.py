@@ -4,16 +4,21 @@ from scipy.cluster.hierarchy import linkage
 
 
 def heatmap(df):
-    available_palettes = ["Spectral", "Set1", "Set2", "Set3", "deep", "muted", 
-                          "bright", "pastel", "dark", "colorblind", 
-                          "Paired", "Accent"]
+    fila = st.columns([0.15, 0.85])
     
-    selected_palette = st.selectbox("Select palette:", available_palettes)
-    annotations = st.checkbox("Show cell values", False)
-    scaled_data = st.checkbox("Scaled Data", True)
-    discrete_palette = st.checkbox("Discrete palette", True)
-    n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
+    with fila[0]:
+        st.write(' ')
+        discrete_palette = st.checkbox("Discrete palette", True)
+        scaled_data = st.checkbox("Scaled Data", True)
+        annotations = st.checkbox("Show cell values", False)
 
+    available_palettes = ["Spectral", "plasma", 'RdBu']
+    available_palettes += ["Set1", "Set2", "Set3", "pastel", "dark", "Paired", "Accent",] if discrete_palette else []
+    
+    with fila[1]:
+        selected_palette = st.selectbox("Select palette:", available_palettes)  
+        n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
+         
 
     heatmapGraph(df, 
                  color=selected_palette, 
@@ -25,21 +30,23 @@ def heatmap(df):
 
 def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=False, scaled_data=True):
     col = sns.color_palette(color, n_colors=n_colors) if discrete_palette else color
+    
 
     # atrocidad para que el clustermap use jerarquia con los datos originales y no con los datos escalados
     linkage_matrix_row = linkage(df.iloc[:, 3:], method='average', metric='euclidean')
     linkage_matrix_col = linkage(df.iloc[:, 3:].T, method='average', metric='euclidean')
 
+
     # clustermap
-    clustermap = sns.clustermap(df.iloc[:, 3:], 
-                                method='average', 
-                                metric='euclidean', 
-                                cmap=col, 
-                                row_linkage=linkage_matrix_row, 
-                                col_linkage=linkage_matrix_col, 
-                                z_score= 1 if scaled_data else None,
-                                annot=annot,
-                                cbar= not discrete_palette)
+    clustermap = sns.clustermap(data        = df.iloc[:, 3:], 
+                                method      = 'average', 
+                                metric      = 'euclidean', 
+                                cmap        = col, 
+                                row_linkage = linkage_matrix_row, 
+                                col_linkage = linkage_matrix_col, 
+                                z_score     = 1 if scaled_data else None,
+                                annot       = annot,
+                                cbar        = not discrete_palette)
     
     # etiquetas especies
     row_labels = df.iloc[:, 1].values
