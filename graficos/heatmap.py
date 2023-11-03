@@ -13,7 +13,7 @@ def heatmap(df):
         annotations = st.checkbox("Show cell values", False)
 
     available_palettes = ["Spectral", "plasma", 'RdBu']
-    available_palettes += ["Set1", "Set2", "Set3", "pastel", "dark", "Paired", "Accent",] if discrete_palette else []
+    available_palettes += ["Set1", "Set2", "Set3", "pastel", "dark", "Paired", "Accent"] if discrete_palette else []
     
     with fila[1]:
         selected_palette = st.selectbox("Select palette:", available_palettes)  
