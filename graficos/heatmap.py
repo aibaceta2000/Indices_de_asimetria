@@ -7,7 +7,7 @@ from scipy.cluster.hierarchy import linkage
 def heatmap(df):
     # seleccion indices
     indicesDisponibles = list(df.columns[3:])
-    indicesSeleccionados = st.multiselect("Select the indexes", indicesDisponibles, default=indicesDisponibles)
+    indicesSeleccionados = st.multiselect("Selected indexes", indicesDisponibles, default=indicesDisponibles)
     indices = [df.columns.get_loc(indice) for indice in indicesSeleccionados]
 
     fila = st.columns([0.15, 0.85])
