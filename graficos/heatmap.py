@@ -1,6 +1,7 @@
 import seaborn as sns
 import streamlit as st
 from scipy.cluster.hierarchy import linkage
+from scipy.stats import zscore
 
 
 # personalizacion del heatmap
@@ -78,8 +79,10 @@ def heatmapGraph(df, indices, color="Spectral", n_colors=9, discrete_palette=Tru
     # histograma
     if discrete_palette:
         clustermap.cax.set_position([0.0, 0.85, 0.18, 0.18])
+        
+        datosHistograma = zscore(df.iloc[:, indices]) if scaled_data else df.iloc[:, indices]
 
-        hist = sns.histplot(clustermap.data2d.values.ravel(), #clustermap.data2d.to_numpy().reshape(-1), 
+        hist = sns.histplot(datosHistograma.to_numpy().reshape(-1), #clustermap.data2d.values.ravel(), #clustermap.data2d.to_numpy().reshape(-1), 
                             ax=clustermap.cax,
                             bins=n_colors)
         
