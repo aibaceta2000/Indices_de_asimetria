@@ -3,7 +3,13 @@ import streamlit as st
 from scipy.cluster.hierarchy import linkage
 
 
+# personalizacion del heatmap
 def heatmap(df):
+    # seleccion indices
+    indicesDisponibles = list(df.columns[3:])
+    indicesSeleccionados = st.multiselect("Select the indexes", indicesDisponibles, default=indicesDisponibles)
+    indices = [df.columns.get_loc(indice) for indice in indicesSeleccionados]
+
     fila = st.columns([0.15, 0.85])
     
     with fila[0]:
@@ -18,27 +24,32 @@ def heatmap(df):
     with fila[1]:
         selected_palette = st.selectbox("Select palette:", available_palettes)  
         n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
-         
+        
 
-    heatmapGraph(df, 
-                 color=selected_palette, 
-                 n_colors=n_colors, 
-                 discrete_palette=discrete_palette,
-                 annot=annotations,
-                 scaled_data=scaled_data)
+    if len(indicesSeleccionados) < 2:
+        st.warning("Select at least 2 indexes")
+    else:
+        heatmapGraph(df, 
+                    indices=indices,
+                    color=selected_palette, 
+                    n_colors=n_colors, 
+                    discrete_palette=discrete_palette,
+                    annot=annotations,
+                    scaled_data=scaled_data)
 
 
-def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=False, scaled_data=True):
+# funcion del heatmap
+def heatmapGraph(df, indices, color="Spectral", n_colors=9, discrete_palette=True, annot=False, scaled_data=True):
     col = sns.color_palette(color, n_colors=n_colors) if discrete_palette else color
     
 
     # atrocidad para que el clustermap use jerarquia con los datos originales y no con los datos escalados
-    linkage_matrix_row = linkage(df.iloc[:, 3:], method='average', metric='euclidean')
-    linkage_matrix_col = linkage(df.iloc[:, 3:].T, method='average', metric='euclidean')
+    linkage_matrix_row = linkage(df.iloc[:, indices], method='average', metric='euclidean')
+    linkage_matrix_col = linkage(df.iloc[:, indices].T, method='average', metric='euclidean')
 
 
     # clustermap
-    clustermap = sns.clustermap(data        = df.iloc[:, 3:], 
+    clustermap = sns.clustermap(data        = df.iloc[:, indices], 
                                 method      = 'average', 
                                 metric      = 'euclidean', 
                                 cmap        = col, 
@@ -68,10 +79,9 @@ def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=
     if discrete_palette:
         clustermap.cax.set_position([0.0, 0.85, 0.18, 0.18])
 
-        hist = sns.histplot(clustermap.data2d.to_numpy().reshape(-1), 
+        hist = sns.histplot(clustermap.data2d.values.ravel(), #clustermap.data2d.to_numpy().reshape(-1), 
                             ax=clustermap.cax,
-                            bins=n_colors
-                            )
+                            bins=n_colors)
         
         for bin, i in zip(hist.patches, col):
             bin.set_facecolor(i)
@@ -81,7 +91,6 @@ def heatmapGraph(df, color="Spectral", n_colors=9, discrete_palette=True, annot=
             hist.set_xticks([-1, 0, 1])
 
         hist.set_xlabel("z-score" if scaled_data else "Value")
-
 
     st.pyplot(clustermap)
 
