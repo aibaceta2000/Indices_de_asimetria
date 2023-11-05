@@ -190,6 +190,8 @@ def docs():
     of the shortest arm of the _i_-th chromosome, respectively. That is, this index is calculated as the sum of the
     lengths of the short arms divided by the sum of the lengths of all the chromosomes. Note that Ask%+TF%=1 for any
     set of chromosomes.""", unsafe_allow_html=True)
+
+
     write_espacios(2)
 
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \

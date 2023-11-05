@@ -195,6 +195,27 @@ def docu():
 
 
     write_espacios(2)
+    
+    st.header('Documentación de gráficos')
+
+    st.markdown("<h4>Heatmap</h4>", unsafe_allow_html=True)
+    st.markdown("""Su implementación es mediante la función __clustermap__ y el histograma mostrado 
+                en su esquina superior izquierda es mediante la función __histplot__, ambos pertenecientes a la librería __seaborn__. 
+                El escalado de datos se realiza utilizando la puntuación Z, que se aplica de forma independiente a cada columna. 
+                Los dendrogramas se crean utilizando el método de enlace promedio con datos sin estandarizar, y se utiliza 
+                la métrica euclidiana para calcular las distancias entre los puntos.""", unsafe_allow_html=True)
+
+    st.markdown("<h4>Scatter plot with Convex Hull and Boxplots</h4>", unsafe_allow_html=True)
+    st.markdown("""Su implementación es mediante la función __spatial.ConvexHull__ de la librería __scipy__. Los boxplots usados 
+                son de __seaborn__, mediante la función __boxplot__.""", unsafe_allow_html=True)
+    
+    st.markdown("<h4>Boxplot</h4>", unsafe_allow_html=True)
+    st.markdown("""Su implementación es mediante la función __express.box__ de la librería __plotly__.""", unsafe_allow_html=True)
+    
+    st.markdown("<h4>graf 1 2</h4>", unsafe_allow_html=True)
+    st.markdown("""Su implementación es mediante la función __pyplot__ de la librería __matplotlib__.""", unsafe_allow_html=True)
+
+    write_espacios(2)
 
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
     and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)
