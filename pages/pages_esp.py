@@ -137,7 +137,7 @@ def docu():
     st.markdown("""El código fuente está disponible en el siguiente repositorio de GitHub:
     <a href="https://github.com/Zekess/Indices_de_asimetria">**Chromindex-UdeC Repository**</a>.\n""",
                 unsafe_allow_html=True)
-    st.markdown(""" A continuación se detallan los índices que **Chromidex-UdeC** incluye. Notar que
+    st.markdown(""" A continuación se detallan los índices que **Chromindex-UdeC** incluye. Notar que
     en lo que sigue, _n_ representa el número total de cromosomas. Además, la desviación estandar corresponde
     a la desviación estandar de la muestra de cromosomas (insesgada).""", unsafe_allow_html=True)
 
