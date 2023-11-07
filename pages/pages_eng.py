@@ -401,16 +401,18 @@ def bd():
         # borrar todo lo de la bd
         collection.delete_many({})
 
+        username = st.session_state['logeado']
         for data in data_entrada:
+            data["username"] = username
             inserted_data = collection.insert_one(data)
 
             if inserted_data.acknowledged:
-                st.write("Datos insertados con el ID:", inserted_data.inserted_id)
+                st.write(f"Datos insertados para {username} con el ID:", inserted_data.inserted_id)
             else:
                 st.write("Error al insertar datos.")
 
         # imprimir toda la data de la bd
-        data_from_collection = list(collection.find({}))
+        data_from_collection = list(collection.find({"username": username}))
 
         if data_from_collection:
             st.header('Data from MongoDB Collection')
@@ -419,8 +421,53 @@ def bd():
 
         client.close()
 
-    st.header('Chromindex-UdeC')
+    # auth muy basico, busca si esta el user y password en la coleccion users
+    def auth(username, password):
+        client = pymongo.MongoClient("mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority")
+        db = client["Chromindex"]
+        collection = db["users"]  
 
+        user_data = collection.find_one({"username": username, "password": password})
+
+        if user_data:
+            return True
+        else:
+            return False
+    
+    # login que utiliza el auth basico
+    def login():
+        username = st.text_input("Usuario")
+        password = st.text_input("Contraseña", type="password")
+
+        if st.button("Iniciar Sesión"):
+            if auth(username, password):
+                st.success("Inicio de sesión exitoso")
+                add_sesion_state('logeado',username) # esto mantiene la sesion del usuario
+            else:
+                st.error("Credenciales incorrectas. Inténtalo de nuevo.")
+
+    # crear user basico, no cifra la contraseña
+    def create_user():
+        client = pymongo.MongoClient("mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority")
+        db = client["Chromindex"]
+        collection = db["users"]  
+
+        username = st.text_input("Nombre de Usuario")
+        password = st.text_input("Contraseña deseada", type="password")
+        confirm_password = st.text_input("Confirmar Contraseña", type="password")
+
+        if st.button("Registrar"):
+            if password == confirm_password:
+                collection.insert_one({"username": username, "password": password})
+                st.success("Registro exitoso. Puedes iniciar sesión ahora.")
+            else:
+                st.error("Las contraseñas no coinciden. Inténtalo de nuevo.")
+
+    
+    st.header('Chromindex-UdeC')
+    
+    create_user()
+    login()
     ## Uploades de los excels:
     lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
                                     on_change=add_sesion_state('uploader_key', 1))
@@ -457,7 +504,7 @@ def bd():
                 mime="application/vnd.ms-excel",
             )
 
-        if 'db_data' in st.session_state:
+        if 'db_data' in st.session_state and 'logeado' in st.session_state:
             if st.button('Save to my account'):
                 print(st.session_state['db_data'])
                 guardar(st.session_state['db_data'])  
