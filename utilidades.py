@@ -14,7 +14,8 @@ paginas_navegacion_eng = [
     '🥀Index calculation', 
     '📃Documentation', 
     '📊Graph selector',
-    '❓About Chromindex-UdeC'
+    '❓About Chromindex-UdeC',
+    'BD'
     
 ]
 paginas_navegacion_esp = [

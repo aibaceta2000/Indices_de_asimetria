@@ -4,7 +4,7 @@ from pages.pages_eng import *
 from pages.pages_esp import *
 
 st.set_page_config(
-page_title="Chromidex-UdeC",
+page_title="Chromindex-UdeC",
 page_icon="imagenes/logoAPP.jpeg",
 layout="wide"
 )
@@ -41,6 +41,9 @@ if leng == lenguajes[0]:
 
     elif pag_actual == paginas_navegacion_eng[5]:#about
         about()
+
+    elif pag_actual == paginas_navegacion_eng[6]:#about
+        bd()
 
 
 # Cargar página en español

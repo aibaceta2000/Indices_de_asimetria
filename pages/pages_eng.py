@@ -6,9 +6,12 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from graficos.plot_hull_boxplot import *
 from graficos.heatmap import heatmap
+from graficos.continuous import continuous
 import io
 import base64
+import pymongo
 from matplotlib.backends.backend_pdf import PdfPages
+from graficos.boxplot import boxplot
 
 def home():
     st.header('Chromindex-UdeC')
@@ -81,7 +84,7 @@ def howToUse():
     st.subheader('Test file')
     st.write(
     """
-    You can try Chromidex-UdeC with the following test excel file. It was obtained with MicroMeasure.
+    You can try Chromindex-UdeC with the following test excel file. It was obtained with MicroMeasure.
     """
     )
 
@@ -309,25 +312,10 @@ def graphSelector():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Select the type of graph:',
-                ('graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+                ('Contunious graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
-            if selectgraphtype == 'graph1':
-                # Plot 'CVCL' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['CVCL'])
-                plt.title('Graph 1: CVCL Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('CVCL Values')
-                st.pyplot(plt)
-
-            elif selectgraphtype == 'graph2':
-                # Plot 'LTC' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['LTC'])
-                plt.title('Graph 2: LTC Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('LTC Values')
-                st.pyplot(plt)
+            if selectgraphtype == 'Contunious graph':
+                continuous(df)
 
             elif selectgraphtype == "Heatmap":
                 heatmap(df)
@@ -336,29 +324,30 @@ def graphSelector():
                 plot_convex_hull(df)
 
             elif selectgraphtype == "Boxplot":
-                st.header("Test Graph")
-                df_data = pd.DataFrame(df, columns=df.columns)
-                infrataxas = dict()
-                for index, value in enumerate(df_data['Infrataxa']):
-                    if value not in infrataxas:
-                        infrataxas[value] = index
-                infrataxas_graph_data = dict()
-                indexes = df_data.iloc[:, 3:]
-                for index, (keys, values) in enumerate(infrataxas.items()):
-                    if index >=0 and index < len(infrataxas) - 1:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
-                    else:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
+                boxplot(df)
+                # st.header("Test Graph")
+                # df_data = pd.DataFrame(df, columns=df.columns)
+                # infrataxas = dict()
+                # for index, value in enumerate(df_data['Infrataxa']):
+                #     if value not in infrataxas:
+                #         infrataxas[value] = index
+                # infrataxas_graph_data = dict()
+                # indexes = df_data.iloc[:, 3:]
+                # for index, (keys, values) in enumerate(infrataxas.items()):
+                #     if index >=0 and index < len(infrataxas) - 1:
+                #         infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
+                #     else:
+                #         infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
                     
-                figs = []
-                for (columnName) in indexes.columns:
-                    fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
-                    fig.update_layout(height=600, width=800)
-                    fig.update_traces(width=0.5)
-                    #fig.update_layout(hovermode=False)
-                    figs.append(fig)
-                for index, figure in enumerate(figs):
-                    st.plotly_chart(figure)              
+                # figs = []
+                # for (columnName) in indexes.columns:
+                #     fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
+                #     fig.update_layout(height=600, width=800)
+                #     fig.update_traces(width=0.5)
+                #     #fig.update_layout(hovermode=False)
+                #     figs.append(fig)
+                # for index, figure in enumerate(figs):
+                #     st.plotly_chart(figure)              
 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
@@ -402,3 +391,71 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
     data = base64.b64encode(bin_data.getvalue()).decode()
     href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
     return href
+
+def bd():
+    def guardar(data_entrada):
+        client = pymongo.MongoClient("mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority")
+        db = client.Chromindex  # Reemplaza 'ChromIndex' con el nombre de tu base de datos
+        collection = db.tu_coleccion  # Reemplaza 'tu_coleccion' con el nombre de tu colección
+
+        # Inserta los datos en la colección
+        for data in data_entrada:
+            # Insert each dictionary into the collection
+            inserted_data = collection.insert_one(data)
+
+            if inserted_data.acknowledged:
+                st.write("Datos insertados con el ID:", inserted_data.inserted_id)
+            else:
+                st.write("Error al insertar datos.")
+
+        data_from_collection = list(collection.find({}))
+
+        if data_from_collection:
+            st.header('Data from MongoDB Collection')
+            for data in data_from_collection:
+                st.write(data)
+        # Cierra la conexión a MongoDB
+        client.close()
+
+    st.header('Chromindex-UdeC')
+
+    ## Uploades de los excels:
+    lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
+                                    on_change=add_sesion_state('uploader_key', 1))
+
+    indices_nombres = [u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
+
+    if ('uploader_key' in st.session_state) & (len(lista_excels) > 0):
+        container_multiselect = st.container()
+        check_all = st.checkbox('Select all')
+        if check_all:
+            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
+        else:
+            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
+        if st.button('Calculate indices'):
+            df = pd.DataFrame(columns=['File'] + indices_seleccionados)
+
+            for uploader in lista_excels:
+                excel_data = pd.read_excel(uploader, header=0)
+                indices_clase = IndicesDesdeExcel(uploader)
+                indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
+                excel_nombre = uploader.name.split('.xls')[0]
+                df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
+            st.dataframe(df)
+
+            print(excel_data)
+            guardar(excel_data.to_dict(orient='records'))
+            print(df.to_dict)
+            guardar(df.to_dict(orient='records'))
+            
+            add_sesion_state('df_resultado', xlsdownload(df))
+        if 'df_resultado' in st.session_state:
+            fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss")
+            excel_nombre = f'Indices_{fecha_hoy}.xlsx'
+            st.download_button(
+                label='📥 Download as Excel',
+                data=st.session_state['df_resultado'],
+                file_name=excel_nombre,
+                mime="application/vnd.ms-excel",
+                on_click=del_sesion_state('df_resultado')
+            )
