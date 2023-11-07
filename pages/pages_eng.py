@@ -11,6 +11,7 @@ import io
 import base64
 import pymongo
 from matplotlib.backends.backend_pdf import PdfPages
+from graficos.boxplot import boxplot
 
 def home():
     st.header('Chromindex-UdeC')
@@ -287,29 +288,30 @@ def graphSelector():
                 plot_convex_hull(df)
 
             elif selectgraphtype == "Boxplot":
-                st.header("Test Graph")
-                df_data = pd.DataFrame(df, columns=df.columns)
-                infrataxas = dict()
-                for index, value in enumerate(df_data['Infrataxa']):
-                    if value not in infrataxas:
-                        infrataxas[value] = index
-                infrataxas_graph_data = dict()
-                indexes = df_data.iloc[:, 3:]
-                for index, (keys, values) in enumerate(infrataxas.items()):
-                    if index >=0 and index < len(infrataxas) - 1:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
-                    else:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
+                boxplot(df)
+                # st.header("Test Graph")
+                # df_data = pd.DataFrame(df, columns=df.columns)
+                # infrataxas = dict()
+                # for index, value in enumerate(df_data['Infrataxa']):
+                #     if value not in infrataxas:
+                #         infrataxas[value] = index
+                # infrataxas_graph_data = dict()
+                # indexes = df_data.iloc[:, 3:]
+                # for index, (keys, values) in enumerate(infrataxas.items()):
+                #     if index >=0 and index < len(infrataxas) - 1:
+                #         infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
+                #     else:
+                #         infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
                     
-                figs = []
-                for (columnName) in indexes.columns:
-                    fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
-                    fig.update_layout(height=600, width=800)
-                    fig.update_traces(width=0.5)
-                    #fig.update_layout(hovermode=False)
-                    figs.append(fig)
-                for index, figure in enumerate(figs):
-                    st.plotly_chart(figure)              
+                # figs = []
+                # for (columnName) in indexes.columns:
+                #     fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
+                #     fig.update_layout(height=600, width=800)
+                #     fig.update_traces(width=0.5)
+                #     #fig.update_layout(hovermode=False)
+                #     figs.append(fig)
+                # for index, figure in enumerate(figs):
+                #     st.plotly_chart(figure)              
 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
