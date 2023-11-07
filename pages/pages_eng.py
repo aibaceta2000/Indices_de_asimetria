@@ -397,10 +397,11 @@ def bd():
         client = pymongo.MongoClient("mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority")
         db = client.Chromindex  # Reemplaza 'ChromIndex' con el nombre de tu base de datos
         collection = db.tu_coleccion  # Reemplaza 'tu_coleccion' con el nombre de tu colección
+        
+        # borrar todo lo de la bd
+        collection.delete_many({})
 
-        # Inserta los datos en la colección
         for data in data_entrada:
-            # Insert each dictionary into the collection
             inserted_data = collection.insert_one(data)
 
             if inserted_data.acknowledged:
@@ -408,13 +409,14 @@ def bd():
             else:
                 st.write("Error al insertar datos.")
 
+        # imprimir toda la data de la bd
         data_from_collection = list(collection.find({}))
 
         if data_from_collection:
             st.header('Data from MongoDB Collection')
             for data in data_from_collection:
                 st.write(data)
-        # Cierra la conexión a MongoDB
+
         client.close()
 
     st.header('Chromindex-UdeC')
@@ -436,19 +438,15 @@ def bd():
             df = pd.DataFrame(columns=['File'] + indices_seleccionados)
 
             for uploader in lista_excels:
-                excel_data = pd.read_excel(uploader, header=0)
                 indices_clase = IndicesDesdeExcel(uploader)
                 indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
                 excel_nombre = uploader.name.split('.xls')[0]
                 df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             st.dataframe(df)
-
-            print(excel_data)
-            guardar(excel_data.to_dict(orient='records'))
-            print(df.to_dict)
-            guardar(df.to_dict(orient='records'))
             
+            add_sesion_state('db_data', df.to_dict(orient='records'))
             add_sesion_state('df_resultado', xlsdownload(df))
+
         if 'df_resultado' in st.session_state:
             fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss")
             excel_nombre = f'Indices_{fecha_hoy}.xlsx'
@@ -457,5 +455,11 @@ def bd():
                 data=st.session_state['df_resultado'],
                 file_name=excel_nombre,
                 mime="application/vnd.ms-excel",
-                on_click=del_sesion_state('df_resultado')
             )
+
+        if 'db_data' in st.session_state:
+            if st.button('Save to my account'):
+                print(st.session_state['db_data'])
+                guardar(st.session_state['db_data'])  
+            
+

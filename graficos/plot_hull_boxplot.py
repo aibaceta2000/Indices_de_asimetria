@@ -104,7 +104,7 @@ def plot_convex_hull(a):
                         textcoords="offset points",
                         fontsize=8,
                     )
-            # show the point value (population coulmn)
+            # show the point value (population column)
             if show_population:
                 for x, y, population in zip(
                     data[x_var], data[y_var], data["Population"]
@@ -145,7 +145,7 @@ def plot_convex_hull(a):
         if show_legend:
             scatter_ax.legend()
         else:
-            scatter_ax.legend().set_visible(False)  # Hide legend if not required
+            scatter_ax.legend().set_visible(False)  
 
         # x and y ticks
         if not show_ticks:
