@@ -191,8 +191,44 @@ def docs():
     set of chromosomes.""", unsafe_allow_html=True)
 
 
-    write_espacios(2)
 
+    write_espacios(2)
+    st.header('Graphics Documentation')
+    st.markdown("""To generate graphics, the file must be in .XLS, .XLSX, or .CSV format. 
+                Additionally, the columns should follow the following order: Taxa, Infrataxa, Population, and Indices. Each column should 
+                have its corresponding header in the first row, and the indices can be arranged in any 
+                order. Below is an example:""", unsafe_allow_html=True)
+
+    example = pd.read_csv("./ejemplo/Baeza_Werdermannii.csv")
+    st.dataframe(example.set_index(example.columns[0])[:10], width=1400)
+
+    st.download_button(
+        label="Download CSV Example",
+        data=example.to_csv().encode('utf-8'),
+        file_name="example.csv",
+        key='download_button'
+    )
+
+    st.markdown("<h4>Heatmap</h4>", unsafe_allow_html=True)
+    st.markdown("""Its implementation is done using the __clustermap__ function and the histogram shown 
+                in the upper left corner is created using the __histplot__ function, both belonging to the __seaborn__ library. 
+                Data scaling is performed using Z-scores, applied independently to each column. 
+                Dendrograms are created using the average linkage method with unstandardized data, and 
+                the Euclidean metric is used to calculate distances between points.""", unsafe_allow_html=True)
+
+    st.markdown("<h4>Scatter plot with Convex Hull and Boxplots</h4>", unsafe_allow_html=True)
+    st.markdown("""Its implementation is done using the __spatial.ConvexHull__ function from the __scipy__ library. The boxplots used 
+                are from the __seaborn__ library, generated with the __boxplot__ function.""", unsafe_allow_html=True)
+
+    st.markdown("<h4>Boxplot</h4>", unsafe_allow_html=True)
+    st.markdown("""Its implementation is done using the __express.box__ function from the __plotly__ library.""", unsafe_allow_html=True)
+
+    st.markdown("<h4>Graph 1 2</h4>", unsafe_allow_html=True)
+    st.markdown("""Its implementation is done using the __pyplot__ function from the __matplotlib__ library.""", unsafe_allow_html=True)
+        
+
+
+    write_espacios(2)
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
     and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)
     st.caption("<h10>Huziwara, Y. 1962. Karyotype analysis in some genera of Compositae. VIII. Further studies on \
