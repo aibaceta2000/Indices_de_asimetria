@@ -199,7 +199,7 @@ def docs():
     st.header('Graphics Documentation')
     st.markdown("""To generate graphics, the file must be in .XLS, .XLSX, or .CSV format. 
                 Additionally, the columns should follow the following order: Taxa, Infrataxa, Population, and Indices. Each column should 
-                have its corresponding header in the first row, and the indices can be arranged in any 
+                have its corresponding header in the first row, and the indices can be of any type and arranged in any 
                 order. Below is an example:""", unsafe_allow_html=True)
 
     example = pd.read_csv("./ejemplo/Baeza_Werdermannii.csv")

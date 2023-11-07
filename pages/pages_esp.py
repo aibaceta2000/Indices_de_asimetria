@@ -199,8 +199,8 @@ def docu():
     st.header('Documentación de gráficos')
     st.markdown("""Para utilizar la generacion de graficos, es necesario que el archivo tenga un formato de .XLS, .XLSX o .CSV. 
                 Además, las columnas deben seguir el siguiente orden: Taxa, Infrataxa, Población e Índices. Cada columna debe 
-                tener su encabezado correspondiente en la primera fila, y los índices pueden estar dispuestos en cualquier 
-                orden. A continuacion, se muestra un ejemplo:""", unsafe_allow_html=True)    
+                tener su encabezado correspondiente en la primera fila, y los índices pueden ser de cualquier tipo y estar 
+                dispuestos en cualquier orden. A continuacion, se muestra un ejemplo:""", unsafe_allow_html=True)    
 
     ejemplo = pd.read_csv("./ejemplo/Baeza_Werdermannii.csv")
     st.dataframe(ejemplo.set_index(ejemplo.columns[0])[:10], width=1400)
