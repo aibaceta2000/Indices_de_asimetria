@@ -6,6 +6,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from graficos.plot_hull_boxplot import *
 from graficos.heatmap import heatmap
+from graficos.continuous import continuous
 import io
 import base64
 import pymongo
@@ -274,25 +275,10 @@ def graphSelector():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Select the type of graph:',
-                ('graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+                ('Contunious graph', 'graph1', 'graph2', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
-            if selectgraphtype == 'graph1':
-                # Plot 'CVCL' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['CVCL'])
-                plt.title('Graph 1: CVCL Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('CVCL Values')
-                st.pyplot(plt)
-
-            elif selectgraphtype == 'graph2':
-                # Plot 'LTC' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['LTC'])
-                plt.title('Graph 2: LTC Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('LTC Values')
-                st.pyplot(plt)
+            if selectgraphtype == 'Contunious graph':
+                continuous(df)
 
             elif selectgraphtype == "Heatmap":
                 heatmap(df)
