@@ -44,7 +44,6 @@ available_palettes = [
 def plot_convex_hull(a):
     available_columns = a.columns[3:]  # get columns from 3 to end
     selected_columns = st.multiselect("Select the indexes", available_columns)
-    combinations = []
 
     if len(selected_columns) < 2:
         st.warning("Select at least 2 indexes")
@@ -52,11 +51,7 @@ def plot_convex_hull(a):
         # get the permutations
         permutations = list(itertools.permutations(selected_columns, 2))
         # select desired permutations
-        combinations = st.multiselect(
-            "Select the combinations", permutations, permutations
-        )
-        if len(combinations) < 1:
-            st.warning("Select at least 1 combination")
+        combination = st.selectbox("Select a combination", permutations)
 
         selected_palette = st.selectbox("Select palette:", available_palettes)
         show_legend = st.checkbox("Show Legend", True)
@@ -65,11 +60,11 @@ def plot_convex_hull(a):
         show_population = st.checkbox("Show Point Values", True)
         show_coordinates = st.checkbox("Show Coordinates", False)
 
-    # Initialize an empty DataFrame for convex hull points
-    hulls = pd.DataFrame(columns=a.columns)
+        # Initialize an empty DataFrame for convex hull points
+        hulls = pd.DataFrame(columns=a.columns)
 
-    # Find convex hull for each 'Infrataxa' group
-    for x_var, y_var in combinations:
+        # Find convex hull for each 'Infrataxa' group
+        x_var, y_var = combination
         for group, data in a.groupby("Infrataxa"):
             hull = ConvexHull(data[[x_var, y_var]].values)  # Compute convex hull
             hull_points = data.iloc[hull.vertices]  # Get hull points
@@ -117,7 +112,7 @@ def plot_convex_hull(a):
                         fontsize=8,
                     )
 
-        # Plot Convex hull
+            # Plot Convex hull
         for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
             hull = ConvexHull(data[[x_var, y_var]].values)
             for simplex in hull.simplices:
@@ -145,7 +140,7 @@ def plot_convex_hull(a):
         if show_legend:
             scatter_ax.legend()
         else:
-            scatter_ax.legend().set_visible(False)  
+            scatter_ax.legend().set_visible(False)
 
         # x and y ticks
         if not show_ticks:
