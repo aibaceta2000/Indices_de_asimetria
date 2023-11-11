@@ -396,7 +396,8 @@ def bd():
     st.header('Chromindex-UdeC')
     
     create_user()
-    login()
+    if not 'logeado' in st.session_state:
+        login()
     ## Uploades de los excels:
     lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
                                     on_change=add_sesion_state('uploader_key', 1))

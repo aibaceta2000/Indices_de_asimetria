@@ -15,7 +15,7 @@ paginas_navegacion_eng = [
     '📃Documentation', 
     '📊Graph selector',
     '❓About Chromindex-UdeC',
-    'BD'
+    'Account'
     
 ]
 paginas_navegacion_esp = [

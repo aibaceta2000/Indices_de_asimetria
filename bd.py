@@ -1,5 +1,6 @@
 import pymongo
 import streamlit as st
+import bcrypt
 from utilidades import add_sesion_state
 
 
@@ -48,10 +49,12 @@ def auth(username, password):
     db = client["Chromindex"]
     collection = db["users"]
 
-    user_data = collection.find_one({"username": username, "password": password})
+    user_data = collection.find_one({"username": username})
 
     if user_data:
-        return True
+        hashed_password = user_data.get("password")
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+            return True
     else:
         return False
 
@@ -83,7 +86,8 @@ def create_user():
 
     if st.button("Registrar"):
         if password == confirm_password:
-            collection.insert_one({"username": username, "password": password})
+            hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+            collection.insert_one({"username": username, "password": hashed_password})
             st.success("Registro exitoso. Puedes iniciar sesión ahora.")
         else:
             st.error("Las contraseñas no coinciden. Inténtalo de nuevo.")
