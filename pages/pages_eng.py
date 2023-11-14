@@ -1,16 +1,16 @@
 import streamlit as st
+from graficos.graficos_eng.boxplot import boxplot
+from graficos.graficos_eng.continuous import continuous
+from graficos.graficos_eng.heatmap import heatmap
+from graficos.graficos_eng.plot_hull_boxplot import *
 from utilidades import *
 from clases import *
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
-from graficos.plot_hull_boxplot import *
-from graficos.heatmap import heatmap
-from graficos.continuous import continuous
 import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
-from graficos.boxplot import boxplot
 from bd import *
 
 def home():
