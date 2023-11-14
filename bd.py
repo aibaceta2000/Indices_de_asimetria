@@ -39,9 +39,8 @@ def guardar(data_entrada):
 
     client.close()
 
-    # auth muy basico, busca si esta el user y password en la coleccion users
 
-
+# auth muy basico, busca si esta el user y password en la coleccion users
 def auth(username, password):
     client = pymongo.MongoClient(
         "mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority"
@@ -53,7 +52,7 @@ def auth(username, password):
 
     if user_data:
         hashed_password = user_data.get("password")
-        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+        if bcrypt.checkpw(password.encode("utf-8"), hashed_password):
             return True
     else:
         return False
@@ -61,6 +60,7 @@ def auth(username, password):
 
 # login que utiliza el auth basico
 def login():
+    st.header("Login")
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
 
@@ -72,8 +72,9 @@ def login():
             st.error("Credenciales incorrectas. Inténtalo de nuevo.")
 
 
-# crear user basico, no cifra la contraseña
+# crear user basico, cifrar con bcrypt
 def create_user():
+    st.header("Create account")
     client = pymongo.MongoClient(
         "mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority"
     )

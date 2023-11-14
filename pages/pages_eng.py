@@ -398,6 +398,10 @@ def bd():
     create_user()
     if not 'logeado' in st.session_state:
         login()
+    else:
+        username = st.session_state["logeado"]
+        st.header(f"Welcome {username}")
+                  
     ## Uploades de los excels:
     lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
                                     on_change=add_sesion_state('uploader_key', 1))
