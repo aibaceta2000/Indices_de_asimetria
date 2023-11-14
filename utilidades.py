@@ -15,7 +15,7 @@ paginas_navegacion_eng = [
     '📃Documentation', 
     '📊Graph selector',
     '❓About Chromindex-UdeC',
-    'Account'
+    '🌱Account'
     
 ]
 paginas_navegacion_esp = [
@@ -24,7 +24,8 @@ paginas_navegacion_esp = [
     '🥀Cálculo de índices', 
     '📃Documentación', 
     '📊Selector de graficos',
-    '❓Acerca de Chromindex-UdeC'
+    '❓Acerca de Chromindex-UdeC',
+    '🌱Cuenta'
 ]
 
 def lenguaje_selectbox():

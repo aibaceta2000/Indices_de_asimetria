@@ -43,7 +43,7 @@ if leng == lenguajes[0]:
         about()
 
     elif pag_actual == paginas_navegacion_eng[6]:#about
-        bd()
+        db()
 
 
 # Cargar página en español
@@ -70,6 +70,9 @@ else:
 
     elif pag_actual == paginas_navegacion_esp[5]:#about
         acerca()
+
+    elif pag_actual == paginas_navegacion_esp[6]:#about
+        bd()
 
 #Pie de página
 write_espacios(6)

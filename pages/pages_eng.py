@@ -392,7 +392,7 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
     href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
     return href
 
-def bd():
+def db():
     st.header('Chromindex-UdeC')
     
     create_user()
