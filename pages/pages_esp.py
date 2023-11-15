@@ -343,7 +343,7 @@ def selectorGraficos():
             if len(figuras)>0:
                 bufferList=[]
                 formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
-                if st.button("Exportar Gráfico"):
+                if st.button("Exportar Gráficos"):
                     for f in figuras:
                         buffer=io.BytesIO()
                         if formato == "PNG":
