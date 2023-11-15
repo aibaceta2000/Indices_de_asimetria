@@ -341,7 +341,7 @@ def graphSelector():
             if len(figuras)>0:
                 bufferList=[]
                 formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
-                if st.button("Export Graph"):
+                if st.button("Export Graphs"):
                     for f in figuras:
                         buffer=io.BytesIO()
                         if formato == "PNG":
