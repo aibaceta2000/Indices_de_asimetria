@@ -287,11 +287,12 @@ def graphSelector():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    """ check_cvcl=st.checkbox("CVCL Column Plot")
-    check_ltc=st.checkbox("LTC Column Plot")
-    check_heat=st.checkbox("Heatmap")
-    check_scatter=st.checkbox("Scatter plot with Convex Hull and Boxplots")
-    check_boxplot=st.checkbox("Boxplot") """
+    graph_types=[
+        "Continuous graph",
+        "Heatmap", 
+        "Scatter plot with Convex Hull and Boxplots", 
+        "Boxplot"
+    ]
     if upload:
         st.markdown('---')
         
@@ -308,65 +309,61 @@ def graphSelector():
                 continue  # Skip processing this file and continue with the next
         
             # Display the DataFrame for each uploaded file
+            figuras=[]
+            graph_list=[]
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
-            selectgraphtype = st.selectbox(
-                'Select the type of graph:',
-                ('Continuous graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
-            )
-            if selectgraphtype == 'Continuous graph':
-                continuous(df)
+            selected_graphs=st.multiselect("Select the graphs",graph_types)
+            if len(selected_graphs)<1:
+                st.warning("Select at least 1 graph")
+            else:
+                graph_list=list(selected_graphs)
 
-            elif selectgraphtype == "Heatmap":
-                heatmap(df)
-            
-            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-                plot_convex_hull(df)
-
-            elif selectgraphtype == "Boxplot":
-                boxplot(df)
-                # st.header("Test Graph")
-                # df_data = pd.DataFrame(df, columns=df.columns)
-                # infrataxas = dict()
-                # for index, value in enumerate(df_data['Infrataxa']):
-                #     if value not in infrataxas:
-                #         infrataxas[value] = index
-                # infrataxas_graph_data = dict()
-                # indexes = df_data.iloc[:, 3:]
-                # for index, (keys, values) in enumerate(infrataxas.items()):
-                #     if index >=0 and index < len(infrataxas) - 1:
-                #         infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
-                #     else:
-                #         infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
-                    
-                # figs = []
-                # for (columnName) in indexes.columns:
-                #     fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
-                #     fig.update_layout(height=600, width=800)
-                #     fig.update_traces(width=0.5)
-                #     #fig.update_layout(hovermode=False)
-                #     figs.append(fig)
-                # for index, figure in enumerate(figs):
-                #     st.plotly_chart(figure)              
-
+            for gr in graph_list:
+                #st.write(gr+"\n")
+                fg=None
+                if selectgraphtype == 'Continuous graph':
+                    continuous(df)
+                    fg=plt.gcf()
+                elif selectgraphtype == "Heatmap":
+                    heatmap(df)
+                    fg=plt.gcf()
+                elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+                    plot_convex_hull(df)
+                    fg=plt.gcf()    
+                elif selectgraphtype == "Boxplot":
+                    boxplot(df)
+                    fg=plt.gcf()                
+                figuras.append(fg)
+                
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
-            if st.button("Export Graph"):
-                # Save Graph
-                buffer = io.BytesIO()
-                if formato == "PNG":
-                    plt.savefig(buffer, format="png")
-                    extension = "png"
-                elif formato == "JPEG":
-                    plt.savefig(buffer, format="jpeg")
-                    extension = "jpg"
-                elif formato == "PDF":
-                    plt.savefig(buffer, format="pdf")
-                    extension = "pdf"
-    
-                # Download graph
-                st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
-
+            if len(figuras)>0:
+                bufferList=[]
+                formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
+                if st.button("Export Graph"):
+                    for f in figuras:
+                        buffer=io.BytesIO()
+                        if formato == "PNG":
+                            f.savefig(buffer, format="png")
+                            extension = "png"
+                        elif formato == "JPEG":
+                            f.savefig(buffer, format="jpeg")
+                            extension = "jpg"
+                        elif formato == "PDF":
+                            f.savefig(buffer, format="pdf")
+                            extension = "pdf"
+                        bufferList.append(buffer)
+                    for i in range(len(bufferList)):
+                        buffer=bufferList[i]
+                        st.markdown(
+                            get_binary_file_downloader_html(
+                                buffer, 
+                                f"graph{i+1}.{extension}", 
+                                f"Download Graph no. {i+1}"
+                            ),
+                            unsafe_allow_html=True
+                        )
 
     st.subheader("How to use?")
     st.write(
