@@ -283,19 +283,19 @@ def acerca():
                CreateSpace.</h10>", unsafe_allow_html=True)
 
 def selectorGraficos():
-    st.header("Selector de graficos")
+    st.header("Selector de gráficos")
     upload = st.file_uploader(
         'Subir archivo(s)', 
         type=['xls', 'xlsx','csv'], 
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    """ check_cvcl=st.checkbox("CVCL Column Plot")
-    check_ltc=st.checkbox("LTC Column Plot")
-    check_heat=st.checkbox("Heatmap")
-    check_scatter=st.checkbox("Scatter plot with Convex Hull and Boxplots")
-    check_boxplot=st.checkbox("Boxplot") """
-    
+    graph_types=[
+        "Continuous graph",
+        "Heatmap", 
+        "Scatter plot with Convex Hull and Boxplots", 
+        "Boxplot"
+    ]
     if upload:
         st.markdown('---')
         
@@ -308,82 +308,64 @@ def selectorGraficos():
                 # Read a CSV file
                 df = pd.read_csv(uploaded_file)
             else:
-                st.error(f'Formato de archivo no soportado {uploaded_file.name}. Porfavor suba un Excel (.xlsx or .xls) o CSV (.csv) file.')
+                st.error(f'Unsupported file format for {uploaded_file.name}. Please upload an Excel (.xlsx or .xls) or CSV (.csv) file.')
                 continue  # Skip processing this file and continue with the next
         
             # Display the DataFrame for each uploaded file
-            st.subheader(f'Data from {uploaded_file.name}:')
+            figuras=[]
+            graph_list=[]
+            st.subheader(f'Datos de {uploaded_file.name}:')
             st.dataframe(df)
-            selectgraphtype = st.selectbox(
-                'Seleccionar tipo de gráfico:',
-                ("CVCL Column Plot", "LTC Column Plot", "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
-            )
-            if selectgraphtype == "CVCL Column Plot":
-                # Plot 'CVCL' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['CVCL'])
-                plt.title('Gráfico 1: CVCL Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('CVCL Values')
-                st.pyplot(plt)
+            selected_graphs=st.multiselect("Elige los gráficos",graph_types)
+            if len(selected_graphs)<1:
+                st.warning("Selecciona al menos 1 gráfico")
+            else:
+                graph_list=list(selected_graphs)
 
-            elif selectgraphtype == "LTC Column Plot":
-                # Plot 'LTC' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['LTC'])
-                plt.title('Gráfico 2: LTC Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('LTC Values')
-                st.pyplot(plt)
-            
-            elif selectgraphtype == "Heatmap":
-                heatmap(df)
-            
-            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-                plot_convex_hull(df)
+            for gr in graph_list:
+                fg=None
+                if selectgraphtype == 'Continuous graph':
+                    continuous(df)
+                    fg=plt.gcf()
+                elif selectgraphtype == "Heatmap":
+                    heatmap(df)
+                    fg=plt.gcf()
+                elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+                    plot_convex_hull(df)
+                    fg=plt.gcf()    
+                elif selectgraphtype == "Boxplot":
+                    boxplot(df)
+                    fg=plt.gcf()                
+                figuras.append(fg)
+                
+            formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
-            elif selectgraphtype == "Boxplot":
-                st.header("Test Graph")
-                df_data = pd.DataFrame(df, columns=df.columns)
-                infrataxas = dict()
-                for index, value in enumerate(df_data['Infrataxa']):
-                    if value not in infrataxas:
-                        infrataxas[value] = index
-                infrataxas_graph_data = dict()
-                indexes = df_data.iloc[:, 3:]
-                for index, (keys, values) in enumerate(infrataxas.items()):
-                    if index >=0 and index < len(infrataxas) - 1:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
-                    else:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
-                    
-                figs = []
-                for (columnName) in indexes.columns:
-                    fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
-                    fig.update_layout(height=600, width=800)
-                    fig.update_traces(width=0.5)
-                    #fig.update_layout(hovermode=False)
-                    figs.append(fig)
-                for index, figure in enumerate(figs):
-                    st.plotly_chart(figure)   
-
-            formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
-
-            if st.button("Exportar gráfico"):
-                # Save Graph
-                buffer = io.BytesIO()
-                if formato == "PNG":
-                    plt.savefig(buffer, format="png")
-                    extension = "png"
-                elif formato == "JPEG":
-                    plt.savefig(buffer, format="jpeg")
-                    extension = "jpg"
-                elif formato == "PDF":
-                    plt.savefig(buffer, format="pdf")
-                    extension = "pdf"
-    
-                # Download graph
-                st.markdown(get_binary_file_downloader_html(buffer, f"gráfico.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
+            if len(figuras)>0:
+                bufferList=[]
+                formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
+                if st.button("Exportar Gráfico"):
+                    for f in figuras:
+                        buffer=io.BytesIO()
+                        if formato == "PNG":
+                            f.savefig(buffer, format="png")
+                            extension = "png"
+                        elif formato == "JPEG":
+                            f.savefig(buffer, format="jpeg")
+                            extension = "jpg"
+                        elif formato == "PDF":
+                            f.savefig(buffer, format="pdf")
+                            extension = "pdf"
+                        bufferList.append(buffer)
+                    for i in range(len(bufferList)):
+                        buffer=bufferList[i]
+                        st.markdown(
+                            get_binary_file_downloader_html(
+                                buffer, 
+                                f"graph{i+1}.{extension}", 
+                                f"Descargar Gráfico no. {i+1}"
+                            ),
+                            unsafe_allow_html=True
+                        )
     
     st.subheader("¿Cómo usar?")
     st.write(
