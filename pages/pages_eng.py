@@ -312,9 +312,9 @@ def graphSelector():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Select the type of graph:',
-                ('Contunious graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+                ('Continuous graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
-            if selectgraphtype == 'Contunious graph':
+            if selectgraphtype == 'Continuous graph':
                 continuous(df)
 
             elif selectgraphtype == "Heatmap":
