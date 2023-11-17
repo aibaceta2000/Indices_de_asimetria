@@ -294,12 +294,6 @@ def graphSelector():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    graph_types=[
-        "Continuous graph",
-        "Heatmap", 
-        "Scatter plot with Convex Hull and Boxplots", 
-        "Boxplot"
-    ]
     if upload:
         st.markdown('---')
         
@@ -316,61 +310,43 @@ def graphSelector():
                 continue  # Skip processing this file and continue with the next
         
             # Display the DataFrame for each uploaded file
-            figuras=[]
-            graph_list=[]
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
-            selected_graphs=st.multiselect("Select the graphs",graph_types)
-            if len(selected_graphs)<1:
-                st.warning("Select at least 1 graph")
-            else:
-                graph_list=list(selected_graphs)
+            selectgraphtype = st.selectbox(
+                'Select the type of graph:',
+                ('Continuous graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+            )
+            if selectgraphtype == 'Continuous graph':
+                continuous(df)
 
-            for gr in graph_list:
-                #st.write(gr+"\n")
-                fg=None
-                if selectgraphtype == 'Continuous graph':
-                    continuous(df)
-                    fg=plt.gcf()
-                elif selectgraphtype == "Heatmap":
-                    heatmap(df)
-                    fg=plt.gcf()
-                elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-                    plot_convex_hull(df)
-                    fg=plt.gcf()    
-                elif selectgraphtype == "Boxplot":
-                    boxplot(df)
-                    fg=plt.gcf()                
-                figuras.append(fg)
+            elif selectgraphtype == "Heatmap":
+                heatmap(df)
+
+            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+                plot_convex_hull(df)
+
+            elif selectgraphtype == "Boxplot":
+                boxplot(df)
+
                 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
-            if len(figuras)>0:
-                bufferList=[]
-                formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
-                if st.button("Export Graphs"):
-                    for f in figuras:
-                        buffer=io.BytesIO()
-                        if formato == "PNG":
-                            f.savefig(buffer, format="png")
-                            extension = "png"
-                        elif formato == "JPEG":
-                            f.savefig(buffer, format="jpeg")
-                            extension = "jpg"
-                        elif formato == "PDF":
-                            f.savefig(buffer, format="pdf")
-                            extension = "pdf"
-                        bufferList.append(buffer)
-                    for i in range(len(bufferList)):
-                        buffer=bufferList[i]
-                        st.markdown(
-                            get_binary_file_downloader_html(
-                                buffer, 
-                                f"graph{i+1}.{extension}", 
-                                f"Download Graph no. {i+1}"
-                            ),
-                            unsafe_allow_html=True
-                        )
+            if st.button("Export Graph"):
+                # Save Graph
+                buffer = io.BytesIO()
+                if formato == "PNG":
+                    plt.savefig(buffer, format="png")
+                    extension = "png"
+                elif formato == "JPEG":
+                    plt.savefig(buffer, format="jpeg")
+                    extension = "jpg"
+                elif formato == "PDF":
+                    plt.savefig(buffer, format="pdf")
+                    extension = "pdf"
+
+                # Download graph
+                st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
+
 
     st.subheader("How to use?")
     st.write(
