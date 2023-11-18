@@ -38,3 +38,4 @@ def boxplot(df):
             figs.append(fig)
     for index, figure in enumerate(figs):
         st.plotly_chart(figure)   
+    return figs

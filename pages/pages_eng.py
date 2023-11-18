@@ -12,6 +12,7 @@ import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
 from bd import *
+import plotly.io as pio
 
 def home():
     st.header('Chromindex-UdeC')
@@ -316,6 +317,8 @@ def graphSelector():
                 'Select the type of graph:',
                 ('Continuous graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
+            #we store the boxplot in case the user want to download them
+            boxplot_figs = []
             if selectgraphtype == 'Continuous graph':
                 continuous(df)
 
@@ -326,26 +329,27 @@ def graphSelector():
                 plot_convex_hull(df)
 
             elif selectgraphtype == "Boxplot":
-                boxplot(df)
+                boxplot_figs = boxplot(df)
 
                 
             formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
 
             if st.button("Export Graph"):
-                # Save Graph
                 buffer = io.BytesIO()
-                if formato == "PNG":
-                    plt.savefig(buffer, format="png")
-                    extension = "png"
-                elif formato == "JPEG":
-                    plt.savefig(buffer, format="jpeg")
-                    extension = "jpg"
-                elif formato == "PDF":
-                    plt.savefig(buffer, format="pdf")
-                    extension = "pdf"
+                extension = formato.lower()
+                #to generate the boxplots a different library of graphs is used therefore the boxplots are saved in a different way
+                if selectgraphtype == "Boxplot":
+                    print("")
+                    for index, figure in enumerate(boxplot_figs):
+                        buffer = io.BytesIO()
+                        pio.write_image(figure, buffer, format=extension)
 
-                # Download graph
-                st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
+                        # Download graph
+                        st.markdown(get_binary_file_downloader_html(buffer, f"graph_{index + 1}.{extension}", f"Download Graph {index + 1}"), unsafe_allow_html=True)
+                else:
+                    plt.savefig(buffer, format = formato.lower())
+                    # Download graph
+                    st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
 
 
     st.subheader("How to use?")
