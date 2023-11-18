@@ -12,8 +12,10 @@ import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
 from bd import *
+import plotly.io as pio
 
-#Traduccion pendiente
+### Página con traduccion pendiente. Métodos pendientes de traduccion serán marcados ###
+
 
 def inicio():
     st.header('Chromindex-UdeC')
@@ -290,12 +292,6 @@ def selectorGraficos():
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    graph_types=[
-        "Continuous graph",
-        "Heatmap", 
-        "Scatter plot with Convex Hull and Boxplots", 
-        "Boxplot"
-    ]
     if upload:
         st.markdown('---')
         
@@ -308,65 +304,51 @@ def selectorGraficos():
                 # Read a CSV file
                 df = pd.read_csv(uploaded_file)
             else:
-                st.error(f'Unsupported file format for {uploaded_file.name}. Please upload an Excel (.xlsx or .xls) or CSV (.csv) file.')
+                st.error(f'El formato del archivo {uploaded_file.name} no es soportado. Por favor suba un archivo Excel (.xlsx or .xls) o un archivo CSV (.csv) file.')
                 continue  # Skip processing this file and continue with the next
         
             # Display the DataFrame for each uploaded file
-            figuras=[]
-            graph_list=[]
-            st.subheader(f'Datos de {uploaded_file.name}:')
+            st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
-            selected_graphs=st.multiselect("Elige los gráficos",graph_types)
-            if len(selected_graphs)<1:
-                st.warning("Selecciona al menos 1 gráfico")
-            else:
-                graph_list=list(selected_graphs)
+            selectgraphtype = st.selectbox(
+                'Selecciona un tipo de gráfico:',
+                ('Continuous graph', "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+            )
+            #we store the boxplot in case the user want to download them
+            boxplot_figs = []
+            if selectgraphtype == 'Continuous graph':
+                continuous(df)
 
-            for gr in graph_list:
-                fg=None
-                if selectgraphtype == 'Continuous graph':
-                    continuous(df)
-                    fg=plt.gcf()
-                elif selectgraphtype == "Heatmap":
-                    heatmap(df)
-                    fg=plt.gcf()
-                elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
-                    plot_convex_hull(df)
-                    fg=plt.gcf()    
-                elif selectgraphtype == "Boxplot":
-                    boxplot(df)
-                    fg=plt.gcf()                
-                figuras.append(fg)
+            elif selectgraphtype == "Heatmap":
+                heatmap(df)
+
+            elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
+                plot_convex_hull(df)
+
+            elif selectgraphtype == "Boxplot":
+                boxplot_figs = boxplot(df)
+
                 
-            formato = st.selectbox("Exportation format:", ["PNG", "JPEG", "PDF"])
+            formato = st.selectbox("Exportar archivo como:", ["PNG", "JPEG", "PDF"])
 
-            if len(figuras)>0:
-                bufferList=[]
-                formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
-                if st.button("Exportar Gráficos"):
-                    for f in figuras:
-                        buffer=io.BytesIO()
-                        if formato == "PNG":
-                            f.savefig(buffer, format="png")
-                            extension = "png"
-                        elif formato == "JPEG":
-                            f.savefig(buffer, format="jpeg")
-                            extension = "jpg"
-                        elif formato == "PDF":
-                            f.savefig(buffer, format="pdf")
-                            extension = "pdf"
-                        bufferList.append(buffer)
-                    for i in range(len(bufferList)):
-                        buffer=bufferList[i]
-                        st.markdown(
-                            get_binary_file_downloader_html(
-                                buffer, 
-                                f"graph{i+1}.{extension}", 
-                                f"Descargar Gráfico no. {i+1}"
-                            ),
-                            unsafe_allow_html=True
-                        )
-    
+            if st.button("Exportar Grafo"):
+                buffer = io.BytesIO()
+                extension = formato.lower()
+                #to generate the boxplots a different library of graphs is used therefore the boxplots are saved in a different way
+                if selectgraphtype == "Boxplot":
+                    print("")
+                    for index, figure in enumerate(boxplot_figs):
+                        buffer = io.BytesIO()
+                        pio.write_image(figure, buffer, format=extension)
+
+                        # Download graph
+                        st.markdown(get_binary_file_downloader_html(buffer, f"graph_{index + 1}.{extension}", f"Descargar Gráfico {index + 1}"), unsafe_allow_html=True)
+                else:
+                    plt.savefig(buffer, format = formato.lower())
+                    # Download graph
+                    st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
+
+
     st.subheader("¿Cómo usar?")
     st.write(
         """
@@ -391,6 +373,7 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
     href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
     return href
 
+# Traduccion pendiente
 def bd():
 
     st.header('Chromindex-UdeC')

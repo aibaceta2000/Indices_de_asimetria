@@ -43,7 +43,10 @@ if leng == lenguajes[0]:
         about()
 
     elif pag_actual == paginas_navegacion_eng[6]:#about
-        db()
+        try:
+            db()
+        except:
+            st.write("Conextion error. Please make sure you have Internet Connection")
 
 
 # Cargar página en español
@@ -72,7 +75,10 @@ else:
         acerca()
 
     elif pag_actual == paginas_navegacion_esp[6]:#about
-        bd()
+        try:
+            bd()
+        except:
+            st.write("Error en la conexión. Por favor asegúrese de tener conexión a Internet")
 
 #Pie de página
 write_espacios(6)

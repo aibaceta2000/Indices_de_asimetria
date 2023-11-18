@@ -22,11 +22,11 @@ def boxplot(df):
     figs = []
     aviable_colors = ['Plotly', 'D3', 'G10','T10','Alphabet','Dark24','Light24','Set1','Pastel1'
                       ,'Dark2','Set2','Pastel2','Set3','Antique','Bold','Pastel','Prism','Safe','Vivid']
-    selected_color = st.selectbox("Select a Color Sequence", aviable_colors)
+    selected_color = st.selectbox("Seleccione una paleta de colores", aviable_colors)
     graph_color = getattr(px.colors.qualitative, selected_color)
-    distance = st.slider("width of the boxes", value=0.5, min_value=0.0, step=0.1, max_value=1.0)
+    distance = st.slider("Anchura de las cajas", value=0.5, min_value=0.0, step=0.1, max_value=1.0)
     indicesDisponibles = list(df.columns[3:])
-    indicesSeleccionados = st.multiselect("Selected indexes", indicesDisponibles, default=indicesDisponibles)
+    indicesSeleccionados = st.multiselect("Índices seleccionados", indicesDisponibles, default=indicesDisponibles)
     for (columnName) in indexes.columns:
         if columnName in indicesSeleccionados:
             fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa", color_discrete_sequence=graph_color)
@@ -38,3 +38,4 @@ def boxplot(df):
             figs.append(fig)
     for index, figure in enumerate(figs):
         st.plotly_chart(figure)   
+    return figs
