@@ -10,3 +10,4 @@ seaborn
 scipy
 bcrypt
 pymongo
+kaleido
