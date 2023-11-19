@@ -13,12 +13,13 @@ import base64
 from matplotlib.backends.backend_pdf import PdfPages
 from bd import *
 
-#Traduccion pendiente
+# Traduccion pendiente
+
 
 def inicio():
     st.header('Chromindex-UdeC')
     st.write(
-    """
+        """
     **Chromindex-UdeC**, un método simple para calcular índices de asimetría
     cariotípica a partir de tablas Excel generadas por el programa MicroMeasure.
 
@@ -36,12 +37,13 @@ def inicio():
     )
     write_espacios(6)
 
+
 def instrucciones():
     st.header('Instrucciones de Uso')
 
     st.subheader('Paso 1:')
     st.write(
-    """
+        """
     Tener una tabla excel generada por MicroMeasure del cariotipo a estudiar.
     MicroMeasure un programa científico de análisis de imágenes, cuya aplicación está destinada a estudios citológicos, citogenéticos y
     estudios citotaxonómicos. Este programa recibe imágenes en un formato específico y, a través de cálculos internos, devuelve
@@ -49,21 +51,23 @@ def instrucciones():
     """
     )
 
-    st.image("imagenes/paso1.png", caption="Ejemplo de Excel obtenido con MicroMeasure.")
+    st.image("imagenes/paso1.png",
+             caption="Ejemplo de Excel obtenido con MicroMeasure.")
 
     st.subheader('Paso 2:')
     st.write(
-    """
+        """
     Vaya al menú 🥀**Cálculo de índices** y haga clic en el botón para cargar archivos. Elija el archivo Excel obtenido con
     MicroMeasure.
     """
     )
 
-    st.image("imagenes/paso2_esp.png", caption="Menú correspondiente y botón para cargar archivo excel..")
+    st.image("imagenes/paso2_esp.png",
+             caption="Menú correspondiente y botón para cargar archivo excel..")
 
     st.subheader('Paso 3:')
     st.write(
-    """
+        """
     Una vez subido el archivo excel a la aplicación web, aparecerá un menú para seleccionar los índices a
     calcular (Ver 📃**Documentación** para revisar cómo se calculan los índices). Seleccione los índices que necesita y haga clic en
     en el botón _Calcular Indices_. Si todo se hizo correctamente, se mostrará una tabla que, por cada excel
@@ -86,7 +90,7 @@ def instrucciones():
 
     st.subheader('Archivo de prueba')
     st.write(
-    """
+        """
     Puede probar Chromindex-Udec con el siguiente archivo excel de prueba. Fue obtenido con MicroMeasure-
     """
     )
@@ -98,10 +102,11 @@ def instrucciones():
         mime="application/vnd.ms-excel"
     )
 
+
 def calculoIndices():
     st.header('Chromindex-UdeC')
 
-    ## Uploades de los excels:
+    # Uploades de los excels:
     lista_excels = st.file_uploader('Cargar archivos', type=['xls', 'xlsx'], accept_multiple_files=True,
                                     on_change=add_sesion_state('uploader_key', 1))
 
@@ -111,16 +116,20 @@ def calculoIndices():
         container_multiselect = st.container()
         check_all = st.checkbox('Seleccionar todos')
         if check_all:
-            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect(
+                'Multiselect', indices_nombres, indices_nombres)
         else:
-            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect(
+                'Multiselect', indices_nombres)
         if st.button('Calcular índices'):
             df = pd.DataFrame(columns=['Archivo'] + indices_seleccionados)
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
-                indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
+                indices_dicc = indices_clase.calcular_indices(
+                    indices_seleccionados)
                 excel_nombre = uploader.name.split('.xls')[0]
-                df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
+                df.loc[len(df) + 1] = [excel_nombre] + \
+                    list(indices_dicc.values())
             st.dataframe(df)
             add_sesion_state('df_resultado', xlsdownload(df))
         if 'df_resultado' in st.session_state:
@@ -133,6 +142,7 @@ def calculoIndices():
                 mime="application/vnd.ms-excel",
                 on_click=del_sesion_state('df_resultado')
             )
+
 
 def docu():
     st.header('Documentación')
@@ -151,59 +161,70 @@ def docu():
     # cortos y al largo promedio de los brazos largos del _i_-ésimo par de cromosomas homólgos. Y ___n<sub>p</sub>___ es la \
     # cantidad de pares de cromosomas.', unsafe_allow_html=True)
 
-    st.markdown("<h4>A<sub>2</sub> (Romero Zarco, 1986)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __A<sub>2</sub>__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("<h4>A<sub>2</sub> (Romero Zarco, 1986)</h4>",
+                unsafe_allow_html=True)
+    st.markdown("El indice __A<sub>2</sub>__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'A_2 = \frac{s}{x}.')
     st.markdown("""Donde ___s___ y ___x___ son la desviación estandar y la meda de las longitudes de los
     cromosomas.""", unsafe_allow_html=True)
 
     st.markdown("<h4>Ask% (Arano y Saito, 1980)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __Ask%__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("El indice __Ask%__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'Ask\% = \frac{\sum_{i=1}^n L_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown("""Donde ___L<sub>i</sub>___ and ___l<sub>i</sub>___ son la longitud del brazo más largo y la longitud del
     brazo más corto del cromosoma _i_-ésimo, respectivamente. Es decir, este índice se calcula como la suma de las longitudes
     de los brazos largos dividido por la suma de las longitudes de todos los cromosomas.""", unsafe_allow_html=True)
 
-    st.markdown("<h4>CV<sub>CI</sub> (Paszko, 2006)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __CV<sub>CI</sub>__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("<h4>CV<sub>CI</sub> (Paszko, 2006)</h4>",
+                unsafe_allow_html=True)
+    st.markdown("El indice __CV<sub>CI</sub>__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'CV_{CI} = \frac{s_{CI}}{x_{CI}}\times 100.')
     st.markdown("""Donde ___s<sub>CI</sub>___ y ___x<sub>CI</sub>___ son la desviación estándar y la media de
     los índices centroméricos, respectivamente.""", unsafe_allow_html=True)
 
-    st.markdown("<h4>CV<sub>CL</sub>  (Peruzzi y Eroglu, 2013)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __CV<sub>CL</sub>__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("<h4>CV<sub>CL</sub>  (Peruzzi y Eroglu, 2013)</h4>",
+                unsafe_allow_html=True)
+    st.markdown("El indice __CV<sub>CL</sub>__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'CV_{CL}= A_2 \times 100.')
     st.markdown("""Donde ___A<sub>2</sub>___ corresponde al índice propuesto por Romero Zarco, mostrado anteriormente.""",
                 unsafe_allow_html=True)
 
-    st.markdown("<h4>M<sub>CA</sub>  (Peruzzi y Eroglu, 2013)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __M<sub>CA</sub>__ se calcula de la siguiente manera:", unsafe_allow_html=True)
-    st.latex(r'M_{CA} = \frac{\sum_{i=1}^n \frac{L_i-l_i}{L_i+l_i}}{n} \times 100.')
+    st.markdown("<h4>M<sub>CA</sub>  (Peruzzi y Eroglu, 2013)</h4>",
+                unsafe_allow_html=True)
+    st.markdown("El indice __M<sub>CA</sub>__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
+    st.latex(
+        r'M_{CA} = \frac{\sum_{i=1}^n \frac{L_i-l_i}{L_i+l_i}}{n} \times 100.')
     st.markdown("""Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son la longitud del brazo más largo y la longitud del
     brazo más corto del cromosoma _i_-ésimo, respectivamente.""", unsafe_allow_html=True)
 
-    st.markdown("<h4>Sy<sub>i</sub>  (Greihuber y Speta, 1976)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __Sy<sub>i</sub>__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("<h4>Sy<sub>i</sub>  (Greihuber y Speta, 1976)</h4>",
+                unsafe_allow_html=True)
+    st.markdown("El indice __Sy<sub>i</sub>__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'Sy_i = \frac{x_l}{x_L} \times 100.')
     st.markdown("""Donde ___x<sub>l</sub>___ y ___x<sub>L</sub>___ son la longitud media de los brazos cortos y la
     longitud media de los brazos largos, respectivamente.""", unsafe_allow_html=True)
 
     st.markdown("<h4>TF% (Huziwara, 1962)</h4>", unsafe_allow_html=True)
-    st.markdown("El indice __TF%__ se calcula de la siguiente manera:", unsafe_allow_html=True)
+    st.markdown("El indice __TF%__ se calcula de la siguiente manera:",
+                unsafe_allow_html=True)
     st.latex(r'TF\% = \frac{\sum_{i=1}^n l_i}{\sum_{i=1}^n L_i+l_i}.')
     st.markdown("""Donde ___L<sub>i</sub>___ y ___l<sub>i</sub>___ son la longitud del brazo más largo y la longitud
     del brazo más corto del cromosoma _i_-ésimo, respectivamente. Es decir, este índice se calcula como la suma de las
     longitudes de los brazos cortos dividido por la suma de las longitudes de todos los cromosomas. Notar que Ask%+TF%=1
     para cualquier conjunto de cromosomas.""", unsafe_allow_html=True)
 
-
-
     write_espacios(2)
     st.header('Documentación de gráficos')
     st.markdown("""Para utilizar la generacion de graficos, es necesario que el archivo tenga un formato de .XLS, .XLSX o .CSV. 
                 Además, las columnas deben seguir el siguiente orden: Taxa, Infrataxa, Población e Índices. Cada columna debe 
                 tener su encabezado correspondiente en la primera fila, y los índices pueden ser de cualquier tipo y estar 
-                dispuestos en cualquier orden. A continuacion, se muestra un ejemplo:""", unsafe_allow_html=True)    
+                dispuestos en cualquier orden. A continuacion, se muestra un ejemplo:""", unsafe_allow_html=True)
 
     ejemplo = pd.read_csv("./ejemplo/Baeza_Werdermannii.csv")
     st.dataframe(ejemplo.set_index(ejemplo.columns[0])[:10], width=1400)
@@ -222,18 +243,19 @@ def docu():
                 Los dendrogramas se crean utilizando el método de enlace promedio con datos sin estandarizar, y se utiliza 
                 la métrica euclidiana para calcular las distancias entre los puntos.""", unsafe_allow_html=True)
 
-    st.markdown("<h4>Scatter plot with Convex Hull and Boxplots</h4>", unsafe_allow_html=True)
+    st.markdown("<h4>Scatter plot with Convex Hull and Boxplots</h4>",
+                unsafe_allow_html=True)
     st.markdown("""Su implementación es mediante la función __spatial.ConvexHull__ de la librería __scipy__. Los boxplots utilizados 
                 son de la libreria __seaborn__, generados con la función __boxplot__.""", unsafe_allow_html=True)
-    
+
     st.markdown("<h4>Boxplot</h4>", unsafe_allow_html=True)
-    st.markdown("""Su implementación es mediante la función __express.box__ de la librería __plotly__.""", unsafe_allow_html=True)
-    
+    st.markdown("""Su implementación es mediante la función __express.box__ de la librería __plotly__.""",
+                unsafe_allow_html=True)
+
     st.markdown("<h4>graf 1 2</h4>", unsafe_allow_html=True)
-    st.markdown("""Su implementación es mediante la función __pyplot__ de la librería __matplotlib__.""", unsafe_allow_html=True)
-    
-    
-    
+    st.markdown("""Su implementación es mediante la función __pyplot__ de la librería __matplotlib__.""",
+                unsafe_allow_html=True)
+
     write_espacios(2)
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
     and Puschkinia (Liliaceae). Plant Systematics and Evolution 126: 149-188.</h10>", unsafe_allow_html=True)
@@ -245,6 +267,7 @@ def docu():
     to measure?  Comparative Cytogenetics 7: 1-9.</h10>", unsafe_allow_html=True)
     st.caption("<h10>Romero Zarco, C. 1986. A new method for estimating Karyotype asymmetry. \
     Taxon 36: 526-530.</h10>", unsafe_allow_html=True)
+
 
 def acerca():
     st.header('Acerca de Chromindex-UdeC')
@@ -282,11 +305,12 @@ def acerca():
     st.caption("<h10>Van Rossum, G. & Drake, F.L., 2009. Python 3 Reference Manual, Scotts Valley, CA: \
                CreateSpace.</h10>", unsafe_allow_html=True)
 
+
 def selectorGraficos():
     st.header("Selector de graficos")
     upload = st.file_uploader(
-        'Subir archivo(s)', 
-        type=['xls', 'xlsx','csv'], 
+        'Subir archivo(s)',
+        type=['xls', 'xlsx', 'csv'],
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
@@ -295,10 +319,10 @@ def selectorGraficos():
     check_heat=st.checkbox("Heatmap")
     check_scatter=st.checkbox("Scatter plot with Convex Hull and Boxplots")
     check_boxplot=st.checkbox("Boxplot") """
-    
+
     if upload:
         st.markdown('---')
-        
+
         for uploaded_file in upload:
             # Check the file extension to determine the file type for each uploaded file
             if uploaded_file.name.endswith(('.xlsx', '.xls')):
@@ -308,37 +332,24 @@ def selectorGraficos():
                 # Read a CSV file
                 df = pd.read_csv(uploaded_file)
             else:
-                st.error(f'Formato de archivo no soportado {uploaded_file.name}. Porfavor suba un Excel (.xlsx or .xls) o CSV (.csv) file.')
+                st.error(
+                    f'Formato de archivo no soportado {uploaded_file.name}. Porfavor suba un Excel (.xlsx or .xls) o CSV (.csv) file.')
                 continue  # Skip processing this file and continue with the next
-        
+
             # Display the DataFrame for each uploaded file
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
             selectgraphtype = st.selectbox(
-                'Seleccionar tipo de gráfico:',
-                ("CVCL Column Plot", "LTC Column Plot", "Heatmap", "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
+                'Select the type of graph:',
+                ('Contunious graph', "Heatmap",
+                 "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
-            if selectgraphtype == "CVCL Column Plot":
-                # Plot 'CVCL' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['CVCL'])
-                plt.title('Gráfico 1: CVCL Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('CVCL Values')
-                st.pyplot(plt)
+            if selectgraphtype == 'Contunious graph':
+                continuous(df)
 
-            elif selectgraphtype == "LTC Column Plot":
-                # Plot 'LTC' column
-                plt.figure(figsize=(8, 6))
-                plt.plot(df['LTC'])
-                plt.title('Gráfico 2: LTC Column Plot')
-                plt.xlabel('Index')
-                plt.ylabel('LTC Values')
-                st.pyplot(plt)
-            
             elif selectgraphtype == "Heatmap":
                 heatmap(df)
-            
+
             elif selectgraphtype == 'Scatter plot with Convex Hull and Boxplots':
                 plot_convex_hull(df)
 
@@ -352,22 +363,26 @@ def selectorGraficos():
                 infrataxas_graph_data = dict()
                 indexes = df_data.iloc[:, 3:]
                 for index, (keys, values) in enumerate(infrataxas.items()):
-                    if index >=0 and index < len(infrataxas) - 1:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[index + 1], 3:]
+                    if index >= 0 and index < len(infrataxas) - 1:
+                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[
+                            index + 1], 3:]
                     else:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:len(df_data), 3:]
-                    
+                        infrataxas_graph_data[keys] = df_data.iloc[values:len(
+                            df_data), 3:]
+
                 figs = []
                 for (columnName) in indexes.columns:
-                    fig = px.box(df_data, y=columnName, boxmode='group', x="Infrataxa", color="Infrataxa")
+                    fig = px.box(df_data, y=columnName, boxmode='group',
+                                 x="Infrataxa", color="Infrataxa")
                     fig.update_layout(height=600, width=800)
                     fig.update_traces(width=0.5)
-                    #fig.update_layout(hovermode=False)
+                    # fig.update_layout(hovermode=False)
                     figs.append(fig)
                 for index, figure in enumerate(figs):
-                    st.plotly_chart(figure)   
+                    st.plotly_chart(figure)
 
-            formato = st.selectbox("Formato de exportación:", ["PNG", "JPEG", "PDF"])
+            formato = st.selectbox("Formato de exportación:", [
+                                   "PNG", "JPEG", "PDF"])
 
             if st.button("Exportar gráfico"):
                 # Save Graph
@@ -381,10 +396,11 @@ def selectorGraficos():
                 elif formato == "PDF":
                     plt.savefig(buffer, format="pdf")
                     extension = "pdf"
-    
+
                 # Download graph
-                st.markdown(get_binary_file_downloader_html(buffer, f"gráfico.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
-    
+                st.markdown(get_binary_file_downloader_html(
+                    buffer, f"gráfico.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
+
     st.subheader("¿Cómo usar?")
     st.write(
         """
@@ -404,19 +420,21 @@ def selectorGraficos():
         """
     )
 
+
 def get_binary_file_downloader_html(bin_data, file_label, button_text):
     data = base64.b64encode(bin_data.getvalue()).decode()
     href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
     return href
 
+
 def bd():
 
     st.header('Chromindex-UdeC')
-    
+
     create_user()
     if not 'logeado' in st.session_state:
         login()
-    ## Uploades de los excels:
+    # Uploades de los excels:
     lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
                                     on_change=add_sesion_state('uploader_key', 1))
 
@@ -426,19 +444,23 @@ def bd():
         container_multiselect = st.container()
         check_all = st.checkbox('Select all')
         if check_all:
-            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect(
+                'Multiselect', indices_nombres, indices_nombres)
         else:
-            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect(
+                'Multiselect', indices_nombres)
         if st.button('Calculate indices'):
             df = pd.DataFrame(columns=['File'] + indices_seleccionados)
 
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
-                indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
+                indices_dicc = indices_clase.calcular_indices(
+                    indices_seleccionados)
                 excel_nombre = uploader.name.split('.xls')[0]
-                df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
+                df.loc[len(df) + 1] = [excel_nombre] + \
+                    list(indices_dicc.values())
             st.dataframe(df)
-            
+
             add_sesion_state('db_data', df.to_dict(orient='records'))
             add_sesion_state('df_resultado', xlsdownload(df))
 
@@ -455,5 +477,4 @@ def bd():
         if 'db_data' in st.session_state and 'logeado' in st.session_state:
             if st.button('Save to my account'):
                 print(st.session_state['db_data'])
-                guardar(st.session_state['db_data'])  
-    
+                guardar(st.session_state['db_data'])
