@@ -347,6 +347,7 @@ def graphSelector():
                         # Download graph
                         st.markdown(get_binary_file_downloader_html(buffer, f"graph_{index + 1}.{extension}", f"Download Graph {index + 1}"), unsafe_allow_html=True)
                 else:
+                    plt.tight_layout()
                     plt.savefig(buffer, format = formato.lower())
                     # Download graph
                     st.markdown(get_binary_file_downloader_html(buffer, f"graph.{extension}", "Download Graph"), unsafe_allow_html=True)
