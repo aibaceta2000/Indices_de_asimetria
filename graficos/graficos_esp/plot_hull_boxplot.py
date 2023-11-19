@@ -42,8 +42,13 @@ available_palettes = [
 
 
 def plot_convex_hull(a):
-    available_columns = a.columns[3:]  # get columns from 3 to end
-    selected_columns = st.multiselect("Índices seleccionados", available_columns, default=list(available_columns))
+    popu_flag = a.columns[2].lower() in ["population", "poblacion", "población"]
+    # if there is a population column
+    if popu_flag:
+        available_columns = a.columns[3:]  # get columns from 3 to end
+    else:
+        available_columns = a.columns[2:]
+    selected_columns = st.multiselect("Índices seleccionados", available_columns)
 
     if len(selected_columns) < 2:
         st.warning("Seleccione por lo menos 2 índices")
@@ -53,12 +58,23 @@ def plot_convex_hull(a):
         # select desired permutations
         combination = st.selectbox("Seleccione una combinación", permutations)
 
-        selected_palette = st.selectbox("Seleccione una paleta de colores:", available_palettes)
-        show_legend = st.checkbox("Mostrar Legenda", True)
-        show_labels = st.checkbox("Mostrar Etiquetas", True)
-        show_ticks = st.checkbox("Mostrar Ejes", True)
-        show_population = st.checkbox("Mostrar valores de puntos", True)
-        show_coordinates = st.checkbox("Mostrar coordenadas", False)
+        selected_palette = st.selectbox("Seleccione una paleta:", available_palettes)
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            topboxplots = st.checkbox("Mostrar Boxplots sobre el gráfico", True)
+            rightboxplots = st.checkbox("Mostrar Boxplots a la derecha del gráfico", True)
+            show_hulls = st.checkbox("Mostrar Convex Hulls", True)
+
+        with col2:
+            show_legend = st.checkbox("Mostrar Legenda", True)
+            show_labels = st.checkbox("Mostrar Etiquetas", True)
+            show_ticks = st.checkbox("Mostrar Ticks", True)
+
+        with col3:
+            if popu_flag:
+                show_population = st.checkbox("Mostrar Población", True)
+            show_coordinates = st.checkbox("Mostrar Coordenadas", False)
 
         # Initialize an empty DataFrame for convex hull points
         hulls = pd.DataFrame(columns=a.columns)
@@ -80,8 +96,10 @@ def plot_convex_hull(a):
         # Define positions for the main scatter plot and boxplot axes
         startx, starty, w, h = 0.1, 0.1, 0.75, 0.75
         scatter_ax = plt.axes([startx, starty, w, h])
-        boxplot_ax = plt.axes([w + 0.11, starty, 0.1, h])
-        boxplot_ax2 = plt.axes([startx, h + 0.11, w, 0.1])
+        if rightboxplots:
+            boxplot_ax = plt.axes([w + 0.11, starty, 0.1, h])
+        if topboxplots:
+            boxplot_ax2 = plt.axes([startx, h + 0.11, w, 0.1])
 
         # Plot Scatter plot
         for i, (group, data) in enumerate(a.groupby("Infrataxa")):
@@ -100,34 +118,36 @@ def plot_convex_hull(a):
                         fontsize=8,
                     )
             # show the point value (population column)
-            if show_population:
-                for x, y, population in zip(
-                    data[x_var], data[y_var], data["Population"]
-                ):
-                    scatter_ax.annotate(
-                        f"{population}",
-                        xy=(x, y),
-                        xytext=(-10, 5),
-                        textcoords="offset points",
-                        fontsize=8,
+            if popu_flag:
+                if show_population:
+                    for x, y, population in zip(
+                        data[x_var], data[y_var], data["Population"]
+                    ):
+                        scatter_ax.annotate(
+                            f"{population}",
+                            xy=(x, y),
+                            xytext=(-10, 5),
+                            textcoords="offset points",
+                            fontsize=8,
+                        )
+
+        # Plot Convex hull
+        if show_hulls:
+            for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
+                hull = ConvexHull(data[[x_var, y_var]].values)
+                for simplex in hull.simplices:
+                    scatter_ax.plot(
+                        data[x_var].values[simplex],
+                        data[y_var].values[simplex],
+                        color=palette[i],
                     )
 
-            # Plot Convex hull
-        for i, (group, data) in enumerate(hulls.groupby("Infrataxa")):
-            hull = ConvexHull(data[[x_var, y_var]].values)
-            for simplex in hull.simplices:
-                scatter_ax.plot(
-                    data[x_var].values[simplex],
-                    data[y_var].values[simplex],
+                scatter_ax.fill(
+                    data[x_var].values[hull.vertices],
+                    data[y_var].values[hull.vertices],
+                    alpha=0.2,
                     color=palette[i],
                 )
-
-            scatter_ax.fill(
-                data[x_var].values[hull.vertices],
-                data[y_var].values[hull.vertices],
-                alpha=0.2,
-                color=palette[i],
-            )
 
         # x and y labels
         if show_labels:
@@ -148,29 +168,25 @@ def plot_convex_hull(a):
             scatter_ax.set_yticks([])
 
         # Boxplots
-        ax = sns.boxplot(
-            x="Infrataxa",
-            y=y_var,
-            data=a,
-            ax=boxplot_ax,
-            palette=palette,
-            whis=float("inf"),
-        )
-        ax2 = sns.boxplot(
-            y="Infrataxa",
-            x=x_var,
-            data=a,
-            ax=boxplot_ax2,
-            palette=palette,
-            whis=float("inf"),
-        )
+        def plot_boxplot(ax, data, x, y, palette):
+            sns.boxplot(
+                x=x,
+                y=y,
+                data=data,
+                ax=ax,
+                palette=palette,
+                whis=float("inf"),
+            )
 
-        # Hide boxplots details
-        for ax in [boxplot_ax, boxplot_ax2]:
             ax.set(xlabel=None, ylabel=None)
             ax.set_xticks([])
             ax.set_yticks([])
             for spine in ax.spines.values():
                 spine.set_visible(False)
+
+        if rightboxplots:
+            plot_boxplot(boxplot_ax, a, "Infrataxa", y_var, palette)
+        if topboxplots:
+            plot_boxplot(boxplot_ax2, a, x_var, "Infrataxa", palette)
 
         st.pyplot(fig)

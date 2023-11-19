@@ -24,11 +24,11 @@ def heatmap(df):
     
     with fila[1]:
         selected_palette = st.selectbox("Paleta de colores seleccionada:", available_palettes)  
-        n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
+        n_colors = st.slider("Número de colores:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
         
 
     if len(indicesSeleccionados) < 2:
-        st.warning("Select at least 2 indexes")
+        st.warning("Seleccione por lo menos 2 índices")
     else:
         heatmapGraph(df, 
                     indices=indices,

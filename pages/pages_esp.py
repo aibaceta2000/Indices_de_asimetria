@@ -12,8 +12,9 @@ import io
 import base64
 from matplotlib.backends.backend_pdf import PdfPages
 from bd import *
+import plotly.io as pio
 
-# Traduccion pendiente
+### Página con traduccion pendiente. Métodos pendientes de traduccion serán marcados ###
 
 
 def inicio():
@@ -307,19 +308,13 @@ def acerca():
 
 
 def selectorGraficos():
-    st.header("Selector de graficos")
+    st.header("Selector de gráficos")
     upload = st.file_uploader(
         'Subir archivo(s)',
         type=['xls', 'xlsx', 'csv'],
         accept_multiple_files=True,
         on_change=add_sesion_state('uploader_key', 1)
     )
-    """ check_cvcl=st.checkbox("CVCL Column Plot")
-    check_ltc=st.checkbox("LTC Column Plot")
-    check_heat=st.checkbox("Heatmap")
-    check_scatter=st.checkbox("Scatter plot with Convex Hull and Boxplots")
-    check_boxplot=st.checkbox("Boxplot") """
-
     if upload:
         st.markdown('---')
 
@@ -333,18 +328,20 @@ def selectorGraficos():
                 df = pd.read_csv(uploaded_file)
             else:
                 st.error(
-                    f'Formato de archivo no soportado {uploaded_file.name}. Porfavor suba un Excel (.xlsx or .xls) o CSV (.csv) file.')
+                    f'El formato del archivo {uploaded_file.name} no es soportado. Por favor suba un archivo Excel (.xlsx or .xls) o un archivo CSV (.csv) file.')
                 continue  # Skip processing this file and continue with the next
 
             # Display the DataFrame for each uploaded file
             st.subheader(f'Data from {uploaded_file.name}:')
             st.dataframe(df)
             selectgraphtype = st.selectbox(
-                'Select the type of graph:',
-                ('Contunious graph', "Heatmap",
+                'Selecciona un tipo de gráfico:',
+                ('Continuous graph', "Heatmap",
                  "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
-            if selectgraphtype == 'Contunious graph':
+            # we store the boxplot in case the user want to download them
+            boxplot_figs = []
+            if selectgraphtype == 'Continuous graph':
                 continuous(df)
 
             elif selectgraphtype == "Heatmap":
@@ -354,52 +351,30 @@ def selectorGraficos():
                 plot_convex_hull(df)
 
             elif selectgraphtype == "Boxplot":
-                st.header("Test Graph")
-                df_data = pd.DataFrame(df, columns=df.columns)
-                infrataxas = dict()
-                for index, value in enumerate(df_data['Infrataxa']):
-                    if value not in infrataxas:
-                        infrataxas[value] = index
-                infrataxas_graph_data = dict()
-                indexes = df_data.iloc[:, 3:]
-                for index, (keys, values) in enumerate(infrataxas.items()):
-                    if index >= 0 and index < len(infrataxas) - 1:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:list(infrataxas.values())[
-                            index + 1], 3:]
-                    else:
-                        infrataxas_graph_data[keys] = df_data.iloc[values:len(
-                            df_data), 3:]
+                boxplot_figs = boxplot(df)
 
-                figs = []
-                for (columnName) in indexes.columns:
-                    fig = px.box(df_data, y=columnName, boxmode='group',
-                                 x="Infrataxa", color="Infrataxa")
-                    fig.update_layout(height=600, width=800)
-                    fig.update_traces(width=0.5)
-                    # fig.update_layout(hovermode=False)
-                    figs.append(fig)
-                for index, figure in enumerate(figs):
-                    st.plotly_chart(figure)
-
-            formato = st.selectbox("Formato de exportación:", [
+            formato = st.selectbox("Exportar archivo como:", [
                                    "PNG", "JPEG", "PDF"])
 
-            if st.button("Exportar gráfico"):
-                # Save Graph
+            if st.button("Exportar Grafo"):
                 buffer = io.BytesIO()
-                if formato == "PNG":
-                    plt.savefig(buffer, format="png")
-                    extension = "png"
-                elif formato == "JPEG":
-                    plt.savefig(buffer, format="jpeg")
-                    extension = "jpg"
-                elif formato == "PDF":
-                    plt.savefig(buffer, format="pdf")
-                    extension = "pdf"
+                extension = formato.lower()
+                # to generate the boxplots a different library of graphs is used therefore the boxplots are saved in a different way
+                if selectgraphtype == "Boxplot":
+                    print("")
+                    for index, figure in enumerate(boxplot_figs):
+                        buffer = io.BytesIO()
+                        pio.write_image(figure, buffer, format=extension)
 
-                # Download graph
-                st.markdown(get_binary_file_downloader_html(
-                    buffer, f"gráfico.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
+                        # Download graph
+                        st.markdown(get_binary_file_downloader_html(
+                            buffer, f"graph_{index + 1}.{extension}", f"Descargar Gráfico {index + 1}"), unsafe_allow_html=True)
+                else:
+                    plt.tight_layout()
+                    plt.savefig(buffer, format=formato.lower())
+                    # Download graph
+                    st.markdown(get_binary_file_downloader_html(
+                        buffer, f"graph.{extension}", "Descargar Gráfico"), unsafe_allow_html=True)
 
     st.subheader("¿Cómo usar?")
     st.write(
@@ -425,6 +400,8 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
     data = base64.b64encode(bin_data.getvalue()).decode()
     href = f'<a href="data:application/octet-stream;base64,{data}" download="{file_label}">{button_text}</a>'
     return href
+
+# Traduccion pendiente
 
 
 def bd():
