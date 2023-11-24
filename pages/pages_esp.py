@@ -336,12 +336,12 @@ def selectorGraficos():
             st.dataframe(df)
             selectgraphtype = st.selectbox(
                 'Selecciona un tipo de gráfico:',
-                ('Continuous graph', "Heatmap",
+                ('Gráfico Continuo', "Heatmap",
                  "Scatter plot with Convex Hull and Boxplots", "Boxplot"),
             )
             # we store the boxplot in case the user want to download them
             boxplot_figs = []
-            if selectgraphtype == 'Continuous graph':
+            if selectgraphtype == 'Gráfico Continuo':
                 continuous(df)
 
             elif selectgraphtype == "Heatmap":
