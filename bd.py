@@ -3,11 +3,15 @@ import streamlit as st
 import bcrypt
 import pandas as pd
 from utilidades import add_sesion_state
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 def conectar():
     client = pymongo.MongoClient(
-        "mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority"
+        os.getenv('mongo_client')
     )
     db = client.Chromindex  # nombre de la bd
     return client, db
