@@ -14,6 +14,8 @@ def conectar():
 
 
 def guardar(data_entrada):
+    idioma = st.session_state.idioma
+    
     client, db = conectar()
     collection = db.indices
 
@@ -23,13 +25,28 @@ def guardar(data_entrada):
         inserted_data = collection.insert_one(data)
 
         if inserted_data.acknowledged:
-            st.success(f"Data saved for {username}")
+            if idioma == 0:
+                st.success(f"Data saved for {username}")
+            elif idioma == 1:
+                st.success(f"Data del usuario {username} guardada")
+
         else:
-            st.error("Error while saving the data.")
+            if idioma == 0:
+                st.error("Error while saving the data.")
+            elif idioma == 1:
+                st.error("Ocurrió un error mientras se guardaba la data.")
+
     client.close()
 
 
 def ver():
+    idioma = st.session_state.idioma
+    text = {}
+    text['header'] = ['Saved data from', 'Data del usuario']
+    text['delete'] = ['Delete', 'Borrar']
+    text['document'] = ['Document', 'Archivo']
+    text['download'] = ['Download', 'Descargar']
+
     client, db = conectar()
     collection = db.indices
 
@@ -38,26 +55,37 @@ def ver():
     data_from_collection = list(collection.find({"username": username}))
 
     if data_from_collection:
-        st.header(f"Saved data from {username}")
+        st.header(f"{text['header'][idioma]} {username}")
         for data in data_from_collection:
+
+            if data != data_from_collection[0]:
+                st.write('---')
+
             # Crear un DataFrame sin incluir el campo 'username' e 'id'
             df = pd.DataFrame([data])
             df.drop(columns=["username", "_id"], inplace=True)
             st.write(df)
 
-            # Agregar un botón para eliminar el documento
-            if st.button(f"Delete {data['File']}, id: {data['_id']}"):
-                collection.delete_one({"_id": data["_id"]})
-                st.success(f"Document {data['File']} deleted.")
+            col1, col2 = st.columns(2)
 
-            # Descargar el DataFrame como un archivo CSV
-            csv_data = df.to_csv(index=False, encoding="utf-8")
-            st.download_button(
-                label=f"Download CSV {data['File']}, id: {data['_id']}",
-                data=csv_data,
-                file_name=f"{data['File']}.csv",
-                mime="text/csv",
-            )
+            with col1:
+                # Agregar un botón para eliminar el documento
+                if st.button('❌ 'f"{text['delete'][idioma]} {data['File']}, id: {data['_id']}"):
+                    collection.delete_one({"_id": data["_id"]})
+                    if idioma == 0:
+                        st.success(f"Document {data['File']} deleted.")
+                    elif idioma == 1:
+                        st.success(f"Archivo {data['File']} borrado.")
+
+            with col2:
+                # Descargar el DataFrame como un archivo CSV
+                csv_data = df.to_csv(index=False, encoding="utf-8")
+                st.download_button(
+                    label='⬇️ ' f"{text['download'][idioma]} CSV {data['File']}, id: {data['_id']}",
+                    data=csv_data,
+                    file_name=f"{data['File']}.csv",
+                    mime="text/csv",
+                )
 
     client.close()
 
@@ -80,40 +108,66 @@ def auth(username, password):
 
 # login que utiliza el auth 
 def login():
-    st.header("Login")
-    username = st.text_input("Username ")
-    password = st.text_input("Password", type="password")
+    idioma = st.session_state.idioma
+    text= {}
+    text['username'] = ['Username', 'Nombre de usuario']
+    text['password'] = ['Password', 'Contraseña']
+    text['log_in'] = ['Log in', 'Iniciar sesión']
+    text['msg_001'] = ['Login successful', 'Autenticación existosa']
+    text['view_my_data'] = ['View my data', 'Ver mi data']
+    text['msg_002'] = ['Incorrect credentials. Please try again.', 
+                       'Credenciales incorrectas. Por favor, intente de nuevo']
 
-    if st.button("Log In"):
+    st.header("Login")
+    username = st.text_input(text['username'][idioma], key='login_username')
+    password = st.text_input(text['password'][idioma], type="password", key='login_password')
+
+    if st.button(text['log_in'][idioma]):
         if auth(username, password):
-            st.success("Login successful")
+            st.success(text['msg_001'][idioma])
             add_sesion_state("logeado", username)  # esto mantiene la sesion del usuario
-            st.button("View my data")
+            st.button(text['view_my_data'][idioma])
         else:
-            st.error("Incorrect credentials. Please try again.")
+            st.error(text['msg_002'][idioma])
 
 
 # crear user, cifrar con bcrypt
 def create_user():
-    st.header("Create account")
+    idioma = st.session_state.idioma
+    text = {}
+    text['header'] = ['Create account', 'Crear cuenta']
+    text['username'] = ['Username', 'Nombre de usuario']
+    text['desired_password'] = ['Desired password', 'Nueva contraseña']
+    text['confirm_password'] = ['Confirm password', 'Confirmar contraseña']
+    text['register'] = ['Register', 'Registrarse']
+    text['msg_001'] = ['Username already taken. Please choose another.', 
+                         'El nombre de usuario ya existe. Por favor, escoja otro']
+    text['msg_002'] = ['Registration successful. You can now log in.', 
+                       'Usuario creado correctamente. Ahora puede logearse']
+    text['msg_003'] = ['Passwords do not match. Please try again.', 
+                       'Contraseña o nombre de usuario incorrecto. Por favor, intente nuevamente']
+    
+    
+    st.header(text["header"][idioma])
     client, db = conectar()
     collection = db.users
 
-    username = st.text_input("Username")
-    password = st.text_input("Desired Password", type="password")
-    confirm_password = st.text_input("Confirm Password", type="password")
+    # username = st.text_input("Username")
+    username = st.text_input(text["username"][idioma])
+    password = st.text_input(text["desired_password"][idioma], type="password")
+    confirm_password = st.text_input(text["confirm_password"][idioma], type="password")
 
-    if st.button("Register"):
+    if st.button(text["register"][idioma]):
         # Check if the username is already taken
         existing_user = collection.find_one({"username": username})
 
         if existing_user:
-            st.error("Username already taken. Please choose another.")
+            st.error(text["msg_001"][idioma])
         elif password == confirm_password:
             hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
             collection.insert_one({"username": username, "password": hashed_password})
-            st.success("Registration successful. You can now log in.")
+            st.success(text["msg_002"][idioma])
         else:
-            st.error("Passwords do not match. Please try again.")
+            st.error(text["msg_003"][idioma])
 
     client.close()

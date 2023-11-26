@@ -144,6 +144,11 @@ def calculoIndices():
                 on_click=del_sesion_state('df_resultado')
             )
 
+        if 'db_data' in st.session_state and 'logeado' in st.session_state:
+            if st.button('Guardar a mi cuenta'):
+                guardar(st.session_state['db_data']) 
+        if 'db_data' in st.session_state and 'logeado' not in st.session_state:
+            st.write("Si necesita guardar la data, inicie sesión en la pestaña Cuenta")
 
 def docu():
     st.header('Documentación')
@@ -402,56 +407,12 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
     return href
 
 # Traduccion pendiente
-
-
 def bd():
-
-    st.header('Chromindex-UdeC')
-
-    create_user()
     if not 'logeado' in st.session_state:
         login()
-    # Uploades de los excels:
-    lista_excels = st.file_uploader('Upload files', type=['xls', 'xlsx'], accept_multiple_files=True,
-                                    on_change=add_sesion_state('uploader_key', 1))
-
-    indices_nombres = [u'A\u2082', 'Ask%', 'CVCI', 'CVCL', 'MCA', 'Syi', 'TF%']
-
-    if ('uploader_key' in st.session_state) & (len(lista_excels) > 0):
-        container_multiselect = st.container()
-        check_all = st.checkbox('Select all')
-        if check_all:
-            indices_seleccionados = container_multiselect.multiselect(
-                'Multiselect', indices_nombres, indices_nombres)
-        else:
-            indices_seleccionados = container_multiselect.multiselect(
-                'Multiselect', indices_nombres)
-        if st.button('Calculate indices'):
-            df = pd.DataFrame(columns=['File'] + indices_seleccionados)
-
-            for uploader in lista_excels:
-                indices_clase = IndicesDesdeExcel(uploader)
-                indices_dicc = indices_clase.calcular_indices(
-                    indices_seleccionados)
-                excel_nombre = uploader.name.split('.xls')[0]
-                df.loc[len(df) + 1] = [excel_nombre] + \
-                    list(indices_dicc.values())
-            st.dataframe(df)
-
-            add_sesion_state('db_data', df.to_dict(orient='records'))
-            add_sesion_state('df_resultado', xlsdownload(df))
-
-        if 'df_resultado' in st.session_state:
-            fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss")
-            excel_nombre = f'Indices_{fecha_hoy}.xlsx'
-            st.download_button(
-                label='📥 Download as Excel',
-                data=st.session_state['df_resultado'],
-                file_name=excel_nombre,
-                mime="application/vnd.ms-excel",
-            )
-
-        if 'db_data' in st.session_state and 'logeado' in st.session_state:
-            if st.button('Save to my account'):
-                print(st.session_state['db_data'])
-                guardar(st.session_state['db_data'])
+        create_user()
+    else:
+        text = {'welcome': ['Welcome', 'Bienvenido']}
+        username = st.session_state["logeado"]
+        st.header(f"{text['welcome'][st.session_state.idioma]} {username}")
+        ver()

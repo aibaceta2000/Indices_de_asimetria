@@ -379,10 +379,11 @@ def get_binary_file_downloader_html(bin_data, file_label, button_text):
 
 def db():
     if not 'logeado' in st.session_state:
-        create_user()
         login()
+        create_user()
     else:
+        text = {'welcome': ['Welcome', 'Bienvenido']}
         username = st.session_state["logeado"]
-        st.header(f"Welcome {username}")
+        st.header(f"{text['welcome'][st.session_state.idioma]} {username}")
         ver()
 
