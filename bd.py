@@ -3,16 +3,19 @@ import streamlit as st
 import bcrypt
 import pandas as pd
 from utilidades import add_sesion_state
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 def conectar():
-    client = pymongo.MongoClient(
-        "mongodb+srv://sebasheviarivas:izipass@cluster0.opihyei.mongodb.net/ChromIndex?retryWrites=true&w=majority"
-    )
+    client = pymongo.MongoClient(os.getenv("mongo_client"))
     db = client.Chromindex  # nombre de la bd
     return client, db
 
 
+# guardar resultados de los indices
 def guardar(data_entrada):
     idioma = st.session_state.idioma
     
@@ -21,7 +24,7 @@ def guardar(data_entrada):
 
     username = st.session_state["logeado"]
     for data in data_entrada:
-        data["username"] = username
+        data["username"] = username  # asociar con el user
         inserted_data = collection.insert_one(data)
 
         if inserted_data.acknowledged:
@@ -39,6 +42,7 @@ def guardar(data_entrada):
     client.close()
 
 
+# mostrar todos los datos de la bd
 def ver():
     idioma = st.session_state.idioma
     text = {}
@@ -90,7 +94,7 @@ def ver():
     client.close()
 
 
-# auth, busca si esta el user y password en la coleccion users
+# auth, busca si esta el user y password (hash) en la coleccion users
 def auth(username, password):
     client, db = conectar()
     collection = db.users
@@ -106,7 +110,7 @@ def auth(username, password):
     client.close()
 
 
-# login que utiliza el auth 
+# login que utiliza el auth
 def login():
     idioma = st.session_state.idioma
     text= {}

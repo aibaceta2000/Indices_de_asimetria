@@ -11,3 +11,4 @@ scipy
 bcrypt
 pymongo
 kaleido
+python-dotenv
