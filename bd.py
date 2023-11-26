@@ -10,20 +10,19 @@ load_dotenv()
 
 
 def conectar():
-    client = pymongo.MongoClient(
-        os.getenv('mongo_client')
-    )
+    client = pymongo.MongoClient(os.getenv("mongo_client"))
     db = client.Chromindex  # nombre de la bd
     return client, db
 
 
+# guardar resultados de los indices
 def guardar(data_entrada):
     client, db = conectar()
     collection = db.indices
 
     username = st.session_state["logeado"]
     for data in data_entrada:
-        data["username"] = username
+        data["username"] = username  # asociar con el user
         inserted_data = collection.insert_one(data)
 
         if inserted_data.acknowledged:
@@ -33,6 +32,7 @@ def guardar(data_entrada):
     client.close()
 
 
+# mostrar todos los datos de la bd
 def ver():
     client, db = conectar()
     collection = db.indices
@@ -66,7 +66,7 @@ def ver():
     client.close()
 
 
-# auth, busca si esta el user y password en la coleccion users
+# auth, busca si esta el user y password (hash) en la coleccion users
 def auth(username, password):
     client, db = conectar()
     collection = db.users
@@ -82,7 +82,7 @@ def auth(username, password):
     client.close()
 
 
-# login que utiliza el auth 
+# login que utiliza el auth
 def login():
     st.header("Login")
     username = st.text_input("Username ")
@@ -108,7 +108,6 @@ def create_user():
     confirm_password = st.text_input("Confirm Password", type="password")
 
     if st.button("Register"):
-        # Check if the username is already taken
         existing_user = collection.find_one({"username": username})
 
         if existing_user:
