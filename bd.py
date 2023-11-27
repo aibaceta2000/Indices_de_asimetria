@@ -60,6 +60,14 @@ def ver():
 
     if data_from_collection:
         st.header(f"{text['header'][idioma]} {username}")
+
+        # boton para borrar todos los datos
+        if st.button(f"Delete all {username}'s data"):
+            # buscar los datos asociados al user
+            result = collection.delete_many({"username": username})
+            if result.deleted_count > 0:
+                st.success(f"All documents for {username} deleted.")
+
         for data in data_from_collection:
 
             if data != data_from_collection[0]:

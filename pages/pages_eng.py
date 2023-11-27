@@ -120,8 +120,10 @@ def indexCalc():
                 excel_nombre = uploader.name.split('.xls')[0]
                 df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             st.dataframe(df)
-            #agregar data para la bd en la sesion
-            add_sesion_state('db_data', df.to_dict(orient='records'))
+
+            #agregar data para la bd en la sesion, solo si esta logueado
+            if 'logeado' in st.session_state:
+                add_sesion_state('db_data', df.to_dict(orient='records'))
             add_sesion_state('df_resultado', xlsdownload(df))
         if 'df_resultado' in st.session_state:
             fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss")
@@ -134,11 +136,15 @@ def indexCalc():
                 on_click=del_sesion_state('df_resultado')
             )
         
-        # si esta logeado y hay data, hay un boton para guardar
-        if 'db_data' in st.session_state and 'logeado' in st.session_state:
-            if st.button('Save to my account'):
-                guardar(st.session_state['db_data']) 
-        if 'db_data' in st.session_state and 'logeado' not in st.session_state:
+        # si esta lougeado y hay data, hay un boton para guardar
+        if 'logeado' in st.session_state:
+            if 'db_data' in st.session_state:
+                if st.button('Save to my account'):
+                    guardar(st.session_state['db_data']) 
+                    del_sesion_state('db_data')
+            else:
+                st.write("No data to save. Please calculate indices")
+        else:
             st.write("Create an account and/or login to save the data to your account")
 
 def docs():
