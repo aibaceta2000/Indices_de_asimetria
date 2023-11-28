@@ -228,7 +228,7 @@ def docu():
     write_espacios(2)
     st.header('Documentación de gráficos')
     st.markdown("""Para utilizar la generacion de graficos, es necesario que el archivo tenga un formato de .XLS, .XLSX o .CSV. 
-                Además, las columnas deben seguir el siguiente orden: Taxa, Infrataxa, Población e Índices. Cada columna debe 
+                Además, las columnas deben seguir el siguiente orden y nombres: Taxa, Infrataxa, Población (opcional) e Índices. Cada columna debe 
                 tener su encabezado correspondiente en la primera fila, y los índices pueden ser de cualquier tipo y estar 
                 dispuestos en cualquier orden. A continuacion, se muestra un ejemplo:""", unsafe_allow_html=True)
 

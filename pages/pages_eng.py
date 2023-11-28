@@ -214,7 +214,7 @@ def docs():
     write_espacios(2)
     st.header('Graphics Documentation')
     st.markdown("""To generate graphics, the file must be in .XLS, .XLSX, or .CSV format. 
-                Additionally, the columns should follow the following order: Taxa, Infrataxa, Population, and Indices. Each column should 
+                Additionally, the columns must follow the following order: Taxa, Infrataxa, Population (optional), and Indices. Each column should 
                 have its corresponding header in the first row, and the indices can be of any type and arranged in any 
                 order. Below is an example:""", unsafe_allow_html=True)
 
