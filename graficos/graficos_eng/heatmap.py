@@ -7,10 +7,12 @@ from scipy.stats import zscore
 # personalizacion del heatmap
 def heatmap(df):
     # seleccion indices
-    indicesDisponibles = list(df.columns[3:])
+    indicesDisponibles = list(df.columns[3:]) if df.columns[2] == "Population" else list(df.columns[2:])
     indicesSeleccionados = st.multiselect("Selected indexes", indicesDisponibles, default=indicesDisponibles)
     indices = [df.columns.get_loc(indice) for indice in indicesSeleccionados]
 
+
+    # Personalizacion 
     fila = st.columns([0.15, 0.85])
     
     with fila[0]:
@@ -26,7 +28,8 @@ def heatmap(df):
         selected_palette = st.selectbox("Select palette:", available_palettes)  
         n_colors = st.slider("Number of colors:", value=9, min_value=3, step=1, max_value=15, disabled= not discrete_palette)
         
-
+        
+    # Heatmap
     if len(indicesSeleccionados) < 2:
         st.warning("Select at least 2 indexes")
     else:
