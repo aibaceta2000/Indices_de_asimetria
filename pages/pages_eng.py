@@ -145,7 +145,7 @@ def indexCalc():
             else:
                 st.write("No data to save. Please calculate indices")
         else:
-            st.write("Create an account and/or login to save the data to your account")
+            st.write("Create an account and/or login through 🌱Account to save the data to your account")
 
 def docs():
     st.header('Documentation')

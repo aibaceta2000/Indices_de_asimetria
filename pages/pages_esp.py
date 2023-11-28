@@ -14,9 +14,6 @@ from matplotlib.backends.backend_pdf import PdfPages
 from bd import *
 import plotly.io as pio
 
-### Página con traduccion pendiente. Métodos pendientes de traduccion serán marcados ###
-
-
 def inicio():
     st.header('Chromindex-UdeC')
     st.write(
@@ -37,7 +34,6 @@ def inicio():
     """
     )
     write_espacios(6)
-
 
 def instrucciones():
     st.header('Instrucciones de Uso')
@@ -103,7 +99,6 @@ def instrucciones():
         mime="application/vnd.ms-excel"
     )
 
-
 def calculoIndices():
     st.header('Chromindex-UdeC')
 
@@ -117,21 +112,21 @@ def calculoIndices():
         container_multiselect = st.container()
         check_all = st.checkbox('Seleccionar todos')
         if check_all:
-            indices_seleccionados = container_multiselect.multiselect(
-                'Multiselect', indices_nombres, indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres, indices_nombres)
         else:
-            indices_seleccionados = container_multiselect.multiselect(
-                'Multiselect', indices_nombres)
+            indices_seleccionados = container_multiselect.multiselect('Multiselect', indices_nombres)
         if st.button('Calcular índices'):
-            df = pd.DataFrame(columns=['Archivo'] + indices_seleccionados)
+            df = pd.DataFrame(columns=['File'] + indices_seleccionados)
             for uploader in lista_excels:
                 indices_clase = IndicesDesdeExcel(uploader)
-                indices_dicc = indices_clase.calcular_indices(
-                    indices_seleccionados)
+                indices_dicc = indices_clase.calcular_indices(indices_seleccionados)
                 excel_nombre = uploader.name.split('.xls')[0]
-                df.loc[len(df) + 1] = [excel_nombre] + \
-                    list(indices_dicc.values())
+                df.loc[len(df) + 1] = [excel_nombre] + list(indices_dicc.values())
             st.dataframe(df)
+
+            #agregar data para la bd en la sesion, solo si esta logueado
+            if 'logeado' in st.session_state:
+                add_sesion_state('db_data', df.to_dict(orient='records'))
             add_sesion_state('df_resultado', xlsdownload(df))
         if 'df_resultado' in st.session_state:
             fecha_hoy = datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss")
@@ -144,11 +139,16 @@ def calculoIndices():
                 on_click=del_sesion_state('df_resultado')
             )
 
-        if 'db_data' in st.session_state and 'logeado' in st.session_state:
-            if st.button('Guardar a mi cuenta'):
-                guardar(st.session_state['db_data']) 
-        if 'db_data' in st.session_state and 'logeado' not in st.session_state:
-            st.write("Si necesita guardar la data, inicie sesión en la pestaña Cuenta")
+        # si esta lougeado y hay data, hay un boton para guardar
+        if 'logeado' in st.session_state:
+            if 'db_data' in st.session_state:
+                if st.button('Guardar a mi cuenta'):
+                    guardar(st.session_state['db_data']) 
+                    del_sesion_state('db_data')
+            else:
+                st.write("Para guarda la data, primero debe calcular índices")
+        else:
+            st.write("Inicie sesión desde la pestaña 🌱Cuenta para guardar la data")
 
 def docu():
     st.header('Documentación')

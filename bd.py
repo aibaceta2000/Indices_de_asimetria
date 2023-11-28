@@ -55,6 +55,9 @@ def ver():
     collection = db.indices
 
     username = st.session_state["logeado"]
+    text['msg_001'] = [f"💣 Delete all {username}'s data", 
+                       f"💣 Borrar toda la data del usuario {username}"]
+
     # buscar data de la bd con el username
     data_from_collection = list(collection.find({"username": username}))
 
@@ -62,7 +65,8 @@ def ver():
         st.header(f"{text['header'][idioma]} {username}")
 
         # boton para borrar todos los datos
-        if st.button(f"Delete all {username}'s data"):
+
+        if st.button(text['msg_001'][idioma]):
             # buscar los datos asociados al user
             result = collection.delete_many({"username": username})
             if result.deleted_count > 0:
@@ -81,24 +85,28 @@ def ver():
             col1, col2 = st.columns(2)
 
             with col1:
+                # Descargar el DataFrame como un archivo CSV
+                csv_data = df.to_csv(index=False, encoding="utf-8")
+                st.download_button(
+                    label='⬇️ ' f"{text['download'][idioma]} CSV {data['File']}",
+                    data=csv_data,
+                    file_name=f"{data['File']}.csv",
+                    mime="text/csv",
+                    key= {data['_id']}
+                )
+
+            with col2:
                 # Agregar un botón para eliminar el documento
-                if st.button('❌ 'f"{text['delete'][idioma]} {data['File']}, id: {data['_id']}"):
+                if st.button('❌ 'f"{text['delete'][idioma]} {data['File']}", key={data['_id']}):
                     collection.delete_one({"_id": data["_id"]})
                     if idioma == 0:
                         st.success(f"Document {data['File']} deleted.")
                     elif idioma == 1:
                         st.success(f"Archivo {data['File']} borrado.")
 
-            with col2:
-                # Descargar el DataFrame como un archivo CSV
-                csv_data = df.to_csv(index=False, encoding="utf-8")
-                st.download_button(
-                    label='⬇️ ' f"{text['download'][idioma]} CSV {data['File']}, id: {data['_id']}",
-                    data=csv_data,
-                    file_name=f"{data['File']}.csv",
-                    mime="text/csv",
-                )
-
+    text['msg_002'] = ['You can upload and save data from 🥀Index calculation', 
+                       'Puede subir y guardar data desde la pestaña 🥀Cálculo de índices']
+    st.write(text['msg_002'][idioma])
     client.close()
 
 
