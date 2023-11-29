@@ -258,9 +258,6 @@ def docu():
     st.markdown("""Su implementación es mediante la función __express.box__ de la librería __plotly__.""",
                 unsafe_allow_html=True)
 
-    st.markdown("<h4>graf 1 2</h4>", unsafe_allow_html=True)
-    st.markdown("""Su implementación es mediante la función __pyplot__ de la librería __matplotlib__.""",
-                unsafe_allow_html=True)
 
     write_espacios(2)
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \

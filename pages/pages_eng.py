@@ -242,9 +242,6 @@ def docs():
     st.markdown("<h4>Boxplot</h4>", unsafe_allow_html=True)
     st.markdown("""Its implementation is done using the __express.box__ function from the __plotly__ library.""", unsafe_allow_html=True)
 
-    st.markdown("<h4>Graph 1 2</h4>", unsafe_allow_html=True)
-    st.markdown("""Its implementation is done using the __pyplot__ function from the __matplotlib__ library.""", unsafe_allow_html=True)
-        
 
 
     write_espacios(2)
