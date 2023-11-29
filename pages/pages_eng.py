@@ -242,7 +242,9 @@ def docs():
     st.markdown("<h4>Boxplot</h4>", unsafe_allow_html=True)
     st.markdown("""Its implementation is done using the __express.box__ function from the __plotly__ library.""", unsafe_allow_html=True)
 
-
+    st.markdown("<h4>Continuous graph</h4>", unsafe_allow_html=True)
+    st.markdown("""Its implementation is done the __matplotlib.pyplot__ library.""",
+                unsafe_allow_html=True)
 
     write_espacios(2)
     st.caption("<h10>Greilhuber, J., Speta. F. 1976. C-banded karyotypes in the Scilla hohenackeri group, S. persica, \
